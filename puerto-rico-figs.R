@@ -12,7 +12,7 @@ names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 ##  - chikingunya fall+winder in 2014,
 ##  - a couple of weeks of clear outliers in 2001
 ##  - 2020 and beyond as the data might be incomplete
-out_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
+exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
                seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
                seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
                seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
@@ -27,10 +27,9 @@ the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
 # Supp Figure - Trend esimtate --------------------------------------------
-
 res <- map_df(unique(all_counts$agegroup), function(x){
   tmp <- all_counts %>% filter(agegroup == x) %>%
-    compute_expected(exclude = out_dates, keep.components = TRUE)
+    compute_expected(exclude = exclude_dates, keep.components = TRUE)
   data.frame(agegroup = x, date = tmp$counts$date, trend= tmp$trend)
 })
 library(directlabels)
@@ -47,7 +46,7 @@ res %>%
 
 res <- map_df(unique(counts$agegroup), function(x){
   all_counts %>% filter(agegroup == x) %>%
-    compute_expected(exclude = out_dates, keep.components = TRUE) %>%
+    compute_expected(exclude = exclude_dates, keep.components = TRUE) %>%
     .$seasonal %>%
   mutate(agegroup = x)
 })
@@ -64,7 +63,7 @@ res %>%
 
 # Supp Figure: Correlated errors ------------------------------------------
 counts <- filter(all_counts, agegroup == "75-Inf")
-counts <- compute_expected(counts, exclude = out_dates)
+counts <- compute_expected(counts, exclude = exclude_dates)
 example_dates <- control_dates[year(control_dates) <= 2005]
 r <- tibble(date = counts$date, observed = counts$outcome, expected = counts$expected) %>%
   filter(date %in% example_dates) %>%
@@ -102,25 +101,59 @@ sd(V_inv %*% r)
 
 
 # Figure 1B - Chikingunya -------------------------------------------------
-
 the_breaks <- c(0, 5, 20, 40, 60, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 fit <- lapply(c("0-4","60-Inf"), function(x){
   ret <- all_counts %>% 
     filter(agegroup == x) %>%
-    excess_model(start = make_date(2014, 7, 1),
-                 end = make_date(2015, 7, 1),
-                 exclude = out_dates,
+    excess_model(start = make_date(2014, 1, 1),
+                 end = make_date(2015, 12, 31),
+                 exclude = exclude_dates,
                  control.dates = control_dates,
-                 nknots = 6, 
+                 nknots = 12, 
                  model = "correlated")
   return(ret)
-  
 })
 
 excess_plot(fit[[1]])
 excess_plot(fit[[2]])
 
+
+
+# Figure 2 - Excess deaths ------------------------------------------------
+the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
+ndays <- 365
+all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
+interval_start <- c(georges = hurricane_dates[2],
+                  maria = hurricane_dates[3],
+                  chikungunya = make_date(2014, 7, 1),
+                  covid = make_date(2020, 1, 1))
+
+before <-365
+after <- 365
+nknots <- 6
+
+e <- map_df(seq_along(interval_start), function(i){
+  tmp <- map_df(unique(all_counts$agegroup), function(x){
+    f <- all_counts %>% filter(agegroup == x) %>%
+      excess_model(event = interval_start[i],
+                   start = interval_start[i] - before,
+                   end = interval_start[i] + after, 
+                   exclude = exclude_dates,
+                   control.dates = control_dates,
+                   nknots = nknots, 
+                   model = "correlated",
+                   max.iter = 25)
+    excess_cumulative(f, start = interval_start[i], end = interval_start[i] + ndays) %>%
+      mutate(agegroup = x, event = names(intervals)[i])
+  })
+  tmp %>% group_by(date) %>% 
+    summarize(fitted = sum(fitted),
+              observed = sum(observed),
+              sd = sqrt(sum(se^2)),
+              se = sqrt(sum(fitted_se^2)),
+              event = event[1])
+})
 
 
 
