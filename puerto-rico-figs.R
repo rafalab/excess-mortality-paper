@@ -101,6 +101,30 @@ acf(V_inv %*% r)
 sd(V_inv %*% r)
 
 
+# Figure 1B - Chikingunya -------------------------------------------------
+
+the_breaks <- c(0, 5, 20, 40, 60, Inf)
+all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
+fit <- lapply(c("0-4","60-Inf"), function(x){
+  ret <- all_counts %>% 
+    filter(agegroup == x) %>%
+    excess_model(start = make_date(2014, 7, 1),
+                 end = make_date(2015, 7, 1),
+                 exclude = out_dates,
+                 control.dates = control_dates,
+                 nknots = 6, 
+                 model = "correlated")
+  return(ret)
+  
+})
+
+excess_plot(fit[[1]])
+excess_plot(fit[[2]])
+
+
+
+
+
 
 
 
