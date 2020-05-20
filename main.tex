@@ -157,11 +157,11 @@ with $N_t$ the population at time $t$, $\alpha(t)$ a slow moving trend that acco
 \label{subsec:effects}
 We fit our model to Puerto Rico morality data from 1985 to 2020 and found that the death rate in Puerto Rico increased by \textbf{XXX} to \textbf{XXX}\% the day after landfall of hurricane Maria and an increased death rate persisted until well after the end of the year \textbf{(Figure 1A, Supp Figure XX)}. To understand if such a large and sustained increase is common after an intense hurricane, we examined mortality counts in Louisiana after Katrina, New Jersey after Sandy, Florida after Irma as well as two other hurricanes in Puerto Rico, Hugo in 1989 and Georges in 1998.  Although not as severe, a similar pattern was observed for Georges in 1998 when the death rate increased \textbf{XX-XX}\% the day after landfall and an increased death rate persisted until well after the end of December \textbf{(Figure 1, Supplemental Figure XX)}. The effects of Katrina on Louisiana were much more direct. On August 29, 2005, the day the levees broke, there were 834 deaths, which translates to an increase in death rate of 689\%. However, the increase in mortality rates for the months following this catastrophe was substantially lower than in Puerto Rico after Maria and Georges \textbf{(Figure 1)}. None of the other hurricanes examined had noticeable direct or indirect effects \textbf{(Figure 1, Supplemental FiguresXXX)}.
 
-\subsection{Detecting epidemics}
+\subsection{Quantifyint the effects epidemics}
 \label{subsec:epidemics}
 Our model can also be fitted to detect epidemics or outbreaks and quantify their effects. We examined Puerto Rico mortality data by age groups to 2014-2015 data, when the Chikungunya outbreak occurred \textbf{(CITE)}, and detected an increase in mortality rate above the typical natural variability for a period of \textbf{XXX} days for the 60+ age groups and a period of \textbf{XXX} days for the  0-4 age group \textbf{(Figure 1B)}. \\
 
-To compare the effect of COVID-19 to those of the flu in the United States, we fit our model to state level weekly mortality data from 2017 to May 5, 2020. These data were adjusted for incomplete data \textbf{[CITE }\href{https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm}{\textbf{cdc}]} . Our approach clearly detects the COVID-19 epidemics for several states, as well as the 2018 flu season \textbf{(Table XX)}. By aggregating the results for the entire US we confirm that the COVID-19 pandemic was indeed more impactful. By comparing the data from the New York Times \textbf{[CITE]} we also note the reported COVID-19 are undercounting in many states \textbf{(Table XX)}.
+To compare the effect of COVID-19 to those of the flu in the United States, we fit our model to state level weekly mortality data from 2017 to May 5, 2020. These data were adjusted for incomplete data \textbf{[CITE }\href{https://www.cdc.gov/nchs/nvss/vsrr/covid19/excess_deaths.htm}{\textbf{cdc}]} . Our approach clearly detects the COVID-19 epidemics for several states, as well as the 2018 flu season (Supp Figure XXX, \textbf{(Table XX)}. By aggregating the results for the entire US we confirm that the COVID-19 pandemic had a substantially larger impact, although the difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Supp Figure XXX).
 
 \subsection{Excess mortality estimates}
 \label{subsec:excess-mortality}
@@ -169,9 +169,11 @@ Once we have fit our model to data, we can compute excess mortality estimates fo
 
 Based on the Center for Disease Control and Prevention (CDC) data, we can also compute excess mortality for the period of the COVID-19 epidemic for which we have data, specifically the March 8 to April 25. When we  compare these numbers to the reported number of COVID-19 deaths, we find a \textbf{XX}\% difference \textbf{(Figure XXX, Table XX)}. We also note that more the US, the number of excess deaths are much larger than the 2018 flu season, although this is not true for all states \textbf{(Figure XX, Table XX)}.
 
+Comparing the data from the New York Times \textbf{[CITE]} we also note the reported COVID-19 are under-counting in many states \textbf{(Table XX)}.
+
 \subsection{Across group comparisons}
 \label{subsec:group-comparison}
-Because our model provides standard errors for our estimates, we can also compare the event effects for two or more groups and assess the statistical significance of the observed differences. The Cook County medical examiner is proving daily updates of their death registry. Although only about \textbf{1/5XXX} of all deaths are examined by this, one of the criteria for an examination from this office is that the death is disease constituting a threat to public health, which implies some if not most COVID-19 deaths are being examined. This database includes demographic information permitting comparisons among, for example, racial groups. The largest percent increases were observed for individuals over 65 \textbf{(Supp Fig X)}. Among those 65 years of age and older, the increase in medical examiner death rate for Cook county was as high as \textbf{XXX} on \textbf{XXXX} and shows a significant difference between black and white populations. The population size for other racial groups of this age was substantially smaller and were not included in the analysis.
+Because our model provides both estimates and standard errors, we can also compare the event effects for two or more groups and assess the statistical significance of the observed differences. The Cook County medical examiner is proving daily updates of their death registry. Although only about \textbf{1/5XXX} of all deaths are examined by this, one of the criteria for an examination from this office is that the death is disease constituting a threat to public health, which implies some if not most COVID-19 deaths are being examined. This database includes demographic information permitting comparisons among, for example, racial groups. The largest percent increases were observed for individuals over 65 \textbf{(Supp Fig X)}. Among those 65 years of age and older, the increase in medical examiner death rate for Cook county was as high as \textbf{XXX} on \textbf{XXXX} and shows a significant difference between black and white populations. The population size for other racial groups of this age was substantially smaller and were not included in the analysis.
  
 % disease reached Puerto Rico and our excess death method reveals that in the month of XX there were XXX deaths among people over 60, v is an arbovirus common to tropical regions, mainly in Africa and Asia. According to XXX, most infected individuals recover 10 days, and deaths are rare. In 2014 the disease reached Puerto Rico and our excess death method reveals that in the month of XX there were XXX deaths among people over 60, very likely due to a Chikungunya outbreak. The next XX months saw an incread in the death rate of individuals over 60  (Supplemental Figure 1b) as well as in infants (Supplemental Figure 1b)  with a final excess mortality count of XXXX  +/- XXXX (Supplemental FIgure 1c).
 
@@ -272,5 +274,10 @@ We first determined the period of indirect effect for each hurricane. To do this
  \begin{equation*}
     \mbox{Var(Excess deaths)} = \sum_{t_{ij} \in I} N_{ijk}\exp\{g_k(t_{ij})+s_k(j)\}
  \end{equation*}
+ 
+\newpage
+\bibliographystyle{unsrt}
+\bibliography{ref.bib}
+
 \end{document}
 
