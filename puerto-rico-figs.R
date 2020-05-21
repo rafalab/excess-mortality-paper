@@ -44,7 +44,7 @@ res %>%
 
 # Supp Figure - Sesonal esimtate --------------------------------------------
 
-res <- map_df(unique(counts$agegroup), function(x){
+res <- map_df(unique(all_counts$agegroup), function(x){
   all_counts %>% filter(agegroup == x) %>%
     compute_expected(exclude = exclude_dates, keep.components = TRUE) %>%
     .$seasonal %>%
@@ -124,37 +124,51 @@ excess_plot(fit[[2]])
 the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 ndays <- 365
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
-interval_start <- c(georges = hurricane_dates[2],
-                  maria = hurricane_dates[3],
-                  chikungunya = make_date(2014, 7, 1),
-                  covid = make_date(2020, 1, 1))
+interval_start <- c(hurricane_dates[2],
+                  hurricane_dates[3],
+                  Chikungunya = make_date(2014, 8, 1),
+                  Covid_19 = make_date(2020, 1, 1))
 
-before <-365
-after <- 365
-nknots <- 6
+disc <- c(TRUE, TRUE, FALSE, FALSE)
+before <-c(365, 365, 365, 548) 
+after <-c(365, 365, 365, 90)
+npy <- 12
 
 e <- map_df(seq_along(interval_start), function(i){
   tmp <- map_df(unique(all_counts$agegroup), function(x){
     f <- all_counts %>% filter(agegroup == x) %>%
       excess_model(event = interval_start[i],
-                   start = interval_start[i] - before,
-                   end = interval_start[i] + after, 
+                   start = interval_start[i] - before[i],
+                   end = interval_start[i] + after[i], 
                    exclude = exclude_dates,
                    control.dates = control_dates,
-                   nknots = nknots, 
-                   model = "correlated",
-                   max.iter = 25)
-    excess_cumulative(f, start = interval_start[i], end = interval_start[i] + ndays) %>%
-      mutate(agegroup = x, event = names(intervals)[i])
+                   nknots = round(npy*(before[i] + after[i])/365), 
+                   discontinuity = disc[i],
+                   model = "correlated")
+    excess_cumulative(f, 
+                      start = interval_start[i], 
+                      end = pmin(make_date(2020, 3, 31), interval_start[i] + ndays)) %>%
+      mutate(agegroup = x, event_day = interval_start[i], event = names(interval_start)[i])
   })
   tmp %>% group_by(date) %>% 
     summarize(fitted = sum(fitted),
               observed = sum(observed),
-              sd = sqrt(sum(se^2)),
-              se = sqrt(sum(fitted_se^2)),
+              sd = sqrt(sum(sd^2)),
+              se = sqrt(sum(se^2)),
+              event_day = event_day[1], 
               event = event[1])
 })
 
+e %>%
+  mutate(day = as.numeric(date - event_day)) %>%
+  ggplot(aes(color = event, fill = event)) +
+  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25) + 
+  geom_point(aes(day, observed), alpha = 0.25, cex = 1) +
+  geom_line(aes(day, fitted))
+  
+  
+  
+  
 
 
 

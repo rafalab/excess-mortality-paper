@@ -37,22 +37,26 @@ rm(covid_nyc, ny)
 # Fit excess deaths models ------------------------------------------------
 flu_season <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date <- make_date(2020, 4, 25)
+max_date <- make_date(2020, 5, 2)
 
 ## remover the latest
 counts <- cdc_state_counts %>% filter(date <= max_date)
-  
-fits <- map_df(states, function(x){
+
+states <- setdiff(states, c("Connecticut", "North Carolina"))
+
+fits <- map_df(unique(counts$state), function(x){
   if(x == "Puerto Rico"){
     exclude_dates <- unique(sort(c(exclude_dates, seq(make_date(2017, 9, 20), make_date(2018, 3, 31), by = "day"))))
   }
   fit <- counts %>% filter(state == x) %>%
     excess_model(exclude = exclude_dates,
-                 start =  min(counts$date),
+                 start = min(counts$date),
                  end = max_date,
                  weekday.effect = FALSE,
                  nknots = 20,
                  verbose = FALSE)
+})
+names(fits) <- states
   tibble(state = x, 
          date = fit$date, 
          expected =  fit$expected, 
@@ -64,7 +68,7 @@ fits <- map_df(states, function(x){
 
 # Supplemental Figure - Show f for worse 12 -------------------------------
 show <- fits %>% group_by(state) %>%
-  fitler(state %in% "Puerto Rico") %>% # remove due to María effect.
+  filter(!state %in% "Puerto Rico") %>% # remove due to María effect.
   summarize(max = max(fitted)) %>%
   ungroup() %>%
   arrange(desc(max)) %>%
@@ -86,7 +90,7 @@ fits %>%
 
 # Figure 1C - US effect ---------------------------------------------------
 fits %>% 
-  #filter(!states %in% c("Pennsylvania", "North Carolina", "Connecticut")) %>%
+  filter(!state %in% c("North Carolina", "Connecticut")) %>%
   group_by(date) %>% 
   summarize(fitted = sum(expected * fitted) / sum(expected), 
             se = sqrt(sum(expected^2 * se^2)) / sum(expected),
@@ -96,6 +100,10 @@ fits %>%
   geom_hline(yintercept = 0) +
   geom_ribbon(alpha = 0.5) +
   geom_line()
+
+
+# Excess mortality --------------------------------------------------------
+
 
 
 intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
