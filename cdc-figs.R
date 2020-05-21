@@ -43,31 +43,34 @@ max_date <- make_date(2020, 5, 2)
 counts <- cdc_state_counts %>% filter(date <= max_date)
 
 states <- setdiff(states, c("Connecticut", "North Carolina"))
-
-fits <- map_df(unique(counts$state), function(x){
+nknots <- 80
+fits <- lapply(states, function(x){
   if(x == "Puerto Rico"){
     exclude_dates <- unique(sort(c(exclude_dates, seq(make_date(2017, 9, 20), make_date(2018, 3, 31), by = "day"))))
   }
-  fit <- counts %>% filter(state == x) %>%
+  ret <- counts %>% filter(state == x) %>%
     excess_model(exclude = exclude_dates,
                  start = min(counts$date),
                  end = max_date,
                  weekday.effect = FALSE,
-                 nknots = 20,
+                 nknots = nknots,
                  verbose = FALSE)
+  ret$state <- x
+  return(ret)
 })
 names(fits) <- states
-  tibble(state = x, 
-         date = fit$date, 
-         expected =  fit$expected, 
-         fitted = 100*fit$fitted, 
-         se = 100*fit$se,
-         sd = 100*sqrt(diag(fit$cov)))
-})
-
+  
 
 # Supplemental Figure - Show f for worse 12 -------------------------------
-show <- fits %>% group_by(state) %>%
+df <- map_df(fits, function(f)
+  with(f, tibble(state = state, 
+                 date = date, 
+                 expected =  expected, 
+                 fitted = 100* fitted, 
+                 se = 100* se,
+                 sd = 100* sd)))
+
+show <- df %>% group_by(state) %>%
   filter(!state %in% "Puerto Rico") %>% # remove due to María effect.
   summarize(max = max(fitted)) %>%
   ungroup() %>%
@@ -75,7 +78,7 @@ show <- fits %>% group_by(state) %>%
   top_n(12, max) %>%
   pull(state)
 
-fits %>% 
+df %>% 
   filter(state %in% show) %>%
   mutate(state = factor(state, levels = show)) %>%
   ggplot(aes(date, fitted, ymin = fitted - 2*se, ymax = fitted + 2*se)) +
@@ -89,7 +92,7 @@ fits %>%
 
 
 # Figure 1C - US effect ---------------------------------------------------
-fits %>% 
+df %>% 
   filter(!state %in% c("North Carolina", "Connecticut")) %>%
   group_by(date) %>% 
   summarize(fitted = sum(expected * fitted) / sum(expected), 
@@ -104,6 +107,31 @@ fits %>%
 
 # Excess mortality --------------------------------------------------------
 
+e <- map_df(fits, function(f){
+  ret <- excess_cumulative(f, 
+                    start = make_date(2020, 3, 14), 
+                    end = max_date) 
+  ret$state <- f$state
+  return(ret)
+})
+
+tmp <- covid_states %>% 
+  filter(date >= min(e$date)) %>%
+  group_by(date) %>%
+  summarize(covid = sum(death))
+us <- group_by(date) %>%
+  summarize(observed = sum(observed),
+            sd = sqrt(sum(sd^2)),
+            fitted = sum(fitted),
+            se = sqrt(sum(se^2)),
+            covid = sum(death,na.rm = TRUE)) %>%
+  ungroup()
+  
+us %>% 
+  ggplot(aes(date)) +
+  geom_ribbon(aes(ymin = observed- 2*sd, ymax = observed + 2*sd), alpha = 0.5) +
+  geom_point(aes(y = observed)) +
+  geom_line(aes(x=date, y=covid), data =tmp)
 
 
 intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
