@@ -236,10 +236,10 @@ counts <- puerto_rico_icd %>%
           
 f <- excess_model(counts, exclude = exclude_dates, 
              event = hurricane_dates[3],
-             start = hurricane_dates[3] - 270,
-             end = hurricane_dates[3] + 270,
+             start = hurricane_dates[3] - 365,
+             end = hurricane_dates[3] + 365,
              knots.per.year = 4)
 
-excess_plot(f)
+excess_plot(f, show.data = FALSE)
 
 
