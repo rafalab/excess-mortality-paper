@@ -133,9 +133,8 @@ tmp <- map_df(seq_along(count_index), function(i){
 }) %>%
   mutate(hurricane = reorder(hurricane, date, min))
 
-
 # -- Figure 1
-p <- tmp %>% 
+fig1 <- tmp %>% 
   group_by(hurricane) %>%
   mutate(date = seq(make_date(2017,07,01), make_date(2018,07,02), by="days")) %>%
   ungroup() %>%
@@ -155,17 +154,17 @@ p <- tmp %>%
         axis.text  = element_text(face="bold", color="black"),
         legend.title = element_text(face="bold", color="black"),
         legend.text  = element_text(face="bold", color="black"))
-p
+fig1
 
 # -- Save figure 1
 ggsave("figs/figure-1.pdf",
-       plot   = p,
+       plot   = fig1,
        dpi    = 300, 
        height = 6,
        width  = 8)
 
-# -- Supp Figure
-p <- tmp %>% 
+# -- Supp Figure 1
+supp_fig1 <- tmp %>% 
   mutate(hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
   ggplot(aes(date, fitted*100)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
@@ -181,9 +180,9 @@ p <- tmp %>%
         legend.title = element_text(face="bold", color="black"),
         legend.text  = element_text(face="bold", color="black"))
 
-## -- Save figure 1
-# ggsave("figs/figure-1.pdf",
-#        plot   = p,
-#        dpi    = 300, 
-#        height = 6,
-#        width  = 8)
+# -- Save supp figure 1
+ggsave("figs/supp-figure-1.pdf",
+       plot   = supp_fig1,
+       dpi    = 300,
+       height = 6,
+       width  = 8)
