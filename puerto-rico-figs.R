@@ -1,11 +1,16 @@
+# -- Libraries
+library(ggpubr)
 library(tidyverse)
 library(lubridate)
 library(excessdeaths)
 library(directlabels)
+library(directlabels)
 
-hurricane_dates <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
-hurricane_effect_ends <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
+# -- Hurricanes information
+hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
+hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
 names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
+
 ## define periods not used to compute the expected counts
 ## remove 6 months after hurricane
 ## we also remove:
@@ -13,53 +18,105 @@ names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 ##  - a couple of weeks of clear outliers in 2001
 ##  - 2020 and beyond as the data might be incomplete
 exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
-               seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
-               seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
-               seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-               seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-               seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
+                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
+                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
+                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 
+# -- Control dates
 control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
 
-
+# -- Loading PR data and creating age groups
 data("puerto_rico_counts")
 the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
-# Supp Figure - Trend esimtate --------------------------------------------
+### -- ------------- -----------------------------------------------------
+### -- Supp Figure 1 -----------------------------------------------------
+### -- ------------- -----------------------------------------------------
+# -- Getting trend estimates for each age group
 res <- map_df(unique(all_counts$agegroup), function(x){
-  tmp <- all_counts %>% filter(agegroup == x) %>%
+  
+  tmp <- all_counts %>% 
+    filter(agegroup == x) %>%
     compute_expected(exclude = exclude_dates, keep.components = TRUE)
+  
   data.frame(agegroup = x, date = tmp$counts$date, trend= tmp$trend)
 })
-library(directlabels)
-res %>%
+
+# -- Trend estimates
+sup_fig1a <- res %>%
   mutate(agegroup = str_replace(agegroup, "-Inf", "+")) %>%
-  ggplot(aes(date, trend, color = agegroup)) +
-  geom_line(show.legend = FALSE) +
-  geom_dl(aes(color =  agegroup, label =agegroup), method = list("first.points")) +
-  scale_x_date(limit = c(make_date(1982,1,1), make_date(2020,1,1))) +
-  ylab("Percent of population") +
-  facet_wrap(~agegroup, scale = "free_y")
+  mutate(agegroup = factor(agegroup, levels = c("0-4", "5-19", "20-39", 
+                                                "40-59", "60-74", "75+"))) %>%
+  ggplot(aes(date, trend)) +
+  geom_line(size=1, show.legend = FALSE) +
+  scale_x_date(limit = c(make_date(1985,1,1), make_date(2020,1,1))) +
+  ylab("Estimated trend effect") + 
+  xlab("") +
+  facet_wrap(~agegroup, scale = "free_y") +
+  theme(axis.title = element_text(face="bold", color="black"),
+        axis.text  = element_text(face="bold", color="black"),
+        strip.text   = element_text(face="bold", color="black"),
+        legend.title = element_text(face="bold", color="black"),
+        legend.text  = element_text(face="bold", color="black"))
 
-# Supp Figure - Sesonal esimtate --------------------------------------------
+# -- Save supp-figure-1a
+ggsave("figs/supp-figure-1a.pdf",
+       plot   = sup_fig1a,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
 
+# -- Getting seasonal estimates for each age group
 res <- map_df(unique(all_counts$agegroup), function(x){
-  all_counts %>% filter(agegroup == x) %>%
+  
+  all_counts %>% 
+    filter(agegroup == x) %>%
     compute_expected(exclude = exclude_dates, keep.components = TRUE) %>%
     .$seasonal %>%
   mutate(agegroup = x)
 })
 
-res %>%
+# -- Seasonal estimates
+sup_fig1b <- res %>%
   mutate(agegroup = str_replace(agegroup, "-Inf", "+")) %>%
-  ggplot(aes(day, s, color = agegroup)) +
-  geom_line(show.legend = FALSE) +
-  geom_dl(aes(color =  agegroup, label = agegroup), method = list("first.points")) +
+  mutate(agegroup = factor(agegroup, levels = c("0-4", "5-19", "20-39", 
+                                                "40-59", "60-74", "75+"))) %>%
+  ggplot(aes(day, s)) +
+  geom_line(size=1, show.legend = FALSE) +
   scale_x_continuous(limit = c(-5,365))+
-  ylab("Percent of population") +
-  facet_wrap(~agegroup, scale = "free_y")
+  ylab("Estimated seasonal effect") + 
+  xlab("Day of the year") +
+  facet_wrap(~agegroup, scale = "free_y") +
+  theme(axis.title = element_text(face="bold", color="black"),
+        axis.text  = element_text(face="bold", color="black"),
+        strip.text   = element_text(face="bold", color="black"),
+        legend.title = element_text(face="bold", color="black"),
+        legend.text  = element_text(face="bold", color="black"))
 
+# -- Save supp-figure-1b
+ggsave("figs/supp-figure-1b.pdf",
+       plot   = sup_fig1b,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+
+# -- Supp-figure-1
+sup_fig1 <- ggarrange(p1, p2, 
+                       labels = c("A", "B"), 
+                       nrow = 2, ncol = 1)
+
+# -- Save supp-figure-1
+ggsave("figs/supp-figure-1.pdf",
+       plot   = sup_fig1,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+### -- ----------------- -----------------------------------------------------
+### -- END Supp Figure 1 -----------------------------------------------------
+### -- ----------------- -----------------------------------------------------
 
 # Supp Figure: Correlated errors ------------------------------------------
 counts <- filter(all_counts, agegroup == "75-Inf")
