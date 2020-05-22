@@ -176,7 +176,6 @@ excess_plot(fit[[1]])
 excess_plot(fit[[2]])
 
 
-
 # Figure 2 - Excess deaths ------------------------------------------------
 the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 ndays <- 365
