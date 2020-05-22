@@ -32,9 +32,9 @@ data("puerto_rico_counts")
 the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
-### -- ------------- -----------------------------------------------------
-### -- Supp Figure 1 -----------------------------------------------------
-### -- ------------- -----------------------------------------------------
+### -- ------------------------------------------ -----------------------------------------------------
+### -- Supp Figure 2 (Trend & Seasonal Estimates) -----------------------------------------------------
+### -- ------------------------------------------ -----------------------------------------------------
 # -- Getting trend estimates for each age group
 res <- map_df(unique(all_counts$agegroup), function(x){
   
@@ -46,7 +46,7 @@ res <- map_df(unique(all_counts$agegroup), function(x){
 })
 
 # -- Trend estimates
-sup_fig1a <- res %>%
+supp_fig2a <- res %>%
   mutate(agegroup = str_replace(agegroup, "-Inf", "+")) %>%
   mutate(agegroup = factor(agegroup, levels = c("0-4", "5-19", "20-39", 
                                                 "40-59", "60-74", "75+"))) %>%
@@ -62,9 +62,9 @@ sup_fig1a <- res %>%
         legend.title = element_text(face="bold", color="black"),
         legend.text  = element_text(face="bold", color="black"))
 
-# -- Save supp-figure-1a
-ggsave("figs/supp-figure-1a.pdf",
-       plot   = sup_fig1a,
+# -- Save supp-figure-2a
+ggsave("figs/supp-figure-2a.pdf",
+       plot   = supp_fig2a,
        dpi    = 300, 
        height = 6,
        width  = 8)
@@ -80,7 +80,7 @@ res <- map_df(unique(all_counts$agegroup), function(x){
 })
 
 # -- Seasonal estimates
-sup_fig1b <- res %>%
+supp_fig2b <- res %>%
   mutate(agegroup = str_replace(agegroup, "-Inf", "+")) %>%
   mutate(agegroup = factor(agegroup, levels = c("0-4", "5-19", "20-39", 
                                                 "40-59", "60-74", "75+"))) %>%
@@ -96,65 +96,186 @@ sup_fig1b <- res %>%
         legend.title = element_text(face="bold", color="black"),
         legend.text  = element_text(face="bold", color="black"))
 
-# -- Save supp-figure-1b
-ggsave("figs/supp-figure-1b.pdf",
-       plot   = sup_fig1b,
+# -- Save supp-figure-2b
+ggsave("figs/supp-figure-2b.pdf",
+       plot   = supp_fig2b,
        dpi    = 300, 
        height = 6,
        width  = 8)
 
-# -- Supp-figure-1
-sup_fig1 <- ggarrange(p1, p2, 
+# -- Supp-figure-2
+supp_fig2 <- ggarrange(supp_fig2a, supp_fig2a, 
                        labels = c("A", "B"), 
                        nrow = 2, ncol = 1)
 
-# -- Save supp-figure-1
-ggsave("figs/supp-figure-1.pdf",
-       plot   = sup_fig1,
+# -- Save supp-figure-2
+ggsave("figs/supp-figure-2.pdf",
+       plot   = supp_fig2,
        dpi    = 300, 
        height = 6,
        width  = 8)
-### -- ----------------- -----------------------------------------------------
-### -- END Supp Figure 1 -----------------------------------------------------
-### -- ----------------- -----------------------------------------------------
+### -- ---------------------------------------------- -----------------------------------------------------
+### -- END Supp Figure 2 (Trend & Seasonal Estimates) -----------------------------------------------------
+### -- ---------------------------------------------- -----------------------------------------------------
 
-# Supp Figure: Correlated errors ------------------------------------------
-counts <- filter(all_counts, agegroup == "75-Inf")
+### -- -------------------------------- -----------------------------------------------------
+### -- Supp Figure 3 (Correlated errors) -----------------------------------------------------
+### -- -------------------------------- -----------------------------------------------------
+# -- Mortality data for individuals 75 years and older
+# counts <- filter(all_counts, agegroup == "75-Inf")
+counts <- puerto_rico_counts %>%
+            group_by(date) %>%
+            summarize(outcome    = sum(outcome),
+                      population = sum(population)) %>%
+            ungroup()
+
+# -- Computing expected mortality counts
 counts <- compute_expected(counts, exclude = exclude_dates)
+
+# -- Dates for model check
 example_dates <- control_dates[year(control_dates) <= 2005]
+
+# -- Computing z scores for example dates (H0 true)
 r <- tibble(date = counts$date, observed = counts$outcome, expected = counts$expected) %>%
   filter(date %in% example_dates) %>%
   mutate(r = (observed - expected)/sqrt(expected)) %>%
   pull(r)
 
-## remake these nice in same ggplot2 style
-## A - show that poisson model doesn't quite fit
-qqnorm(r); abline(0,1)
-# B - there is correlation
-acf(r)
-## And the SD is not 1
+# -- Supp Figure 3A: Show that poisson model doesn't quite fit
+# qqnorm(r); abline(0,1): OLD VERSION
+supp_fig3a <- tibble(r=r) %>%
+  ggplot(aes(sample=r)) +
+  stat_qq(alpha=0.50) + 
+  geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
+  ylab("Sample quantiles") +
+  xlab("Theoretical quantiles") +
+  theme(axis.title = element_text(face="bold"),
+        axis.text  = element_text(face="bold"))
+
+# -- Save supp-figure-3a
+ggsave("figs/supp-figure-3a.pdf",
+       plot   = supp_fig3a,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+
+# -- Supp Figure 3B: There is correlation
+# acf(r): OLD VERSION
+auto_cor <- acf(r, plot=FALSE)
+supp_fig3b <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
+  ggplot(aes(lag, acf)) +
+  geom_col(color="black", fill="#252525", width = 0.5) +
+  ylab("ACF") +
+  xlab("Lag") +
+  geom_hline(yintercept = qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
+             colour = "#cb181d",
+             linetype = 2) +
+  geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
+             colour = "#cb181d",
+             linetype = 2) +
+  theme(axis.title = element_text(face="bold"),
+        axis.text  = element_text(face="bold"))
+
+# -- Save supp-figure-3b
+ggsave("figs/supp-figure-3b.pdf",
+       plot   = supp_fig3b,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+
+# -- The SD is not 1
 sd(r)
 
-## Now show that we if "prewhiten" the errors things get better
-tmp <-counts %>%
-  filter(date %in% example_dates) %>%
-  mutate(r = (outcome - expected)/expected)
-r <- tmp$r
-mu <- tmp$expected
-n <- length(r)
-arfit<- excessdeaths:::fit_ar(tmp,  control.dates = control_dates)
-rhos <- ARMAacf(ar = arfit$ar, ma = 0, lag.max = n)
-s <- arfit$sigma
-mu <- counts$expected[counts$date %in% example_dates]
-Sigma <- apply(abs(outer(1:n, 1:n, "-")) + 1, 1, function(i) rhos[i]) *
-  outer(sqrt(s^2 + 1/mu), sqrt(s^2 + 1/mu))
-V <- chol(Sigma)
-V_inv = backsolve(r = V, x = diag(ncol(V))) ## V is upper triangular so backsolve faster
+# -- Now show that we if "prewhiten" the errors things get better
+tmp <- counts %>%
+        filter(date %in% example_dates) %>%
+        mutate(r = (outcome - expected)/expected)
 
-## whitened residuals
-qqnorm(V_inv %*% r); abline(0,1)
-acf(V_inv %*% r)
+# -- Extracting percent change
+r     <- tmp$r
+
+# -- Expected value
+mu    <- tmp$expected
+
+# -- Number of data points
+n     <- length(r)
+
+# -- Estimating AR(p) with control dates
+arfit <- excessdeaths:::fit_ar(tmp,  control.dates = control_dates)
+
+# -- Estimated rhos
+rhos  <- ARMAacf(ar = arfit$ar, ma = 0, lag.max = n)
+
+# -- Estimated sd
+s     <- arfit$sigma
+
+# -- Computing covariance matrix
+Sigma <- apply(abs(outer(1:n, 1:n, "-")) + 1, 1, function(i) rhos[i]) * outer(sqrt(s^2 + 1/mu), sqrt(s^2 + 1/mu))
+
+# -- Cholesky decomposition of Sigma & computing inverse
+V     <- chol(Sigma)
+V_inv <- backsolve(r = V, x = diag(ncol(V))) ## V is upper triangular so backsolve faster
+
+# -- Supp Figure 3C: QQplot of adjusted residuals
+# qqnorm(V_inv %*% r); abline(0,1): OLD VERSION
+supp_fig3c <- tibble(r=V_inv %*% r) %>%
+  ggplot(aes(sample=r)) +
+  stat_qq(alpha=0.50) + 
+  geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
+  ylab("Sample quantiles") +
+  xlab("Theoretical quantiles") +
+  theme(axis.title = element_text(face="bold"),
+        axis.text  = element_text(face="bold"))
+
+# -- Save supp-figure-3c
+ggsave("figs/supp-figure-3c.pdf",
+       plot   = supp_fig3c,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+
+# -- Supp Figure 3D: No correlation in adjusted residuals
+# acf(V_inv %*% r): OLD VERSION
+auto_cor   <- acf(V_inv %*% r, plot = FALSE)
+supp_fig3d <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
+  ggplot(aes(lag, acf)) +
+  geom_col(color="black", fill="#252525", width = 0.5) +
+  ylab("ACF") +
+  xlab("Lag") +
+  geom_hline(yintercept = qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
+             colour = "#cb181d",
+             linetype = 2) +
+  geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
+             colour = "#cb181d",
+             linetype = 2) +
+  theme(axis.title = element_text(face="bold"),
+        axis.text  = element_text(face="bold"))
+
+# -- Save supp-figure-3d
+ggsave("figs/supp-figure-3d.pdf",
+       plot   = supp_fig3d,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+
+# -- Estimated sd
 sd(V_inv %*% r)
+
+# -- Supp-figure-2
+supp_fig3 <- ggarrange(supp_fig3a, supp_fig3b, supp_fig3c, supp_fig3d, 
+                       labels = c("A", "B", "C", "D"), 
+                       nrow = 2, ncol = 2)
+
+# -- Save supp-figure-3
+ggsave("figs/supp-figure-3.pdf",
+       plot   = supp_fig3,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+### -- ------------------------------------- -----------------------------------------------------
+### -- END Supp Figure 3 (Correlated errors) -----------------------------------------------------
+### -- ------------------------------------- -----------------------------------------------------
+
 
 
 # Figure 1B - Chikingunya -------------------------------------------------
