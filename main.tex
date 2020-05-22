@@ -23,7 +23,12 @@
 \usepackage{makeidx}
 \usepackage{xspace}
 \usepackage{wrapfig}
+\usepackage{newfloat}
 \makeindex
+
+
+\DeclareFloatingEnvironment[name={Supplementary Figure},fileext=lof]{suppfigure}
+
 
 \newtheorem{theorem}{Theorem}
 
@@ -149,9 +154,9 @@ with $T$ the total number of observations, $\mu_t$ the expected number of deaths
 \begin{equation}
     \mu_t =N_t  \exp\{ \alpha(t) + s(t) + w(t)\}
 \end{equation}
-with $N_t$ the population at time $t$, $\alpha(t)$ a slow moving trend that accounts for changes such as the improved health outcomes we have observed during the last 20 years (Supplemental Figure \ref{fig:trend}),  $s(t)$ a yearly periodic function representing a seasonal trend (Suppl Figure \ref{fig:seasonal}), and $w(t)$ is a day of the week effect. 
+with $N_t$ the population at time $t$, $\alpha(t)$ a slow moving trend that accounts for changes such as the improved health outcomes we have observed during the last 20 years (Supplemental Figure \ref{supp-fig:1}A), $s(t)$ a yearly periodic function representing a seasonal trend (Supplemental Figure \ref{supp-fig:1}B), and $w(t)$ is a day of the week effect. 
 
- We refer to $f$ as the \emph{event effect} and assume $f(t) = 0$ for periods without a natural disaster or outbreaks and. As described in more details in the Methods Section, we permit non-continuities in $f(t)$ to account for sudden direct effects caused by natural disasters. Note that we can conveniently represent excess deaths at time $t$ as $\mu_t f(t)$ and compute excess deaths for a time period by just adding these up for the $t$'s in the interval of interest. This model introduces two important new improvements over previous models that are particularly useful for natural disasters. First, the event effect $f(t)$ can account for both direct and indirect effects. Second, the model accounts for natural variability with correlated errors, an empirically motivated assumption (Supp Figure \ref{fig:correlatederrors}) that improves uncertainty estimates. We described how we estimate the model parameters and their standard errors in the Methods Section. In this Section we describe some examples of insights provided by these estimates.
+ We refer to $f$ as the \emph{event effect} and assume $f(t) = 0$ for periods without a natural disaster or outbreaks and. As described in more details in the Methods Section, we permit non-continuities in $f(t)$ to account for sudden direct effects caused by natural disasters. Note that we can conveniently represent excess deaths at time $t$ as $\mu_t f(t)$ and compute excess deaths for a time period by just adding these up for the $t$'s in the interval of interest. This model introduces two important new improvements over previous models that are particularly useful for natural disasters. First, the event effect $f(t)$ can account for both direct and indirect effects. Second, the model accounts for natural variability with correlated errors, an empirically motivated assumption \textbf{(Supp Figure \ref{fig:correlatederrors})} that improves uncertainty estimates. We described how we estimate the model parameters and their standard errors in the Methods Section. In this Section we describe some examples of insights provided by these estimates.
 
 \subsection{Detecting and quantifying indirect effects}
 \label{subsec:effects}
@@ -291,7 +296,18 @@ We first determined the period of indirect effect for each hurricane. To do this
 \begin{center}
 \LARGE{\textbf{Supplemental Material}}
 \end{center}
-Hellow world
+
+\begin{suppfigure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{figs/supp-figure-1.pdf}
+	\caption{Estimated components of the model. (A) Estimated trend effect. (B) Estimated seasonal effect}
+	\label{supp-fig:1}
+\end{suppfigure}
+
+% \begin{figure}[ht]
+% 	\label{fig:1}
+% \end{figure}
+
 
 \end{document}
 
