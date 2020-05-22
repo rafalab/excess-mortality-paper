@@ -170,8 +170,20 @@ e %>%
   
   
 
+# ICD  --------------------------------------------------------------------
+data("puerto_rico_icd")
+counts <- puerto_rico_icd %>%
+  group_by(date) %>%
+  summarize(population = sum(outcome, na.rm = TRUE),
+            outcome = sum(outcome[which(icd %in% c("[A00,A79]"))])) %>%
+  ungroup()
+          
+f <- excess_model(counts, exclude = exclude_dates, 
+             event = hurricane_dates[3],
+             start = hurricane_dates[3] - 270,
+             end = hurricane_dates[3] + 270,
+             knots.per.year = 4)
 
-
-
+excess_plot(f)
 
 
