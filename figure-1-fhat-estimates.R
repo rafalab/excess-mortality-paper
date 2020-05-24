@@ -145,21 +145,17 @@ tmp <- map_df(seq_along(count_index), function(i){
 
 # -- Figure 1A
 fig1a <- tmp %>% 
-  group_by(hurricane) %>%
-  mutate(date = seq(make_date(2017,07,01), make_date(2018,07,02), by="days")) %>%
-  ungroup() %>%
   mutate(day       = as.numeric(date - hurricane_date),
          hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
-  ggplot(aes(date, fitted*100, color = hurricane)) +
+  ggplot(aes(day, fitted*100, color = hurricane)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_line(size=1, show.legend = F) +
   geom_dl(aes(color=hurricane, label=hurricane), 
           method=list(fontface="bold", "smart.grid")) +#"last.qp
-  xlab("") +
+  xlab("Days since the event") +
   ylab("Percent change in mortality") +
-  scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b",
-               limits = c(ymd("2017-07-01"), ymd("2018-08-01"))) +
+  scale_x_continuous(limits = c(-125, 245),
+                     breaks = seq(-125, 245, by=25)) +
   scale_y_continuous(limits = c(-5, 75),
                      breaks = seq(0, 75, by=10)) +
   scale_color_manual(name="",
@@ -180,8 +176,8 @@ fig1a
 ggsave("figs/figure-1a.pdf",
        plot   = fig1a,
        dpi    = 300, 
-       height = 8.50,
-       width  = 11.0)
+       height = 4,
+       width  = 8)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- -------------------------------------------- ------------------------------------------------------------------
@@ -247,8 +243,8 @@ fig1b
 ggsave("figs/figure-1b.pdf",
        plot   = fig1b,
        dpi    = 300, 
-       height = 8.50,
-       width  = 11.0)
+       height = 4,
+       width  = 8)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------
@@ -362,8 +358,8 @@ fig1c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
        dpi    = 300, 
-       height = 8.50,
-       width  = 11.0)
+       height = 4,
+       width  = 8)
 ### -- -------------------------------- ------------------------------------------------------------------
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
 ### -- -------------------------------- ------------------------------------------------------------------
