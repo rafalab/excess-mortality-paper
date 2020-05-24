@@ -29,9 +29,6 @@ exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day")
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 
-# -- Number of knots per year
-nknots <- 20
-
 # -- Control dates
 control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
 
@@ -47,6 +44,7 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- Figure 2A: Excess deaths in PR ------------------------------------------------------------------
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
+nknots <- 6
 ndays  <- 365
 disc   <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 548) 
@@ -172,6 +170,7 @@ ggsave("figs/figure-2a.pdf",
 ### -- ------------------------------ ------------------------------------------------------------------
 ### -- Figure 2B: Excess deaths in US ------------------------------------------------------------------
 ### -- ------------------------------ ------------------------------------------------------------------
+nknots <- 20
 # -- Load US state data and and expand abbreviations
 data(cdc_state_counts)
 state.name.2 <- c(state.name, "New York City", "Puerto Rico", "District of Columbia")
