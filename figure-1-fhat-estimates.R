@@ -76,15 +76,16 @@ exclude_dates  <- list(irma    = hurricane_dates[["irma"]] + 0:180,
 # -- To be used as parameters in model fitting below
 before <- days(122)
 after  <- days(244)
+
+# -- Number of knots per year
 nknots <- 6
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
 
-### -- --------------------------------------- ------------------------------------------------------------------
-### -- Figure 1: Fhat estimates for hurricanes ------------------------------------------------------------------
-### -- --------------------------------------- ------------------------------------------------------------------
-# ------ Figure 1A 
+### -- ---------------------------------------- ------------------------------------------------------------------
+### -- Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
+### -- ---------------------------------------- ------------------------------------------------------------------
 # -- Loop to fit models to hurricanes
 tmp <- map_df(seq_along(count_index), function(i){
   
@@ -157,16 +158,18 @@ fig1a <- tmp %>%
   scale_x_date(date_breaks = "1 month", date_labels = "%b") +
   scale_y_continuous(limits = c(-5, 75),
                      breaks = seq(0, 75, by=10)) +
-  scale_color_manual(name="Hurricanes",
+  scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   theme(axis.title = element_text(face="bold", color="black"),
         axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_text(face="bold", color="black", size=8),
+        legend.title    = element_blank(),
         legend.text     = element_text(face="bold", color="black", size=8),
         legend.background = element_rect(color    = "black",
                                          fill     = "white",
                                          linetype = "solid"),
-        legend.position = c(0.85, 0.70))
+        legend.position = c(0.50, 0.05),
+        legend.key.size = unit(0.1, "cm"),
+        legend.direction = "horizontal")
 fig1a
 
 # -- Save figure 1A
@@ -175,9 +178,13 @@ ggsave("figs/figure-1a.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-# ------ END Figure 1A 
+### -- -------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
+### -- -------------------------------------------- ------------------------------------------------------------------
 
-# ------ Figure 1B 
+### -- ----------------------------------------- ------------------------------------------------------------------
+### -- Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
+### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Creating breaks for age groups and collapsing data
 the_breaks <- c(0, 5, 20, 40, 60, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
@@ -215,16 +222,18 @@ fig1b <- res %>%
   scale_x_date(date_breaks = "1 month", date_labels = "%b") +
   scale_y_continuous(limits = c(-80, 70),
                      breaks = seq(-80, 70, by=20)) +
-  scale_color_manual(name="Age groups",
+  scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   theme(axis.title = element_text(face="bold", color="black"),
         axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_text(face="bold", color="black"),
+        legend.title    = element_blank(),
         legend.text     = element_text(face="bold", color="black"),
         legend.background = element_rect(color    ="black",
                                          fill     ="white",
                                          linetype = "solid"),
-        legend.position = c(0.85, 0.70))
+        legend.position = c(0.50, 0.05),
+        legend.key.size = unit(0.1, "cm"),
+        legend.direction = "horizontal")
 fig1b
 
 # -- Save figure 1B
@@ -233,9 +242,13 @@ ggsave("figs/figure-1b.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-# ------ END Figure 1B 
+### -- --------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
+### -- --------------------------------------------- ------------------------------------------------------------------
 
-# ------ Figure 1C
+### -- -------------------------------- ------------------------------------------------------------------
+### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
+### -- -------------------------------- ------------------------------------------------------------------
 # -- Loading state mortality data 
 data(cdc_state_counts)
 
@@ -284,9 +297,6 @@ max_date      <- make_date(2020, 5, 2)
 # -- Remove last dates
 counts <- cdc_state_counts %>% filter(date <= max_date)
 states <- unique(counts$state)
-
-# -- Knots to be used
-nknots <- 6
 
 # -- Fitting the model to each state
 fits <- lapply(states, function(x){
@@ -347,7 +357,9 @@ ggsave("figs/figure-1c.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-# ------ END Figure 1C
+### -- -------------------------------- ------------------------------------------------------------------
+### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
+### -- -------------------------------- ------------------------------------------------------------------
 
 # -- Figure 1
 fig1 <- ggarrange(fig1a, fig1b, fig1c, 
@@ -360,6 +372,3 @@ ggsave("figs/figure-1.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-### -- ------------------------------------------- ------------------------------------------------------------------
-### -- END Figure 1: Fhat estimates for hurricanes ------------------------------------------------------------------
-### -- ------------------------------------------- ------------------------------------------------------------------
