@@ -152,10 +152,14 @@ fig1a <- tmp %>%
          hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
   ggplot(aes(date, fitted*100, color = hurricane)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_line(size=1) +
+  geom_line(size=1, show.legend = F) +
+  geom_dl(aes(color=hurricane, label=hurricane), 
+          method=list(fontface="bold", "smart.grid")) +#"last.qp
   xlab("") +
   ylab("Percent change in mortality") +
-  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b",
+               limits = c(ymd("2017-07-01"), ymd("2018-08-01"))) +
   scale_y_continuous(limits = c(-5, 75),
                      breaks = seq(0, 75, by=10)) +
   scale_color_manual(name="",
@@ -203,7 +207,7 @@ res <- map_df(c("0-4", "60-Inf"), function(x){
                              end            = end,
                              exclude        = chick_exclude,
                              control.dates  = control_dates$maria,
-                             knots.per.year = 6,
+                             knots.per.year = nknots,
                              model          = "correlated",
                              discontinuity  = FALSE)
   
@@ -216,10 +220,13 @@ fig1b <- res %>%
   filter(date >= "2014-05-01", date <= "2015-05-01") %>%
   ggplot(aes(date, 100*fhat, color=agegroup)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_line(size=1) +
+  geom_line(size=1, show.legend = F) +
   xlab("") +
   ylab("Percent change in mortality") +
-  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+  geom_dl(aes(color=agegroup, label=agegroup), 
+          method=list(fontface="bold", "smart.grid")) +#"last.qp"
+  scale_x_date(date_breaks = "1 month", 
+               date_labels = "%b") +
   scale_y_continuous(limits = c(-80, 70),
                      breaks = seq(-80, 70, by=20)) +
   scale_color_manual(name="",

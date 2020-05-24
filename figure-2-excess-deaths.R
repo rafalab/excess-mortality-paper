@@ -139,9 +139,12 @@ fig2a <- excess_deaths_pr %>%
   ggplot(aes(color = event, fill = event)) +
   geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25, show.legend = F) + 
   geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
-  geom_line(aes(day, fitted), size=1) +
+  geom_line(aes(day, fitted), size=1, show.legend = F) +
+  geom_dl(aes(x=day,y=fitted, color=event, label=event), 
+          method=list(fontface="bold", "last.points")) +#"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
+  scale_x_continuous(limits=c(0, 200)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
@@ -258,33 +261,45 @@ us <- excess_deaths_us %>%
             se       = sqrt(sum(se^2))) %>%
   ungroup()
 
+# -- Some wrangling before viz
+cumulative_deaths <- us %>% 
+  left_join(covid_us, by="date") %>%
+  gather(type, outcome, c(2,4,6)) %>%
+  select(-sd, -se)
+vari_estimates <- us %>% 
+  left_join(covid_us, by="date") %>%
+  gather(type, vari, c(3,5)) %>%
+  select(date,vari) %>%
+  bind_rows(tibble(date=.$date[1:9], vari=rep(0,9)))
+us <- bind_cols(cumulative_deaths, vari_estimates)
+
 # -- Figure 2B
 fig2b <- us %>%
-  left_join(covid_us, by="date") %>%
-  ggplot() +
-  
-  geom_line(aes(date, fitted, color="Fitted")) +
-  geom_point(aes(date, fitted), size=3, color="white", show.legend = F) +
-  geom_point(aes(date, fitted, color="Fitted"), size=3, alpha=0.50, show.legend = F) +
-  
-  geom_line(aes(date, observed, color="Observed")) +
-  geom_point(aes(date, observed), size=3, color="white", show.legend = F) +
-  geom_point(aes(date, observed, color="Observed"), size=3, alpha=0.50, show.legend = F) +
-  
-  geom_line(aes(date, covid, color="Covid-19")) +
-  geom_point(aes(date, covid), size=3, color="white", show.legend = F) +
-  geom_point(aes(date, covid, color="Covid-19"), size=3, alpha=0.50, show.legend = F) +
-  
+  filter(type != "observed") %>%
+  mutate(lwr = outcome-1.96*vari,
+         upr = outcome+1.96*vari,
+         type = ifelse(type=="covid", "Covid-19", "Estimate")) %>%
+  ggplot(aes(date, outcome, color=type, fill=type)) +
+  scale_color_manual(name="",
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  scale_fill_manual(name="",
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  geom_ribbon(aes(ymin=lwr,
+                  ymax=upr), alpha=0.50, show.legend = F) +
+  geom_line(size=1, show.legend = F) +
+  geom_dl(aes(color=type, label=type), 
+          method=list(fontface="bold", "last.points")) + #"smart.grid"
+
   ylab("Cumulative excess deaths") +
   xlab("") +
   
-  scale_y_continuous(limits = c(-1500, 100000),
+  scale_y_continuous(limits = c(-3000, 100000),
                      breaks = seq(0, 100000, by=10000),
                      labels = scales::comma) +
-  scale_x_date(date_breaks = "1 week", date_labels = "%b %y") +
+  scale_x_date(date_breaks = "1 week", 
+               date_labels = "%b %y",
+               limits = c(ymd("2020-03-07"), ymd("2020-05-10"))) +
   
-  scale_color_manual(name="",
-                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   theme(axis.title = element_text(face="bold", color="black"),
         axis.text  = element_text(face="bold", color="black"),
         legend.title    = element_blank(),
@@ -439,10 +454,16 @@ fig2d <- excess_deaths_cook %>%
   ggplot(aes(x=date, y=fitted, color=group, fill=group)) +
   geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.20, show.legend = F) +
   geom_point(aes(date, observed), size=0.80, alpha=0.40, show.legend = F) +
-  geom_line(size=1) +
+  geom_line(size=1, show.legend = F) +
+  geom_dl(aes(color=group, label=group), 
+          method=list(fontface="bold", "last.points")) +#"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("") +
-  scale_x_date(date_breaks = "10 days", date_labels = "%b %d") +
+  scale_x_date(date_breaks = "10 days", 
+               date_labels = "%b %d",
+               limits = c(ymd("2020-03-01"), ymd("2020-06-01"))) +
+  scale_y_continuous(limits = c(-20, 900),
+                     breaks = seq(0, 900, by=100)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
