@@ -153,7 +153,7 @@ fig1a <- tmp %>%
   geom_dl(aes(color=hurricane, label=hurricane), 
           method=list(fontface="bold", "smart.grid")) +#"last.qp
   xlab("Days since the event") +
-  ylab("Percent change in mortality") +
+  ylab("Percent increase from expected mortality") +
   scale_x_continuous(limits = c(-125, 245),
                      breaks = seq(-125, 245, by=25)) +
   scale_y_continuous(limits = c(-5, 75),
