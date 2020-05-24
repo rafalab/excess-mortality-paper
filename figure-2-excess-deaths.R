@@ -29,6 +29,9 @@ exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day")
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 
+# -- Number of knots per year
+nknots <- 20
+
 # -- Control dates
 control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
 
@@ -40,9 +43,10 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
 
-# -- Figure 2A: Excess deaths in PR
+### -- ------------------------------ ------------------------------------------------------------------
+### -- Figure 2A: Excess deaths in PR ------------------------------------------------------------------
+### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
-npy    <- 6
 ndays  <- 365
 disc   <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 548) 
@@ -69,7 +73,7 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
                    exclude        = exclude_dates,
                    control.dates  = control_dates,
                    # knots.per.year = round(npy*(before[i] + after[i])/365), 
-                   knots.per.year = 6,
+                   knots.per.year = nknots,
                    model          = "correlated",
                    discontinuity  = disc[i], 
                    verbose = FALSE))
@@ -109,7 +113,7 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
                    exclude        = exclude_dates,
                    control.dates  = control_dates,
                    # knots.per.year = round(npy*(before[i] + after[i])/365), 
-                   knots.per.year = 6,
+                   knots.per.year = nknots,
                    model          = "correlated",
                    discontinuity  = disc[i], 
                    verbose = FALSE))
@@ -135,23 +139,25 @@ fig2a <- excess_deaths_pr %>%
   mutate(day = as.numeric(date - event_day)) %>%
   mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19"))) %>% 
   ggplot(aes(color = event, fill = event)) +
-  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25) + 
-  geom_point(aes(day, observed), size=1, alpha = 0.25) +
+  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25, show.legend = F) + 
+  geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
   geom_line(aes(day, fitted), size=1) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_color_manual(name="Event",
+  scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="Event",
+  scale_fill_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   theme(axis.title = element_text(face="bold", color="black"),
         axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_text(face="bold", color="black", size=8),
+        legend.title    = element_blank(),
         legend.text     = element_text(face="bold", color="black", size=8),
         legend.background = element_rect(color    = "black",
                                          fill     = "white",
                                          linetype = "solid"),
-        legend.position = c(0.85, 0.20))
+        legend.position = c(0.50, 0.05),
+        legend.key.size = unit(0.1, "cm"),
+        legend.direction = "horizontal")
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
@@ -159,12 +165,13 @@ ggsave("figs/figure-2a.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-rm(list = ls())
-# -- END Figure 2A: Excess deaths in PR
+### -- ---------------------------------- ------------------------------------------------------------------
+### -- END Figure 2A: Excess deaths in PR ------------------------------------------------------------------
+### -- ---------------------------------- ------------------------------------------------------------------
 
-####################################################################################################################################################################################
-
-# -- Figure 2B: Excess deaths in US
+### -- ------------------------------ ------------------------------------------------------------------
+### -- Figure 2B: Excess deaths in US ------------------------------------------------------------------
+### -- ------------------------------ ------------------------------------------------------------------
 # -- Load US state data and and expand abbreviations
 data(cdc_state_counts)
 state.name.2 <- c(state.name, "New York City", "Puerto Rico", "District of Columbia")
@@ -207,7 +214,6 @@ states <- sort(unique(counts$state))
 states <- setdiff(states, c("Connecticut", "North Carolina"))
 
 # -- Fitting model to each date. Using 6 knots as before
-nknots <- 6
 fits   <- lapply(states, function(x){
   print(x)
   if(x == "Puerto Rico"){
@@ -231,7 +237,7 @@ names(fits) <- states
 # -- Calculating excess deaths for each state
 excess_deaths_us <- map_df(fits, function(f){
   ret <- excess_cumulative(f, 
-                           start = make_date(2020, 3, 14), 
+                           start = make_date(2020, 03, 01), 
                            end   = max_date) 
   ret$state <- f$state
   return(ret)
@@ -259,21 +265,21 @@ fig2b <- us %>%
   ggplot() +
   
   geom_line(aes(date, fitted, color="Fitted")) +
-  geom_point(aes(date, fitted), size=3, color="white") +
-  geom_point(aes(date, fitted, color="Fitted"), size=3, alpha=0.50) +
+  geom_point(aes(date, fitted), size=3, color="white", show.legend = F) +
+  geom_point(aes(date, fitted, color="Fitted"), size=3, alpha=0.50, show.legend = F) +
   
   geom_line(aes(date, observed, color="Observed")) +
-  geom_point(aes(date, observed), size=3, color="white") +
-  geom_point(aes(date, observed, color="Observed"), size=3, alpha=0.50) +
+  geom_point(aes(date, observed), size=3, color="white", show.legend = F) +
+  geom_point(aes(date, observed, color="Observed"), size=3, alpha=0.50, show.legend = F) +
   
   geom_line(aes(date, covid, color="Covid-19")) +
-  geom_point(aes(date, covid), size=3, color="white") +
-  geom_point(aes(date, covid, color="Covid-19"), size=3, alpha=0.50) +
+  geom_point(aes(date, covid), size=3, color="white", show.legend = F) +
+  geom_point(aes(date, covid, color="Covid-19"), size=3, alpha=0.50, show.legend = F) +
   
   ylab("Cumulative excess deaths") +
   xlab("") +
   
-  scale_y_continuous(limits = c(-1000, 100000),
+  scale_y_continuous(limits = c(-1500, 100000),
                      breaks = seq(0, 100000, by=10000),
                      labels = scales::comma) +
   scale_x_date(date_breaks = "1 week", date_labels = "%b %y") +
@@ -287,7 +293,9 @@ fig2b <- us %>%
         legend.background = element_rect(color    = "black",
                                          fill     = "white",
                                          linetype = "solid"),
-        legend.position = c(0.85, 0.20))
+        legend.position = c(0.50, 0.05),
+        legend.key.size = unit(0.1, "cm"),
+        legend.direction = "horizontal")
 
 # -- Save figure 2B
 ggsave("figs/figure-2b.pdf",
@@ -295,10 +303,13 @@ ggsave("figs/figure-2b.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-# -- END Figure 2B: Excess deaths in US
-####################################################################################################################################################################################
+### -- ---------------------------------- ------------------------------------------------------------------
+### -- END Figure 2B: Excess deaths in US ------------------------------------------------------------------
+### -- ---------------------------------- ------------------------------------------------------------------
 
-# -- Figure 2C: Covid vs Flu
+### -- ----------------------------------------- ------------------------------------------------------------------
+### -- Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
+### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Intervals for Flu 18 and Covid 19, respectively
 intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
                   seq(make_date(2020, 03, 14), max_date, by = "day"))
@@ -315,7 +326,7 @@ fits <- map_df(states, function(x){
     excess_model(exclude        = exclude_dates,
                  intervals      = intervals,
                  weekday.effect = FALSE,
-                 knots.per.year = 6) %>%
+                 knots.per.year = nknots) %>%
     mutate(state = x))
 })
 
@@ -362,7 +373,8 @@ fig2c <- fits %>%
         legend.background = element_rect(color    = "black",
                                          fill     = "white",
                                          linetype = "solid"),
-        legend.position = c(0.85, 0.20))
+        legend.position = c(0.50, 0.05),
+        legend.direction = "horizontal")
 
 # -- Save figure 2C
 ggsave("figs/figure-2c.pdf",
@@ -370,24 +382,101 @@ ggsave("figs/figure-2c.pdf",
        dpi    = 300, 
        height = 8.50,
        width  = 11.0)
-# -- END Figure 2C: Covid vs Flu
+### -- --------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
+### -- --------------------------------------------- ------------------------------------------------------------------
 
+### -- --------------------------------------------- ------------------------------------------------------------------
+### -- Figure 2D: Cook county Covid19 white vs black ------------------------------------------------------------------
+### -- --------------------------------------------- ------------------------------------------------------------------
+# -- Loading cook county data
+data("cook_records")
 
+# -- Wrangling mortality & population
+the_breaks <- c(seq(0, 85, by=5), Inf)
+counts     <- compute_counts(cook_records, by=c("sex", "race", "agegroup"), breaks = the_breaks)
+counts     <- left_join(counts, cook_demographics, by=c("date", "race", "sex", "agegroup"))
 
+# -- Creating new agegroups and wrangle
+the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
+counts     <- collapse_counts_by_age(counts, the_breaks) %>%
+  filter(sex  %in% c("male", "female"),
+         race %in% c("white", "black")) %>%
+  mutate(agegroup = factor(agegroup, levels = c("0-4", "5-19", "20-39", "40-59", "60-74", "75-Inf"))) %>%
+  mutate(group = paste0(sex," | ",race," | ",agegroup)) %>%
+  filter(!agegroup %in% c("0-4", "5-19"))
 
+# -- Fitting models
+exclude_dates <- seq( ymd("2020-01-01"), max(counts$date), by="days")
+control_dates <- seq(min(counts$date), ymd("2019-12-31"), by="days")
+excess_deaths_cook <- map_df(unique(counts$group), function(x){
+  
+  print(x)
+  tmp_counts <- filter(counts, group == x)
+  f          <- excess_model(counts         = tmp_counts,
+                             exclude        = exclude_dates,
+                             start          = ymd("2020-01-01"),
+                             end            = max(counts$date),
+                             weekday.effect = FALSE,
+                             knots.per.year = nknots,
+                             verbose        = FALSE)
+  
+  ret <- excess_cumulative(f, 
+                           start = make_date(2020, 03, 01), 
+                           end   = max(counts$date)) %>%
+    mutate(sex = tmp_counts$sex[1], race = tmp_counts$race[1], agegroup = tmp_counts$agegroup[1])
+}) %>% as_tibble()
 
+# -- Figure 2D
+fig2d <- excess_deaths_cook %>%
+  group_by(date, sex, race) %>%
+  summarize(observed = sum(observed),
+            sd       = sqrt(sum(sd^2)),
+            fitted   = sum(fitted),
+            se       = sqrt(sum(se^2))) %>%
+  ungroup() %>%
+  mutate(group = paste0(race," ",sex,"s"),
+         group = str_to_sentence(group)) %>%
+  ggplot(aes(x=date, y=fitted, color=group, fill=group)) +
+  geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.20, show.legend = F) +
+  geom_point(aes(date, observed), size=0.80, alpha=0.40, show.legend = F) +
+  geom_line(size=1) +
+  ylab("Cumulative excess deaths") +
+  xlab("") +
+  scale_x_date(date_breaks = "10 days", date_labels = "%b %d") +
+  scale_color_manual(name="",
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  scale_fill_manual(name="",
+                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  theme(axis.title = element_text(face="bold", color="black"),
+        axis.text  = element_text(face="bold", color="black"),
+        legend.title    = element_blank(),
+        legend.text     = element_text(face="bold", color="black", size=8),
+        legend.background = element_rect(color    = "black",
+                                         fill     = "white",
+                                         linetype = "solid"),
+        legend.position = c(0.50, 0.05),
+        legend.key.size = unit(0.1, "cm"),
+        legend.direction = "horizontal")
 
+# -- Save figure 2D
+ggsave("figs/figure-2d.pdf",
+       plot   = fig2d,
+       dpi    = 300, 
+       height = 8.50,
+       width  = 11.0)
+### -- ------------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 2D: Cook county Covid19 white vs black ------------------------------------------------------------------
+### -- ------------------------------------------------- ------------------------------------------------------------------
 
+# -- Create Figure 2
+fig2 <- ggarrange(fig2a,fig2b,fig2c,fig2d,
+          nrow=2, ncol=2, 
+          labels=LETTERS[1:4])
 
-
-
-
-
-
-
-
-
-
-
-
-
+# -- Save figure 2
+ggsave("figs/figure-2.pdf",
+       plot   = fig2,
+       dpi    = 300, 
+       height = 8.50,
+       width  = 11.0)
