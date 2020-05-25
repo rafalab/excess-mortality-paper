@@ -4,16 +4,17 @@
 %\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
 % for adding numbers for lines 
 \usepackage{lineno}
-%\usepackage{natbib}
-%\usepackage{tocbibind}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
 \usepackage{epsfig}
-\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{multicol}
 \usepackage{float}
-\usepackage{subfigure}
 \usepackage{multirow}
 \usepackage{color}
 \usepackage{lineno}
@@ -26,12 +27,10 @@
 \usepackage{newfloat}
 \makeindex
 
-
 \DeclareFloatingEnvironment[name={Supplementary Figure},fileext=lof]{suppfigure}
 
 
 \newtheorem{theorem}{Theorem}
-
 \newtheorem{Definition}{Definition}
 \newtheorem{corollary}{Corollary}
 \newtheorem{Theorem}{Theorem}
@@ -107,6 +106,7 @@
 \newcommand{\edgelistpair}      {{edge-list pair}\xspace}
 \newcommand{\Fnew}          {{F_{new}}}
 \newcommand{\Fold}          {{F_{old}}}
+
 %%%%%%%%%%%%%% macros by yusu end %%%%%%%%%%%%%
 
 \begin{document}
@@ -161,30 +161,30 @@ We refer to $f$ as the \emph{event effect} and assume $f(t) = 0$ for \emph{typic
 
 \subsection{Detecting and quantifying indirect effects after hurricanes}
 \label{subsec:effects}
-We fit our model to Puerto Rico mortality data from 1985 to 2020 and found that the death rate in Puerto Rico increased by \textbf{XXX} to \textbf{XXX}\% the days after hurricane Maria made landfall. The increased death rate persisted until well after the end of the year (Figure \ref{fig:1}, \textbf{(Supp Figure XX)}). To understand if such a large and sustained increase is common after an intense hurricane, we examined mortality counts in Louisiana after Katrina, New Jersey after Sandy, Florida after Irma as well as two other hurricanes in Puerto Rico, Hugo in 1989 and Georges in 1998.  Although not as severe, a similar pattern was observed for Georges in 1998 when the death rate increased \textbf{XX-XX}\% the days after landfall and an increased death rate persisted until at least December (Figure \ref{fig:1}, \textbf{(Supplemental Figure XX)}). The effects of Katrina on Louisiana were much more direct. On August 29, 2005, the day the levees broke, there were 834 deaths, which translates to an increase in death rate of 689\%. However, the increase in mortality rates for the months following this catastrophe was substantially lower than in Puerto Rico after Maria and Georges (Figure \ref{fig:1}). None of the other hurricanes examined had noticeable direct or indirect effects (Figure \ref{fig:1}, \textbf{Supplemental FiguresXXX}).
-
-% \begin{figure}[ht]
-% 	\centering
-% 	\begin{subfigure}[t]{0.49\textwidth}
-% 		\centering
-% 		\includegraphics[width=0.50\linewidth]{figs/figure-1a.pdf} 
-% 		\caption{} 
-% 		\label{fig:1a}
-% 	\end{subfigure}
-% 	\hfill
-% 	\begin{subfigure}[t]{0.49\textwidth}
-% 		\centering
-% 		\includegraphics[width=0.50\linewidth]{figs/figure-1a.pdf}
-% 		\caption{} 
-% 		\label{fig:1b}
-% 	\end{subfigure}
-% 	\caption{Position and momentum coordinates}
-% 	\label{fig:1}
-% \end{figure}
+We fit our model to Puerto Rico mortality data from 1985 to 2020 and found that the death rate in Puerto Rico increased by \textbf{XXX}\% (\textbf{XXX}\%, \textbf{XXX}\%) the days after hurricane Maria made landfall. The increased death rate persisted until well after the end of the year (Figure \ref{fig:fhat-hurricanes}, \textbf{(Supp Figure XX)}). To understand if such a large and sustained increase is common after an intense hurricane, we examined mortality counts in Louisiana after Katrina, New Jersey after Sandy, Florida after Irma as well as two other hurricanes in Puerto Rico, Hugo in 1989 and Georges in 1998.  Although not as severe, a similar pattern was observed for Georges in 1998 when the death rate increased by \textbf{XXX}\% (\textbf{XXX}\%, \textbf{XXX}\%) the days after landfall and an increased death rate persisted until at least December (Figure \ref{fig:fhat-hurricanes}, \textbf{(Supplemental Figure XX)}). The effects of Katrina on Louisiana were much more direct. On August 29, 2005, the day the levees broke, there were 834 deaths, which translates to an increase in death rate of 689\%. However, the increase in mortality rates for the months following this catastrophe was substantially lower than in Puerto Rico after Maria and Georges (Figure \ref{fig:fhat-hurricanes}). None of the other hurricanes examined had noticeable direct or indirect effects (Figure \ref{fig:fhat-hurricanes}, \textbf{Supplemental FiguresXXX}).
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=1\linewidth]{figs/figure-1a.pdf}
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-1a.pdf} 
+		\caption{} 
+		\label{fig:fhat-hurricanes}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-1b.pdf}
+		\caption{} 
+		\label{fig:fhat-chikungunya}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-1c.pdf}
+		\caption{} 
+		\label{fig:fhat-usa}
+	\end{subfigure}
 	\caption{}
 	\label{fig:fhat-estimates}
 \end{figure}
@@ -192,9 +192,9 @@ We fit our model to Puerto Rico mortality data from 1985 to 2020 and found that 
 \subsection{Quantifying the effects of epidemics}
 \label{subsec:epidemics}
 Our model can also be fitted to quantify the effects of epidemics or outbreaks. As an example, 
-we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of \textbf{XXX} days for individuals over 60 year (Figure \ref{fig:} \textbf{XXX} days for the  0-4 age group (Figure \ref{fig:}. We saw no noticeable effects for other age groups (SUPP XX). 
+we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of \textbf{XXX} days for individuals over 60 years and \textbf{XXX} days for the 0 to 4 years age group (Figure \ref{fig:fhat-chikungunya}). We saw no noticeable effects for other age groups \textbf{(Supplemental Figure XXXX)}.
 
-Although mortality data for the COVID-19 pandemic are not yet complete, the CDC has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 5, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and out event effect estimates clearly detects the COVID-19 and 2018 flu epidemics for several states, as well as the 2018 (Supp Figure XXX, \textbf{(Table XX)}. By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 season (Figure \ref{fig:}). We also note that the e difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Supp Figure XXX).
+Although mortality data for the COVID-19 pandemic are not yet complete, the CDC has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 5, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates clearly detects the COVID-19 pandemic for several states, as well as the 2018 flu epidemics (Figure \ref{fig:fhat-usa}, \textbf{Supplemental Figure XXXX, Table XXXX}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 season (Figure \ref{fig:}). We also note that the e difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Supp Figure XXX).
 
 \subsection{Excess mortality estimates}
 \label{subsec:excess-mortality}
@@ -206,7 +206,33 @@ Comparing the data from the New York Times \cite{smith2020coronavirus} we also n
 
 \begin{figure}[ht]
 	\centering
-	\includegraphics[width=1\linewidth]{figs/figure-2.pdf}
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-2a.pdf} 
+		\caption{} 
+		\label{fig:excess-pr}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-2b.pdf}
+		\caption{} 
+		\label{fig:excess-usa}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-2c.pdf}
+		\caption{} 
+		\label{fig:excess-flu-vs-covid}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-2d.pdf}
+		\caption{} 
+		\label{fig:excess-cook}
+	\end{subfigure}
 	\caption{}
 	\label{fig:excess-deaths}
 \end{figure}
