@@ -8,7 +8,6 @@ library(tidyverse)
 library(lubridate)
 library(excessmort)
 library(directlabels)
-library(directlabels)
 dslabs::ds_theme_set()
 
 # -- Hurricanes information
@@ -442,28 +441,28 @@ excess_deaths_cook <- map_df(unique(counts$group), function(x){
 }) %>% as_tibble()
 
 # -- Figure 2D
-fig2d <- excess_deaths_cook %>%
-  group_by(date, sex, race) %>%
+fig2d <- 2
+excess_deaths_cook %>%
+  group_by(date, race) %>%
   summarize(observed = sum(observed),
             sd       = sqrt(sum(sd^2)),
             fitted   = sum(fitted),
             se       = sqrt(sum(se^2))) %>%
   ungroup() %>%
-  mutate(group = paste0(race," ",sex,"s"),
-         group = str_to_sentence(group)) %>%
-  ggplot(aes(x=date, y=fitted, color=group, fill=group)) +
+  mutate(race = str_to_sentence(race)) %>%
+  ggplot(aes(x=date, y=fitted, color=race, fill=race)) +
   geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.20, show.legend = F) +
   geom_point(aes(date, observed), size=0.80, alpha=0.40, show.legend = F) +
   geom_line(size=1, show.legend = F) +
-  geom_dl(aes(color=group, label=group), 
+  geom_dl(aes(color=race, label=race), 
           method=list(fontface="bold", "last.points")) +#"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("") +
   scale_x_date(date_breaks = "10 days", 
                date_labels = "%b %d",
-               limits = c(ymd("2020-03-01"), ymd("2020-06-05"))) +
-  scale_y_continuous(limits = c(-20, 900),
-                     breaks = seq(0, 900, by=100)) +
+               limits = c(ymd("2020-03-01"), ymd("2020-05-25"))) +
+  scale_y_continuous(limits = c(-20, 1500),
+                     breaks = seq(0, 1500, by=150)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
