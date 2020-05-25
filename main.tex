@@ -192,7 +192,7 @@ We fit our model to Puerto Rico mortality data from 1985 to 2020 and found that 
 \subsection{Quantifying the effects of epidemics}
 \label{subsec:epidemics}
 Our model can also be fitted to quantify the effects of epidemics or outbreaks. As an example, 
-we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of 130 days for individuals over 60 years and 167 days for the 0 to 4 years age group (Figure \ref{fig:fhat-chikungunya}). We saw no noticeable effects for other age groups \textbf{(Supplemental Figure XXXX)}.
+we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of 130 days for individuals over 60 years and 167 days for the 0 to 4 years age group (Figure \ref{fig:fhat-chikungunya}). We saw no noticeable effects for other age groups (\ref{supp-fig:chikungunya-agegroups}).
 
 Although mortality data for the COVID-19 pandemic are not yet complete, the CDC has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 5, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates clearly detects the COVID-19 pandemic for several states, as well as the 2018 flu epidemics (Figure \ref{fig:fhat-usa}, \textbf{Supplemental Figure XXXX, Table XXXX}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 season (Figure \ref{fig:}). We also note that the e difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Supp Figure XXX).
 
@@ -408,6 +408,14 @@ We also performed an empirical test by estimating excess deaths and the standard
 	\includegraphics[width=1\linewidth]{figs/supp-figure-3.pdf} 
 	\caption{}
 	\label{supp-fig:hurricane-effects}
+\end{suppfigure}
+
+% Supplemental figure 4
+\begin{suppfigure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
+	\caption{}
+	\label{supp-fig:chikungunya-agegroups}
 \end{suppfigure}
 
 
