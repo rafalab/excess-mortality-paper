@@ -441,8 +441,7 @@ excess_deaths_cook <- map_df(unique(counts$group), function(x){
 }) %>% as_tibble()
 
 # -- Figure 2D
-fig2d <- 2
-excess_deaths_cook %>%
+fig2d <- excess_deaths_cook %>%
   group_by(date, race) %>%
   summarize(observed = sum(observed),
             sd       = sqrt(sum(sd^2)),
