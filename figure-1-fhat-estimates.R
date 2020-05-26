@@ -186,7 +186,7 @@ end   <- lubridate::make_date(2015, 12, 31)
 chick_exclude <- unique(c(exclude_dates$maria, seq(start, end, by="days")))
 
 # -- Fitting model only to the groups of interest
-res <- map_df(c("0-4", "60-Inf"), function(x){
+res <- map_df(c("60-Inf"), function(x){
   
   tmp_counts <- filter(all_counts, agegroup == x)
   tmp_fit    <- excess_model(counts         = tmp_counts, 
@@ -214,8 +214,8 @@ fig1b <- res %>%
           method=list("smart.grid")) +#"last.qp"
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %Y") +
-  scale_y_continuous(limits = c(-95, 80),
-                     breaks = seq(-80, 80, by=20)) +
+  scale_y_continuous(limits = c(-7, 20),
+                     breaks = seq(-5, 20, by=5)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
