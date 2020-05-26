@@ -153,7 +153,7 @@ Following the work developed for monitoring outbreaks \cite{farrington1996statis
 \end{equation}
 with $T$ the total number of observations, $\mu_t$ the expected number of deaths at time $t$ for a typical year, $100 \times f(t)$ the percent increase at time $t$  due to an unusual event, and $\varepsilon_t$ a time series of, possibly auto-correlated, random variables representing natural variability. The expected counts $\mu_t$ can be further decomposed into 
 \begin{equation}
-    \mu_t =N_t  [\alpha(t) + s(t) + w(t)]
+    \mu_t =N_t \exp[\alpha(t) + s(t) + w(t)]
 \end{equation}
 with $N_t$ the population at time $t$, $\alpha(t)$ a slow moving trend that accounts for changes such as the improved health outcomes we have observed during the last 20 years (Supplemental Figure \ref{supp-fig:trend}), $s(t)$ a yearly periodic function representing a seasonal trend (Supplemental Figure \ref{supp-fig:seasonal}), and $w(t)$ is a day of the week effect. 
 
@@ -240,9 +240,16 @@ Based on the CDC data, we can also compute excess mortality for the period of th
 \subsection{Across group comparisons}
 \label{subsec:group-comparison}
 
-The Cook County medical examiner is providing daily updates of their death record, which includes demographic information, such as age and race, about each individual. Although not all deaths that occur in the county fall under the jurisdiction of the medical examiner, disease constituting a threat to public health, are included [CITE https://www.cookcountyil.gov/agency/medical-examiner]. Since our model provides both estimates and standard errors of event effect, we can compare the effects for two or more groups and assess the statistical significance of the observed differences. Using these data, we note that largest percent increases observed for individuals over 65 \textbf{(Supp Fig X)}. Among those 65 years of age and older, the increase in medical examiner death rate for Cook county was as high as \textbf{XXX} on \textbf{XXXX} and shows a significant difference between black and white populations. The population size for other racial groups of this age was substantially smaller and were not included in the analysis.
+The Cook County Medical Examiner's Office is making up-to-date records available online. This office investigates any human death in Cook County that falls within categories such as criminal violence, suicide, accident, diseases constituting a threat to public health, among unusual circumstances \cite{cookcovid19}. If we consider $\mu(t)$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and clearly observed the effects of the COVID-19 epidemic, in particular among individuals over 75. However, a persistent increase in mortality above normal levels is observed for individuals above 40. Since our model provides both estimates and standard errors of event effects, we can compare the effects for two or more groups and assess the statistical significance of the observed differences. Furthermore, we found a difference in the effect of the pandemic between white and black individuals in the months of March and April (Figure \ref{fig:cook-white-v-black}). 
 
+Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 169\% (95\% CI: 134\% to 203\%) and 85\%  (95\% CI: 54\% to 115\%) on April 14 for whites and blacks, respectively, a statistically significant difference. Further, for the 60 to 74 age group we observed a peak percent increase of 630\% (95\% CI: 544\% to 716\%) and 497\% (95\% CI: 424\% to 571\%), respectively. Finally, the percent increase for individuals 75 years and older was 2,334\% (95\% CI: 2,056\% to 2,612\%) and 1213\% (95\% CI: 1092\% to 1334\%), respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}).  The population size for other racial groups was substantially smaller and were not included in the analysis.
 
+\begin{figure}[ht]
+	\centering	
+		\includegraphics[width=1\linewidth]{figs/figure-3.pdf} 
+	\caption{}
+	\label{fig:cook-white-v-black}
+\end{figure}
 
 % Although only about \textbf{1/5XXX} of all deaths are examined by the medical examiner, one of the criteria for an examination from this office is that the cause of death is a disease constituting a threat to public health, which implies that some if not most COVID-19 deaths are being examined. This database includes demographic information permitting comparisons among, for example, racial groups. The largest percent increases were observed for individuals over 65 \textbf{(Supp Fig X)}. Among those 65 years of age and older, the increase in medical examiner death rate for Cook county was as high as \textbf{XXX} on \textbf{XXXX} and shows a significant difference between black and white populations. The population size for other racial groups of this age was substantially smaller and were not included in the analysis.
  
@@ -250,7 +257,7 @@ The Cook County medical examiner is providing daily updates of their death recor
 
 \subsection{Relative proportion of specific causes of death can be used with incomplete data}
 \label{subsec:causes-deaths}
-Limitations of approaches such as our for detecting and monitoring the possibility of a health crisis are that it requires 1) complete death count data and 2) an estimate of population displacement. Note that incomplete death counts or underestimates of the population displacement result in underestimate of the death rate. If we redefine $Y_t$ as the number of deaths do to a specific cause at time $t$ and $N_t$ as the total number of recorded deaths at time $t$, then the estimate of $f$ can be interpreted as the percent increase in the rate for that cause of death even if the data is incomplete. using this approach we find that deaths due to bacterial infection were elevated during the \textbf{XXX} months following the landfall of hurricane Maria in Puerto RIco. A similar index for respiratory disease computed for the COVID-19 pandemic shows \textbf{XXX (Figure XXX)}.
+Limitations of our approaches for detecting and monitoring health crises are that it requires 1) complete death count data and 2) an estimate of population displacement. Note that incomplete death counts or underestimates of population displacement will result in underestimate of the death rate. However, if we redefine $Y_t$ as the number of deaths do to a specific cause at time $t$ and $N_t$ as the total number of recorded deaths at time $t$, then the estimate of $f$ can be interpreted as the percent increase in the proportion of deaths due to that cause, even if the data is incomplete. Using this approach we find that deaths due to bacterial infection were elevated during the \textbf{XXX} months following the landfall of hurricane Maria in Puerto RIco. A similar index for respiratory disease computed for the COVID-19 pandemic shows \textbf{XXX (Figure XXX)}.
 
 \subsection{Natural Variability and Correlated Counts}
 \label{subsec:natural-variability}
