@@ -425,7 +425,7 @@ fig2d <- excess_deaths_cook %>%
   geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.50, show.legend = F, color="transparent") +
   geom_line(show.legend = F) +
   geom_dl(aes(color=race, label=race), 
-          method=list(fontface="bold", "last.points")) +#"smart.grid"
+          method=list("last.points")) +#"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("") +
   scale_x_date(date_breaks = "10 days", 
