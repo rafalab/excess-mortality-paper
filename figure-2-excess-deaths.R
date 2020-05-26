@@ -376,6 +376,7 @@ ggsave("figs/figure-2c.pdf",
 ### -- --------------------------------------------- ------------------------------------------------------------------
 # -- Loading cook county data
 data("cook_records")
+nknots <- 20
 
 # -- Wrangling mortality & population
 the_breaks <- c(seq(0, 85, by=5), Inf)
@@ -409,7 +410,8 @@ excess_deaths_cook <- map_df(unique(counts$group), function(x){
   ret <- excess_cumulative(f, 
                            start = make_date(2020, 03, 01), 
                            end   = max(counts$date)) %>%
-    mutate(sex = tmp_counts$sex[1], race = tmp_counts$race[1], agegroup = tmp_counts$agegroup[1])
+    # mutate(sex = tmp_counts$sex[1], race = tmp_counts$race[1], agegroup = tmp_counts$agegroup[1])
+    mutate(race = tmp_counts$race[1])
 }) %>% as_tibble()
 
 # -- Figure 2D
@@ -430,8 +432,8 @@ fig2d <- excess_deaths_cook %>%
   xlab("") +
   scale_x_date(date_breaks = "10 days", 
                date_labels = "%b %d",
-               limits = c(ymd("2020-03-01"), ymd("2020-05-25"))) +
-  scale_y_continuous(limits = c(-20, 1500),
+               limits = c(ymd("2020-03-01"), ymd("2020-05-30"))) +
+  scale_y_continuous(limits = c(-20, 1550),
                      breaks = seq(0, 1500, by=150),
                      labels = scales::comma) +
   scale_color_manual(name="",
