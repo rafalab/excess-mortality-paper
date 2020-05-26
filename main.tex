@@ -286,7 +286,7 @@ We also obtained estimates of excess deaths made public on May 12, 2020 by the C
 
 \subsection{Population Estimates}
 \label{subsec:population}
-Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Maria in Puerto Rico, we use population proportion estimates from Teralytics \textbf{(Supplemental Figure XXXX)}.
+Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Maria in Puerto Rico, we use population proportion estimates from Teralytics (Supplemental Figure \ref{supp-fig:pop-displacement-pr}).
 
 \subsection{Statistical Model}
 \label{subsec:statistical-model}
@@ -296,7 +296,7 @@ We assume the mortality counts at $t$ follows a generalized linear mixed model d
 \end{equation*}
 where the expected counts have the form:
 \begin{equation*}
-    \mu_t =N_t  \exp\{ \alpha(t) + s(t) + w(t) \}
+    \mu_t =N_t  \exp[\alpha(t) + s(t) + w(t)]
 \end{equation*}
 and the vector $[\varepsilon_1, \ldots, \varepsilon_T]^\top$ has a multivariate normal distribution with mean 1 and variance-covariance matrix $\Sigma$ determined by an auto-regressive (AR) process of order $p$:
 \begin{equation*}
@@ -307,17 +307,17 @@ and the vector $[\varepsilon_1, \ldots, \varepsilon_T]^\top$ has a multivariate 
     \rho_{T} & \rho_{T-1} & \rho_{T-2} & \dots & 1 \\ 
     \end{pmatrix}
 \end{equation*}
-Here $\sigma$ corresponds to the year-to-year standard deviation and $\rho_h$ is the auto-correlation of two error terms that are $h$ time units from each other. In practice, obtaining Maximum Likelihood Estimates for this model is not straight-forward, in particular because the flexibility in $f(t)$ and $\Sigma$ make the model non-identifiable in practice\textbf{[CITE?]}. We now describe a three step approach that works well in practice, as demonstrated both by simulation and empirical validation.
+Here $\sigma$ corresponds to the year-to-year standard deviation and $\rho_h$ is the auto-correlation of two error terms that are $h$ time units from each other. In practice, obtaining Maximum Likelihood Estimates (MLE) for this model is not straight-forward, in particular because the flexibility in $f(t)$ and $\Sigma$ makes the model non-identifiable in practice. We now describe a three step approach that works well in practice, as demonstrated both by simulation and empirical validation.
 
-We start by modeling  the yearly trend $\alpha(t)$ with natural cubic splines with a knot every five years. We model the seasonal effect $s(t)$ with a harmonic model with at most 3 harmonics. Finally
+We start by modeling the yearly trend $\alpha(t)$ with natural cubic splines with a knot every five years. We model the seasonal effect $s(t)$ with a harmonic model with at most 3 harmonics. Finally
 \begin{equation*}
-    w(t) = \sum{k=1}^7 w_k \times 1_{t \bmod 7  == k} \mbox{ with } \sum_{k=1}^7 = 0
+    w(t) = [w_1, \ldots, w_7] \times \boldsymbol{1}_{t \bmod 7==k} \mbox{ where } \sum_{k=1}^7 w_k = 0
 \end{equation*}
 represents seven constrained parameters, one for each day of the week. Because natural disasters and outbreaks are rare, we assume that $f(t)$ is 0 for the majority of our dataset. This implies that for the majority of time points
 \begin{equation*}
-    Y_t \mid \varepsilon_t \propto \mbox{Poisson}[ \mu_t  \varepsilon_t ]
+    Y_t \mid \varepsilon_t \propto \mbox{Poisson}(\mu_t  \varepsilon_t )
 \end{equation*}
-This implies that, for example, for $N = T / 365$ years of daily data we would have $T$ data points to fit a model with at most N/5 + 6 + 6 parameters. For five years of data this translates into 1,826 data points and 14 parameters. This implies that we can obtain highly precise estimates even in the presence of the extra dispersion introduced by $\varepsilon$.  We therefore fit a Poisson Generalized Linear Model to regions that we know do not include natural disasters or outbreaks and consider the MLE $\hat{\alpha}(t)$ and $\hat{s}(t)$ as fixed.
+This implies that, for example, for $N = T / 365$ years of daily data we would have $T$ data points to fit a model with at most N/5 + 6 + 6 + 1 parameters for the mean model. For five years of data this translates into 1,825 data points and 14 parameters. This implies that we can obtain highly precise estimates even in the presence of the extra dispersion introduced by $\varepsilon$. We therefore fit a Poisson Generalized Linear Model to regions that we know do not include natural disasters or outbreaks and consider the MLE $\hat{\alpha}(t)$, $\hat{w}(t)$, and $\hat{s}(t)$ as fixed.
 
 In the second step we estimate $\Sigma$, and to do this we select a control region that is continuous for which we know $f(t)=0$. To estimate the $\sigma^2$ and the autoregressive parameters we can use the law of total variance to note that the observed percent change from the mean
 \begin{equation*}
@@ -340,7 +340,7 @@ Using these estimates we can form an estimate $\hat{\Sigma}$ which we will consi
 In the third step we treat this covariance as known, assume $f(t)$ can be modeled as a natural cubic spline, and use iteratively re-weighted least squares to obtain an estimate $\hat{f}(t)$. To account for non-continuities due to direct effects from natural disasters we permit the spline to be discontinuous at the event day. 
 
 \subsection{Approximation for uncorrelated data}
-Note that our model can be easily adapted to be fitted to weekly data. The US Census data is weekly for example. In this case there is no need to include a weekday effect parameters nor a correlation structure for the errors. We find that fitting an overdispersed GLM provides practically equivalent results as the more complex GLMM and therefore uses it for weekly data, as well as other datasets in which there does not appear to be correlated counts. 
+Note that our model can be easily adapted to be fitted to weekly data. In this case there is no need to include weekday effect parameters nor a correlation structure for the errors. We find that fitting an overdispersed generalized linear model provides practically equivalent results as the more complex GLMM and therefore we use it for weekly data, as well as other datasets in which there does not appear to be correlated counts.
 
 \subsection{Simulation Study}
 To confirm that our estimation procedure produces useful result we conducted a Monte Carlo simulation. Specifically, we generated data from the model above with parameters described in \textbf{Supp Tab XX} and \textbf{Supp Fig XX}. Our procedure produces accurate and precise results for both $f$ and $\Sigma$ \textbf{(Supp Figure)}
@@ -451,6 +451,14 @@ We also performed an empirical test by estimating excess deaths and the standard
 	\includegraphics[width=1\linewidth]{figs/supp-figure-6.pdf} 
 	\caption{}
 	\label{supp-fig:respiratory-index-pr}
+\end{suppfigure}
+
+% Supplemental figure 7
+\begin{suppfigure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{figs/supp-figure-7.pdf} 
+	\caption{}
+	\label{supp-fig:pop-displacement-pr}
 \end{suppfigure}
 
 
