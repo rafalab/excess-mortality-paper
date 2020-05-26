@@ -133,31 +133,25 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
 
 # -- Figure 2A
 fig2a <- excess_deaths_pr %>%
+  filter(event != "Covid-19") %>%
   mutate(day = as.numeric(date - event_day)) %>%
   mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19"))) %>% 
   ggplot(aes(color = event, fill = event)) +
-  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25, show.legend = F) + 
+  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25, show.legend = F, color="transparent") + 
   geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
-  geom_line(aes(day, fitted), size=1, show.legend = F) +
+  geom_line(aes(day, fitted), show.legend = F) +
   geom_dl(aes(x=day,y=fitted, color=event, label=event), 
-          method=list(fontface="bold", "last.points")) +#"smart.grid"
+          method=list("last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits=c(0, 200)) +
+  scale_x_continuous(limits = c(0, 200),
+                     breaks = seq(0, 200, by=20)) +
+  scale_y_continuous(limits = c(-70, 3800),
+                     breaks = seq(0, 3500, by=500)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
-                                         fill     = "white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.key.size = unit(0.1, "cm"),
-        legend.direction = "horizontal")
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
@@ -174,7 +168,7 @@ ggsave("figs/figure-2a.pdf",
 ### -- ------------------------------ ------------------------------------------------------------------
 nknots <- 20
 # -- Load US state data and and expand abbreviations
-data(cdc_state_counts)
+data("cdc_state_counts")
 state.name.2 <- c(state.name, "New York City", "Puerto Rico", "District of Columbia")
 state.abb.2  <- c(state.abb, "NYC", "PR", "DC")
 
@@ -284,31 +278,18 @@ fig2b <- us %>%
   scale_fill_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   geom_ribbon(aes(ymin=lwr,
-                  ymax=upr), alpha=0.50, show.legend = F) +
-  geom_line(size=1, show.legend = F) +
+                  ymax=upr), alpha=0.50, show.legend = F, color="transparent") +
+  geom_line(show.legend = F) +
   geom_dl(aes(color=type, label=type), 
-          method=list(fontface="bold", "last.points")) + #"smart.grid"
-
+          method=list("last.points")) + #"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("") +
-  
   scale_y_continuous(limits = c(-3000, 100000),
                      breaks = seq(0, 100000, by=10000),
                      labels = scales::comma) +
   scale_x_date(date_breaks = "1 week", 
-               date_labels = "%b %y",
-               limits = c(ymd("2020-03-07"), ymd("2020-05-10"))) +
-  
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
-                                         fill     = "white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.key.size = unit(0.1, "cm"),
-        legend.direction = "horizontal")
+               date_labels = "%b %Y",
+               limits = c(ymd("2020-03-07"), ymd("2020-05-07")))
 
 # -- Save figure 2B
 ggsave("figs/figure-2b.pdf",
@@ -369,25 +350,16 @@ fig2c <- fits %>%
   mutate(abb = state.abb.2[match(state, state.name.2)]) %>%
   spread(virus, excess) %>%
   ggplot(aes(Flu_18/pop_flu*10000, COVID_19/pop_covid*10000, label = abb)) +
-  geom_point(size=2, alpha=0.50) +
-  geom_point(size=2, pch=1) +
-  ggrepel::geom_text_repel(fontface="bold") +
+  geom_point(alpha=0.50) +
+  geom_point(pch=1) +
+  ggrepel::geom_text_repel() +
   scale_y_continuous(limits = c(0, 30),
                      breaks = seq(0, 30, by=5)) +
   scale_x_continuous(limits = c(0, 3),
                      breaks = seq(0, 3, by=0.50)) +
   geom_abline(intercept = 0, slope = 1, color="#cb181d", lty=2) +
   ylab("Covid-19 mortality rate per 10,000") +
-  xlab("Seasonal flu (2018) mortality rate per 10,000") +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
-                                         fill     = "white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.direction = "horizontal")
+  xlab("Seasonal flu (2018) mortality rate per 10,000")
 
 # -- Save figure 2C
 ggsave("figs/figure-2c.pdf",
@@ -450,9 +422,8 @@ fig2d <- excess_deaths_cook %>%
   ungroup() %>%
   mutate(race = str_to_sentence(race)) %>%
   ggplot(aes(x=date, y=fitted, color=race, fill=race)) +
-  geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.20, show.legend = F) +
-  geom_point(aes(date, observed), size=0.80, alpha=0.40, show.legend = F) +
-  geom_line(size=1, show.legend = F) +
+  geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.50, show.legend = F, color="transparent") +
+  geom_line(show.legend = F) +
   geom_dl(aes(color=race, label=race), 
           method=list(fontface="bold", "last.points")) +#"smart.grid"
   ylab("Cumulative excess deaths") +
@@ -461,21 +432,12 @@ fig2d <- excess_deaths_cook %>%
                date_labels = "%b %d",
                limits = c(ymd("2020-03-01"), ymd("2020-05-25"))) +
   scale_y_continuous(limits = c(-20, 1500),
-                     breaks = seq(0, 1500, by=150)) +
+                     breaks = seq(0, 1500, by=150),
+                     labels = scales::comma) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
-                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
-                                         fill     = "white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.key.size = unit(0.1, "cm"),
-        legend.direction = "horizontal")
+                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
 
 # -- Save figure 2D
 ggsave("figs/figure-2d.pdf",

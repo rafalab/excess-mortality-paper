@@ -150,9 +150,9 @@ fig1a <- tmp %>%
          hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
   ggplot(aes(day, fitted*100, color = hurricane)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_line(size=1, show.legend = F) +
+  geom_line(show.legend = F) +
   geom_dl(aes(color=hurricane, label=hurricane), 
-          method=list(fontface="bold", "smart.grid")) +#"last.qp
+          method=list("smart.grid")) +#"last.qp
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
   scale_x_continuous(limits = c(-125, 245),
@@ -160,17 +160,7 @@ fig1a <- tmp %>%
   scale_y_continuous(limits = c(-5, 75),
                      breaks = seq(0, 75, by=10)) +
   scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
-                                         fill     = "white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.key.size = unit(0.1, "cm"),
-        legend.direction = "horizontal")
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
 fig1a
 
 # -- Save figure 1A
@@ -217,29 +207,19 @@ fig1b <- res %>%
   filter(date >= "2014-05-01", date <= "2015-05-01") %>%
   ggplot(aes(date, 100*fhat, color=agegroup)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_line(size=1, show.legend = F) +
+  geom_line(show.legend = F) +
   xlab("") +
-  ylab("Percent change in mortality") +
+  ylab("Percent increase from expected mortality") +
   geom_dl(aes(color=agegroup, label=agegroup), 
-          method=list(fontface="bold", "smart.grid")) +#"last.qp"
+          method=list("smart.grid")) +#"last.qp"
   scale_x_date(date_breaks = "2 month", 
-               date_labels = "%b %y") +
+               date_labels = "%b %Y") +
   scale_y_continuous(limits = c(-95, 80),
                      breaks = seq(-80, 80, by=20)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black"),
-        legend.background = element_rect(color    ="black",
-                                         fill     ="white",
-                                         linetype = "solid"),
-        legend.position = c(0.50, 0.05),
-        legend.key.size = unit(0.1, "cm"),
-        legend.direction = "horizontal")
+                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
 fig1b
 
 # -- Save figure 1B
@@ -256,7 +236,7 @@ ggsave("figs/figure-1b.pdf",
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
 ### -- -------------------------------- ------------------------------------------------------------------
 # -- Loading state mortality data 
-data(cdc_state_counts)
+data("cdc_state_counts")
 
 # -- Expand state abbrevaition objects 
 state.name.2 <- c(state.name, "New York City", "Puerto Rico", "District of Columbia")
@@ -343,18 +323,10 @@ fig1c <- df %>%
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(date, ymin = -2*sd, ymax = 2*sd), color = 1, fill = NA, lty = 2) +
   geom_ribbon(alpha = 0.5) +
-  geom_line(size=1) +
+  geom_line() +
   xlab("") +
-  ylab("Percent change in mortality") +
-  scale_x_date(date_breaks = "4 month", date_labels = "%b %y") +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        legend.title    = element_text(face="bold", color="black"),
-        legend.text     = element_text(face="bold", color="black"),
-        legend.background = element_rect(color    ="black",
-                                         fill     ="white",
-                                         linetype = "solid"),
-        legend.position = c(0.90,0.80))
+  ylab("Percent increase from expected mortality") +
+  scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")
 fig1c
 
 # -- Saving figure c

@@ -70,7 +70,7 @@ fig3 <- cook %>%
   ggplot(aes(date, 100*fitted, color=race, fill=race)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
-  geom_line(size=1) +
+  geom_line() +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
@@ -80,14 +80,10 @@ fig3 <- cook %>%
   scale_x_date(date_breaks = "1 months", 
                date_labels = "%b %d") +
   scale_y_continuous(limits = c(-90, 2700),
-                     breaks = seq(0, 2500, by=500)) +
+                     breaks = seq(0, 2500, by=500),
+                     labels = scales::comma) +
   facet_wrap(~agegroup) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        strip.text = element_text(face="bold", color="black"),
-        legend.title    = element_blank(),
-        legend.text     = element_text(face="bold", color="black", size=8),
-        legend.background = element_rect(color    = "black",
+  theme(legend.background = element_rect(color    = "black",
                                          fill     = "white",
                                          linetype = "solid"),
         legend.position = c(0.50, 0.95),
