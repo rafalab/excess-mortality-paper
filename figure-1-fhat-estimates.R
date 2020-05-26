@@ -6,6 +6,7 @@ library(ggpubr)
 library(tidyverse)
 library(lubridate)
 library(excessmort)
+library(directlabels)
 dslabs::ds_theme_set()
 
 # -- Loading data
@@ -214,11 +215,8 @@ res <- map_df(c("0-4", "60-Inf"), function(x){
 # -- Figure 1B
 fig1b <- res %>%
   filter(date >= "2014-05-01", date <= "2015-05-01") %>%
-  mutate(lwr = fhat-1.96*se,
-         upr = fhat+1.96*se) %>%
   ggplot(aes(date, 100*fhat, color=agegroup)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr, fill=agegroup), alpha=0.40, color="transparent", show.legend = F) +
   geom_line(size=1, show.legend = F) +
   xlab("") +
   ylab("Percent change in mortality") +
@@ -226,8 +224,8 @@ fig1b <- res %>%
           method=list(fontface="bold", "smart.grid")) +#"last.qp"
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %y") +
-  scale_y_continuous(limits = c(-95, 100),
-                     breaks = seq(-80, 100, by=20)) +
+  scale_y_continuous(limits = c(-95, 80),
+                     breaks = seq(-80, 80, by=20)) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
