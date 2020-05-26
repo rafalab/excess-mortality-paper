@@ -56,6 +56,9 @@ max_date      <- make_date(2020, 5, 2)
 # -- Remove last dates
 counts <- cdc_state_counts %>% filter(date <= max_date)
 states <- unique(counts$state)
+
+# -- Number of knots per year
+nknots <- 6
 ### -- ------ ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ------ ------------------------------------------------------------------
@@ -112,10 +115,7 @@ supp_fig5 <- df %>%
   geom_ribbon(aes(date, ymin = -2*sd, ymax = 2*sd), color = 1, fill = NA, lty = 2) +
   ylab("Percent change in mortality") +
   xlab("") +
-  facet_wrap(~state, scale = "free_y") +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        strip.text = element_text(face="bold", color="black"))
+  facet_wrap(~state, scale = "free_y")
 
 # -- Saving figure c
 ggsave("figs/supp-figure-5.pdf",

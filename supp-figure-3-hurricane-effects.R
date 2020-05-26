@@ -151,12 +151,7 @@ supp_fig3 <- tmp %>%
   xlab("") +
   ylab("Percent change in mortality") +
   facet_wrap( ~ hurricane, scale= "free_x") +
-  scale_x_date(date_breaks = "3 month", date_labels = "%b") +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        strip.text   = element_text(face="bold", color="black"),
-        legend.title = element_text(face="bold", color="black"),
-        legend.text  = element_text(face="bold", color="black"))
+  scale_x_date(date_breaks = "3 month", date_labels = "%b")
 
 # -- Save supp figure 1
 ggsave("figs/supp-figure-3.pdf",

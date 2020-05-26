@@ -16,14 +16,19 @@ the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 dates      <- unique(all_counts$date)
 
+# -- Hurricanes information
+hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
+hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
+names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
+
 # -- Control & exclude periods
 control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
-exclude_dates  <- c(seq(puerto_rico_hurricane_dates[1], puerto_rico_hurricane_effect_ends[1], by = "day"),
-                    seq(puerto_rico_hurricane_dates[2], puerto_rico_hurricane_effect_ends[2], by = "day"),
-                    seq(puerto_rico_hurricane_dates[3], puerto_rico_hurricane_effect_ends[3], by = "day"),
-                    seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
+                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
+                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
+                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
+                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
@@ -56,9 +61,7 @@ supp_fig2a <- tibble(r=r) %>%
   stat_qq(alpha=0.50) + 
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   ylab("Sample quantiles") +
-  xlab("Theoretical quantiles") +
-  theme(axis.title = element_text(face="bold"),
-        axis.text  = element_text(face="bold"))
+  xlab("Theoretical quantiles")
 
 # -- Save supp-figure-2a
 ggsave("figs/supp-figure-2a.pdf",
@@ -85,13 +88,11 @@ supp_fig2b <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
              linetype = 2) +
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
-             linetype = 2) +
-  theme(axis.title = element_text(face="bold"),
-        axis.text  = element_text(face="bold"))
+             linetype = 2)
 
 # -- Save supp-figure-2b
 ggsave("figs/supp-figure-2b.pdf",
-       plot   = supp_fig3b,
+       plot   = supp_fig2b,
        dpi    = 300, 
        height = 4,
        width  = 8)
@@ -111,22 +112,22 @@ tmp <- counts %>%
   mutate(r = (outcome - expected)/expected)
 
 # -- Extracting percent change
-r     <- tmp$r
+r <- tmp$r
 
 # -- Expected value
-mu    <- tmp$expected
+mu <- tmp$expected
 
 # -- Number of data points
-n     <- length(r)
+n <- length(r)
 
 # -- Estimating AR(p) with control dates
 arfit <- excessdeaths:::fit_ar(tmp,  control.dates = control_dates)
 
 # -- Estimated rhos
-rhos  <- ARMAacf(ar = arfit$ar, ma = 0, lag.max = n)
+rhos <- ARMAacf(ar = arfit$ar, ma = 0, lag.max = n)
 
 # -- Estimated sd
-s     <- arfit$sigma
+s <- arfit$sigma
 
 # -- Computing covariance matrix
 Sigma <- apply(abs(outer(1:n, 1:n, "-")) + 1, 1, function(i) rhos[i]) * outer(sqrt(s^2 + 1/mu), sqrt(s^2 + 1/mu))
@@ -141,9 +142,7 @@ supp_fig2c <- tibble(r=V_inv %*% r) %>%
   stat_qq(alpha=0.50) + 
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   ylab("Sample quantiles") +
-  xlab("Theoretical quantiles") +
-  theme(axis.title = element_text(face="bold"),
-        axis.text  = element_text(face="bold"))
+  xlab("Theoretical quantiles")
 
 # -- Save supp-figure-3c
 ggsave("figs/supp-figure-2c.pdf",
@@ -170,9 +169,7 @@ supp_fig2d <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
              linetype = 2) +
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
-             linetype = 2) +
-  theme(axis.title = element_text(face="bold"),
-        axis.text  = element_text(face="bold"))
+             linetype = 2)
 
 # -- Save supp-figure-2d
 ggsave("figs/supp-figure-2d.pdf",

@@ -11,14 +11,19 @@ dslabs::ds_theme_set()
 # -- Loading data
 data("puerto_rico_counts")
 
+# -- Hurricanes information
+hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
+hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
+names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
+
 # -- Control & exclude periods
 control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
-exclude_dates  <- c(seq(puerto_rico_hurricane_dates[1], puerto_rico_hurricane_effect_ends[1], by = "day"),
-                    seq(puerto_rico_hurricane_dates[2], puerto_rico_hurricane_effect_ends[2], by = "day"),
-                    seq(puerto_rico_hurricane_dates[3], puerto_rico_hurricane_effect_ends[3], by = "day"),
-                    seq(as.Date("2014-01-01"), as.Date("2015-12-31"), by = "day"),
-                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
+                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
+                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
+                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
+                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 
 # -- Age groups
 # the_breaks <- c(0, 5, 20, 40, 60, Inf)
@@ -63,14 +68,11 @@ supp_fig4 <- res %>%
   ggplot(aes(date, 100*fhat)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.40, color="transparent") +
-  geom_line(size=1) +
+  geom_line() +
   xlab("") +
   ylab("Percent change in mortality") +
   scale_x_date(date_breaks = "3 month", date_labels = "%b %y") +
-  facet_wrap(~agegroup) +
-  theme(axis.title = element_text(face="bold", color="black"),
-        axis.text  = element_text(face="bold", color="black"),
-        strip.text = element_text(face="bold", color="black"))
+  facet_wrap(~agegroup)
 
 # -- Save # -- Supplemental figure 4
 ggsave("figs/supp-figure-4.pdf",
