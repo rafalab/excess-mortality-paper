@@ -186,40 +186,33 @@ We fit our model to Puerto Rico mortality data from 1985 to 2020 and found that 
 
 \subsection{Quantifying the effects of epidemics}
 \label{subsec:epidemics}
-Our model can also be fitted to quantify the effects of epidemics or outbreaks. As an example, we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of 130 days for individuals over 60 years (Figure \ref{fig:fhat-estimates}B) and 167 days for the 0 to 4 years age group. We saw no noticeable effects for other age groups (Supplemental Figure \ref{supp-fig:chikungunya-agegroups}).
+Our model can also be fitted to quantify the effects of epidemics or outbreaks. As an example, we fit our model to Puerto Rico mortality data from 2014-2015, when the Chikungunya outbreak occurred \cite{sharp2016surveillance, hsu2019risk}. We detected an increase in mortality rate for a period of 130 days for individuals over 60 years (Figure \ref{fig:fhat-estimates}B) and 160 days for the 0 to 4 years age group. We saw no noticeable effects for other age groups (Supplemental Figure \ref{supp-fig:chikungunya-agegroups}).
 
-Although mortality data for the time period of the COVID-19 pandemic are not yet complete, the Center for Disease Control and Prevention (CDC) has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 5, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates clearly detects the COVID-19 pandemic for several states, as well as the 2018 flu epidemics (Figure \ref{fig:fhat-usa}, Supplemental Figure \ref{supp-fig:covid19-states}, \textbf{Table XXXX}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 flu season. We also note that the difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Figure \ref{fig:excess-flu-vs-covid}, \ref{supp-fig:covid19-states}).
+Although mortality data for the time period of the COVID-19 pandemic are not yet complete, the Center for Disease Control and Prevention (CDC) has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 5, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates clearly detects the COVID-19 pandemic for several states, as well as the 2018 flu epidemics (Figure \ref{fig:fhat-estimates}C, Supplemental Figure \ref{supp-fig:covid19-states}, \textbf{Table XXXX}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 flu season. We also note that the difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Figure \ref{fig:excess-deaths}C, Supplemental Figure \ref{supp-fig:covid19-states}).
 
 \subsection{Excess mortality estimates}
 \label{subsec:excess-mortality}
-Once we have fit our model to data, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the estimated period of effect after hurricanes Hugo, Georges, and Mar\'ia as described in \textbf{Section XXXX}. We found excess deaths of 132 (95\% CI: 48 to 216), 1,293 (95\% CI: 1,013 to 1,572), and 3,264 (95\% CI: 2,820 to 3,709), respectively (Figure \ref{fig:excess-deaths}A). We also computed excess deaths for the detected time period in 2014-15, which coincides with a Chikungunya outbreak that occurred on the island, and found an excess mortality of 1,516 (95\% 1,117 to 1,916) (Figure \ref{fig:excess-deaths}A).
+Once we have fit our model, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following the day hurricanes Georges, and Mar\'ia made landfall. We also computed these quantities for the 365 days following August, 2014, the first month that year for which we observe an increase for which a 99\% confidence interval do not include 0. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020 to April 7 2020. For María the excess death curve grew for XXX days with a point estimate on XXX of 3,264 (95\% CI: 2,820 to 3,709) XXX CORRECT???XX. For Georges the excess death curve grew for XX days witha point estimate of 1,293 (95\% CI: 1,013 to 1,572) XXFIX XX on XXX. We found excess deaths of 132 (95\% CI: 48 to 216), 1,293 (95\% CI: 1,013 to 1,572), and 3,264 (95\% CI: 2,820 to 3,709), respectively (Figure \ref{fig:excess-deaths}A). For the Chikungunya outbreak the excess death curve grows for XX days and then decreases until day XXX. The decrease is consistent with \emph{harvesting effect} [CITE https://academic.oup.com/aje/article/163/2/181/95820]. On XXX, when the excess death stabilizes, the point estimate was XXX [CI ]
 
-% every day in a \textbf{XXX} month period after hurricane Georges, Maria made landfall in Puerto Rico and found excess deaths of \textbf{XXX +/- XX} and \textbf{XXX +/- XX} respectively \textbf{(Figure XX)}. We also computed excess death for the \textbf{XX - XX} time period, which our analysis detected as a Chikingunya outbreak, and found an excess mortality of \textbf{XXX-XXX (Figure XX)}. \\ 
-
-Based on the CDC data, we can also compute excess mortality for the period of the COVID-19 pandemic for which we have data, specifically the March 8, 2020 to May 2, 2020 time period. When we compare these numbers to the reported numbers of COVID-19 deaths, we find a difference of 24,785 (95\% CI: 22,892 to 26,678) deaths (Figure \ref{fig:excess-deaths}B, \textbf{Table XX}). We also note that in the US, the number of excess deaths during the COVID-19 pandemic are much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, \textbf{Table XX}). Comparing to data from the New York Times \cite{smith2020coronavirus} we also note the reported COVID-19 deaths are under-counted in many states (\textbf{Table XX}).
+Using the CDC data we computd excess mortality for the period of the COVID-19 pandemic for which we have data, specifically the March 8, 2020 to May 2, 2020 time period. When we compared these numbers to the reported numbers of COVID-19 deaths, we find a difference of 24,785 (95\% CI: 22,892 to 26,678) deaths (Figure \ref{fig:excess-deaths}B, \textbf{Table XX}). We also note that in the US, the number of excess deaths during the COVID-19 pandemic are much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, \textbf{Table XX}). Comparing to data from the New York Times \cite{smith2020coronavirus} we also note the reported COVID-19 deaths are under-counted in many states (\textbf{Table XX}).
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
-	A&B\\
-	\begin{subfigure}[t]{0.49\linewidth}
+	A&B&C\\
+	\begin{subfigure}[t]{0.3\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{figs/figure-2a.pdf} 
 	\end{subfigure}&
-	\begin{subfigure}[t]{0.49\linewidth}
+	\begin{subfigure}[t]{0.3\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{figs/figure-2b.pdf}
-	\end{subfigure}&\\
-	C&D\\
-	\begin{subfigure}[t]{0.49\linewidth}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.3\linewidth}
 		\centering
 		\includegraphics[width=1\linewidth]{figs/figure-2c.pdf}
-	\end{subfigure}&
-	\begin{subfigure}[t]{0.49\linewidth}
-    	\centering
-	    \includegraphics[width=1\linewidth]{figs/figure-2d.pdf}
-    \end{subfigure}\\
-    \end{tabular}
-    \caption{Cumulative excess mortality estimates. A) Excess death estimates and 95\% confidence intervals for events in Puerto Rico. Periods of interest were determined as described in \textbf{Section XX}. B) Comparison of estimated cumulative excess deaths in the United States to reported COVID-19 cumulative mortality. C) State-specific cumulative excess death comparison between COVID-19 and the Flu season in 2018. The identity line is represented in red. D) Cumulative excess mortality comparison between whites and blacks in Cook county, IL, with corresponding 95\% confidence intervals.}
+	\end{subfigure}\\
+	\end{tabular}
+    \caption{Cumulative excess mortality estimates. A) Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on XXX, XX, XX, and XX for Hurricanes Georges, Hurricane María, the Chikungunya epidemic, and the COVID-19 pandemic, respectively.  B) Estimated cumulative excess mortality and reported COVID-19 cumulative deaths in the United States. C) State-specific cumulative excess mortality rates (excess deaths per 1,000 per 365 days) for COVID-19 plotted against the excess mortality rate 2018 Flu season. The identity line is represented in red and separates states in which mortality was higher during COVID-19 rom those in which the increase in mortality rate was where higher during the 2018 was worse. D) Cumulative excess mortality comparison between whites and blacks in Cook county, IL, with corresponding 95\% confidence intervals.}
     \label{fig:excess-deaths}
 \end{figure}
 
@@ -329,6 +322,7 @@ In the third step we treat this covariance as known, assume $f(t)$ can be modele
 Note that our model can be easily adapted to be fitted to weekly data. In this case there is no need to include weekday effect parameters nor a correlation structure for the errors. We find that fitting an overdispersed generalized linear model provides practically equivalent results as the more complex GLMM and therefore we use it for weekly data, as well as other datasets in which there does not appear to be correlated counts.
 
 \subsection{Excess death estimates}
+\label{subsec:excess-deaths}
 To estimate excess deaths we must first determine a period of interest, here we propose two approaches. First one can take the conventional approach and determine a period of interest based on subject matter knowledge (e.g., months constituting the flu season for a particular year). Otherwise one can use what we refer to as the \textit{period of indirect effect}. Define the interval starting on the event day (e.g., landfall for a hurricane), denoted here with $t_0$, until the first day, $t > t_0$, for which $f(t)=0$. Since $f(t)$ is unobserved, and instead we obtain an estimate we take the conservative approach of defining the end of the period when the lower bound of a 95\% confidence interval reaches 0 $\left(\mbox{i.e., } \hat{f}(t)-1.96\hat{\mbox{se}}\{\hat{f}(t)\}=0\right)$. We denote the period of interest with $I$ and define \textit{fitted} and \textit{observed} excess deaths at time $t$ with $\hat{\mu}_t \hat{f}(t)$ and $Y_t - \hat{\mu}_t$, respectively. Finally, cumulative excess deaths are estimated by adding the excess deaths of each day in $I$: 
 \begin{equation*}
     \mbox{Excess deaths} = \sum_{t \in I} \hat{\mu}_t \hat{f}(t) 
@@ -343,15 +337,18 @@ Estimation of excess mortality requires an accurate prediction of the counterfac
 \begin{equation*}
     Y_t \mid \varepsilon_t \propto \mbox{Poisson}(\mu_t  \varepsilon_t )
 \end{equation*}
-This implies that, for example, the counterfactual of no hurricane in Puerto Rico for hurricane Mar\'ia is determined by model \ref{eq:mean-model}. It is well known that population displacement may occur after natural disasters \cite{mbaye2017climate, thomaz2013post, curtis2015recovery}. Therefore, the mortality and population distributions differ between the factual and counterfactual scenarios. In the past, the inability to measure population displacement in close to real time has limited researchers to use the same population estimates in both factual and counterfactual scenarios. However, with the advent of social media data and call detail records, we now have the ability to estimate population displacement shortly after a disaster. Assuming population displacement in Puerto Rico after hurricane Mar\'ia (Supplemental Figure \ref{supp-fig:pop-displacement-pr}) in both the factual and counterfactual scenarios we find the elevated and persistent increase in mortality described in the Results section (Figures \ref{fig:fhat-estimates}A \& \ref{fig:excess-deaths}A). Assuming that the population displacement observed post-hurricane was caused by the disaster, we can postulate that the counterfactual scenario should not account for population displacement. 
+This implies that, for example, the counterfactual of no hurricane in Puerto Rico for hurricane Mar\'ia is determined by model \ref{eq:mean-model}. It is well known that population displacement may occur after natural disasters \cite{mbaye2017climate, thomaz2013post, curtis2015recovery}. Therefore, the mortality and population distributions differ between the factual and counterfactual scenarios. In the past, the inability to measure population displacement in close to real time has limited researchers to use the same population estimates in both factual and counterfactual scenarios. However, with the advent of social media data and call detail records, we now have the ability to estimate population displacement shortly after a disaster. Assuming population displacement in Puerto Rico after hurricane Mar\'ia (Supplemental Figure \ref{supp-fig:pop-displacement-pr}) in both the factual and counterfactual scenarios we find the elevated and persistent increase in mortality described in the Results section (Figures \ref{fig:fhat-estimates}A \& \ref{fig:excess-deaths}A). Not accounting for population displacement in both the factual and counterfactual scenarios yields a noticeable yet non significant difference in our estimates (Supplemental Figure \ref{supp-fig:counterfactual-considerations}). Assuming that the population displacement observed post-hurricane was caused by the disaster, one can postulate that the counterfactual scenario should not account for population displacement. 
 
 \subsection{Simulation study}
-To assess that our estimation procedure produces useful results we conducted a Monte Carlo simulation. Specifically, we computed $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and generated data $Y_t^* \sim \mbox{Poisson}(\hat{\mu}_t)$ with serial correlation. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expected our estimate of $f(t)$ to be centered around 0. Parameters describing our simulation are in \textbf{Supplemental Figure XX}. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (\textbf{Supplemental Figure}).
+To assess that our estimation procedure produces useful results we conducted a Monte Carlo simulation. Specifically, we computed $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and generated data $Y_t^* \sim \mbox{Poisson}(\hat{\mu}_t)$ with serial correlation. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expected our estimate of $f(t)$ to be centered around 0. Parameters describing our simulation are in \textbf{Supplemental Table XX}. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (Supplemental Figure \ref{fig:simulation}).
 
 % To confirm that our estimation procedure produces useful result we conducted a Monte Carlo simulation. Specifically, we generated data from the model above with parameters described in \textbf{Supp Tab XX} and \textbf{Supp Fig XX}. Our procedure produces accurate and precise results for both $f$ and $\Sigma$ \textbf{(Supp Figure)}
 
 We also performed an empirical test by estimating excess deaths and the standard error for period for which no natural disaster occured and no known outbreak. In this case the the estimate divided by its standard error should follow a normal distribution.  We find that the model with correlated errors performs best with the Poisson model greatly underestimating the standard error. Adding a over-dispersion parameter improves the results but still underestimates the variance \textbf{(Supp Figure)}. Providing further evidence that considering correlation is important when analyzing daily data.
 
+\section{Discussion}
+
+\section{Conclusion}
 
 % We first determined the period of indirect effect for each hurricane. To do this, we defined the interval starting on landfall day, denoted here with $t_0$, until the first day, $t_{ij} > t_0$, for which $f(t_{ij})>0$. Because we do not observe $f(t_{ij})$, and instead obtain an estimate we took the conservative approach of defining the period with the day for which the lower part of a marginal 95\% confidence interval crosses 0: $f(t_{ij})−1.96\hat(se)\{\hat{f}(t_{ij})\}>0$. We denoted this interval with $I$ and defined the excess deaths by adding the observed deaths minus expected deaths for every day in the interval:
 % \begin{equation*}
@@ -426,7 +423,7 @@ We also performed an empirical test by estimating excess deaths and the standard
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
-    \caption{Estimated event effects as percent increase over expected mortality during the Chikungunya epidemic in Puerto Rico for six age groups.}
+    \caption{Estimated event effects as percent increase over expected mortality during the Chikungunya epidemic in Puerto Rico for six age groups. The points are percetage above or below expectation for the daily counts.}
 	\label{supp-fig:chikungunya-agegroups}
 \end{suppfigure}
 
@@ -438,7 +435,7 @@ We also performed an empirical test by estimating excess deaths and the standard
 	\label{supp-fig:covid19-states}
 \end{suppfigure}
 
-% Supplemental figure 6
+% Supp figure 6: Respiratory diseases mortality index
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-6.pdf} 
@@ -446,7 +443,7 @@ We also performed an empirical test by estimating excess deaths and the standard
 	\label{supp-fig:respiratory-index-pr}
 \end{suppfigure}
 
-% Supplemental figure 7
+% Supp figure 7: Population displacement in Puerto Rico
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-7.pdf} 
@@ -454,6 +451,56 @@ We also performed an empirical test by estimating excess deaths and the standard
 	\label{supp-fig:pop-displacement-pr}
 \end{suppfigure}
 
+% Supp figure 8: Counterfactual considerations
+\begin{suppfigure}[ht]
+	\begin{tabular}{lll}
+	A&B\\
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-8a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-8b.pdf}
+	\end{subfigure}&\\
+    \end{tabular}
+    \caption{Counterfactual considerations}
+    \label{supp-fig:counterfactual-considerations}
+\end{suppfigure}
+
+% Supp figure 9: Simulation study
+\begin{suppfigure}[ht]
+	\begin{tabular}{lll}
+	A&B&C\\
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9b.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9c.pdf}
+	\end{subfigure}\\
+	D&E&F\\
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9d.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9e.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-9f.pdf}
+	\end{subfigure}\\	
+    \end{tabular}
+    \caption{Simulation study}
+    \label{fig:simulation}
+\end{suppfigure}
 
 \end{document}
 
