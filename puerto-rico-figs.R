@@ -2,7 +2,7 @@
 library(ggpubr)
 library(tidyverse)
 library(lubridate)
-library(excessdeaths)
+library(excessmort)
 library(directlabels)
 library(directlabels)
 
@@ -288,7 +288,7 @@ fit <- lapply(c("0-4","60-Inf"), function(x){
                  end = make_date(2015, 12, 31),
                  exclude = exclude_dates,
                  control.dates = control_dates,
-                 nknots = 12, 
+                 knots.per.year = 12, 
                  model = "correlated")
   return(ret)
 })
