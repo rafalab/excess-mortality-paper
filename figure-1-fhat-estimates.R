@@ -161,8 +161,8 @@ fig1a <- tmp %>%
                      breaks = seq(0, 75, by=10)) +
   # scale_color_manual(name="",
   #                    values = c("#D55E00","#0571b0","#009E73","#cb181d","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.text  = element_text(size=10),
-        axis.title = element_text(size=11.5))
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1a
 
 # -- Save figure 1A
@@ -225,8 +225,8 @@ fig1b <- res %>%
   #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   # scale_fill_manual(name="",
   #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))  +
-  theme(axis.text  = element_text(size=10),
-        axis.title = element_text(size=11.5))
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1b
 
 # -- Save figure 1B
@@ -334,8 +334,8 @@ fig1c <- df %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")   +
-  theme(axis.text  = element_text(size=10),
-        axis.title = element_text(size=11.5))
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1c
 
 # -- Saving figure c
