@@ -69,7 +69,6 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
                    end            = interval_start[i] + after[i], 
                    exclude        = exclude_dates,
                    control.dates  = control_dates,
-                   # knots.per.year = round(npy*(before[i] + after[i])/365), 
                    knots.per.year = nknots,
                    model          = "correlated",
                    discontinuity  = disc[i], 
@@ -96,12 +95,14 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
   } else {
     last_day <- ymd(dates[ind])
   }
-
+  
+  # -- Period of indirect effect
+  message(paste0("\nPeriod of indirect effect: ",last_day - interval_start[i], " days"))
   
   # -- Now fit model to compute cumulative excess deaths
   message("\nFitting model to estimate cumulative excess deaths")
   tmp <- map_df(unique(all_counts$agegroup), function(x){
-    cat(".")
+    # cat(".")
     f <- suppressMessages(all_counts %>% 
       filter(agegroup == x) %>%
       excess_model(event          = interval_start[i],
@@ -117,7 +118,7 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
     
     excess_cumulative(f, 
                       start = interval_start[i], 
-                      end   = last_day) %>%
+                      end   = ymd(interval_start[i]) + ndays) %>%
       mutate(agegroup = x, event_day = interval_start[i], event = names(interval_start)[i])
   })
   tmp %>% 
@@ -133,31 +134,34 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
 
 # -- Figure 2A
 fig2a <- excess_deaths_pr %>%
-  filter(event != "Covid-19") %>%
+  filter(event != "Hugo") %>%
   mutate(day = as.numeric(date - event_day)) %>%
   mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19"))) %>% 
   ggplot(aes(color = event, fill = event)) +
-  geom_ribbon(aes(day, ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25, show.legend = F, color="transparent") + 
+  geom_ribbon(aes(day, ymin = fitted - 1.96*se, ymax = fitted + 1.96*se), alpha = 0.50, show.legend = F, color="transparent") + 
   geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
   geom_line(aes(day, fitted), show.legend = F) +
   geom_dl(aes(x=day,y=fitted, color=event, label=event), 
           method=list("last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits = c(0, 200),
-                     breaks = seq(0, 200, by=20)) +
-  scale_y_continuous(limits = c(-70, 3800),
-                     breaks = seq(0, 3500, by=500)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
+  scale_x_continuous(limits = c(0, 410),
+                     breaks = seq(0, 410, by=30)) +
+  scale_y_continuous(limits = c(-350, 4000),
+                     breaks = seq(0, 4000, by=500),
+                     labels = scales::comma) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
+  # scale_color_manual(name="",
+  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  # scale_fill_manual(name="",
+  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
        plot   = fig2a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ---------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2A: Excess deaths in PR ------------------------------------------------------------------
@@ -271,31 +275,29 @@ fig2b <- us %>%
   filter(type != "observed") %>%
   mutate(lwr = outcome-1.96*vari,
          upr = outcome+1.96*vari,
-         type = ifelse(type=="covid", "Covid-19", "Estimate")) %>%
+         type = ifelse(type=="covid", "Reported \nCovid-19", "Excess \ndeaths")) %>%
   ggplot(aes(date, outcome, color=type, fill=type)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   geom_ribbon(aes(ymin=lwr,
                   ymax=upr), alpha=0.50, show.legend = F, color="transparent") +
   geom_line(show.legend = F) +
   geom_dl(aes(color=type, label=type), 
-          method=list("last.points")) + #"smart.grid"
+          method=list("last.qp")) + #"smart.grid"
   ylab("Cumulative excess deaths") +
   xlab("") +
   scale_y_continuous(limits = c(-3000, 100000),
                      breaks = seq(0, 100000, by=10000),
                      labels = scales::comma) +
   scale_x_date(date_breaks = "1 week", 
-               date_labels = "%b %Y",
-               limits = c(ymd("2020-03-07"), ymd("2020-05-07")))
+               date_labels = "%b %d",
+               limits = c(ymd("2020-03-07"), ymd("2020-05-07"))) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save figure 2B
 ggsave("figs/figure-2b.pdf",
        plot   = fig2b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ---------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2B: Excess deaths in US ------------------------------------------------------------------
@@ -305,8 +307,8 @@ ggsave("figs/figure-2b.pdf",
 ### -- Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
 ### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Intervals for Flu 18 and Covid 19, respectively
-intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
-                  seq(make_date(2020, 03, 14), max_date, by = "day"))
+intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 10), by = "day"),
+                  seq(make_date(2020, 03, 01), max_date, by = "day"))
 
 # -- Fitting model to each state 
 fits <- map_df(states, function(x){
@@ -348,24 +350,30 @@ fig2c <- fits %>%
   left_join(pop, by = "state") %>%
   mutate(state = str_remove(state, " \\(not including NYC\\)")) %>%
   mutate(abb = state.abb.2[match(state, state.name.2)]) %>%
+  filter(!abb %in% c("CT", "PR")) %>%
   spread(virus, excess) %>%
-  ggplot(aes(Flu_18/pop_flu*10000, COVID_19/pop_covid*10000, label = abb)) +
+  filter(COVID_19 >= 50, Flu_18 >= 50) %>%
+  # ggplot(aes(10000 * Flu_18 / pop_flu, 10000 * COVID_19 / pop_covid, label = abb)) +
+  ggplot(aes(Flu_18, COVID_19, label = abb)) +
   geom_point(alpha=0.50) +
   geom_point(pch=1) +
-  ggrepel::geom_text_repel() +
-  scale_y_continuous(limits = c(0, 30),
-                     breaks = seq(0, 30, by=5)) +
-  scale_x_continuous(limits = c(0, 3),
-                     breaks = seq(0, 3, by=0.50)) +
+  ggrepel::geom_text_repel(size=3.5,
+                           force=0.05) +
+  scale_y_continuous(labels = scales::comma, 
+                     trans = "log10") +
+  scale_x_continuous(labels = scales::comma,
+                     trans = "log10") +
   geom_abline(intercept = 0, slope = 1, color="#cb181d", lty=2) +
-  ylab("Covid-19 mortality rate per 10,000") +
-  xlab("Seasonal flu (2018) mortality rate per 10,000")
+  ylab("Covid-19 excess deaths") +
+  xlab("Seasonal flu (2018) excess deaths") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save figure 2C
 ggsave("figs/figure-2c.pdf",
        plot   = fig2c,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
