@@ -30,8 +30,8 @@ data("puerto_rico_counts")
 nknots <- 6
 
 # -- Causes of interest
-icds   <- c("[A00,A79]")
-names  <- c("Bacterial infections")
+icds   <- c("[A00,A79]", "[J00,J99]")
+names  <- c("Bacterial infections", "Respiratory diseases")
 causes <- tibble(icds, names)
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
@@ -50,18 +50,30 @@ fit <- map_df(icds, function(x){
                   ungroup() %>%
                   filter(icd == x)
   
-  # -- Fitting excess model
-  tmp_fit <- excess_model(tmp_counts, 
-                          event = hurricane_dates[3],
-                          start = make_date(2017,07,01),
-                          end   = make_date(2018,07,30),
-                          exclude        = exclude_dates,
-                          control.dates  = control_dates,
-                          knots.per.year = nknots,
-                          weekday.effect = FALSE,
-                          model          = "correlated",
-                          discontinuity  = TRUE)
-  
+  if(x == "[A00,A79]"){
+    # -- Fitting excess model
+    tmp_fit <- excess_model(tmp_counts, 
+                            event = hurricane_dates[3],
+                            start = make_date(2017,07,01),
+                            end   = make_date(2018,07,01),
+                            exclude        = exclude_dates,
+                            control.dates  = control_dates,
+                            knots.per.year = nknots,
+                            weekday.effect = FALSE,
+                            model          = "correlated",
+                            discontinuity  = TRUE)
+  } else {
+    # -- Fitting excess model
+    tmp_fit <- excess_model(tmp_counts,
+                            start = make_date(2019,04,01),
+                            end   = make_date(2020,04,01),
+                            exclude        = exclude_dates,
+                            control.dates  = control_dates,
+                            knots.per.year = nknots,
+                            weekday.effect = FALSE,
+                            model          = "correlated",
+                            discontinuity  = TRUE)
+  }
   tibble(date = tmp_fit$date, expected = tmp_fit$expected, observed = tmp_fit$observed  ,fitted = tmp_fit$fitted, se = tmp_fit$se, icd=x)
 })
 
@@ -78,8 +90,9 @@ fig4 <- fit %>%
   ylab("Percent increase from expected mortality") +
   scale_y_continuous(limits = c(-70, 101),
                      breaks = seq(-60, 100, by=20)) +
-  scale_x_date(date_breaks = "2 month", 
+  scale_x_date(date_breaks = "3 month", 
                date_labels = "%b %Y") +
+  facet_wrap(~names, scales = "free_x") +
   theme(axis.text  = element_text(size=12),
         axis.title = element_text(size=13))
 

@@ -44,7 +44,7 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
 nknots <- 6
-ndays  <- 365
+ndays  <- 365*2
 disc   <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 548) 
 after  <- c(365, 365, 365, 365, 90)
@@ -116,10 +116,13 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
                    discontinuity  = disc[i], 
                    verbose = FALSE))
     
+    ndays <- 365*2
     excess_cumulative(f, 
                       start = interval_start[i], 
                       end   = ymd(interval_start[i]) + ndays) %>%
-      mutate(agegroup = x, event_day = interval_start[i], event = names(interval_start)[i])
+      mutate(agegroup = x, event_day = interval_start[i], event = names(interval_start)[i]) %>%
+      as_tibble()
+    
   })
   tmp %>% 
     group_by(date) %>% 
