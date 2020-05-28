@@ -115,13 +115,15 @@ supp_fig5 <- df %>%
   geom_ribbon(aes(date, ymin = -2*sd, ymax = 2*sd), color = 1, fill = NA, lty = 2) +
   ylab("Percent change in mortality") +
   xlab("") +
-  facet_wrap(~state, scale = "free_y")
+  facet_wrap(~state, scale = "free_y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Saving figure c
 ggsave("figs/supp-figure-5.pdf",
        plot   = supp_fig5,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ---------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 5: Fhat for worse 12 US states ------------------------------------------------------------------

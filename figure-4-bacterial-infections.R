@@ -79,11 +79,16 @@ fig4 <- fit %>%
   scale_y_continuous(limits = c(-70, 101),
                      breaks = seq(-60, 100, by=20)) +
   scale_x_date(date_breaks = "2 month", 
-               date_labels = "%b %Y")
+               date_labels = "%b %Y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save figure 5
 ggsave("figs/figure-4.pdf",
        plot   = fig4,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
+### -- ------------------------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 5: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
+### -- ------------------------------------------------------------- ------------------------------------------------------------------

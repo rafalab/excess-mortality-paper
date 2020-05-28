@@ -71,14 +71,16 @@ supp_fig4 <- res %>%
   geom_line() +
   xlab("") +
   ylab("Percent change in mortality") +
-  scale_x_date(date_breaks = "3 month", date_labels = "%b %y") +
-  facet_wrap(~agegroup)
+  scale_x_date(date_breaks = "3 month", date_labels = "%b") +
+  facet_wrap(~agegroup) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save # -- Supplemental figure 4
 ggsave("figs/supp-figure-4.pdf",
        plot   = supp_fig4,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 4: Chikungunya by age groups ------------------------------------------------------------------

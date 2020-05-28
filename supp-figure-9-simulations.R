@@ -394,13 +394,15 @@ supp_fig9a <- hurricane$fitted %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b") 
+               date_labels = "%b") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9a
 ggsave("figs/supp-figure-9a.pdf",
        plot   = supp_fig9a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Supp figure 9b
@@ -412,13 +414,15 @@ supp_fig9b <- epidemic$fitted %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b") 
+               date_labels = "%b") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9b
 ggsave("figs/supp-figure-9b.pdf",
        plot   = supp_fig9b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Supp figure 9c
@@ -430,13 +434,15 @@ supp_fig9c <- normal$fitted %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "1 month", 
-               date_labels = "%b") 
+               date_labels = "%b") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9c
 ggsave("figs/supp-figure-9c.pdf",
        plot   = supp_fig9c,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Supp figure 9d
@@ -451,13 +457,15 @@ supp_fig9d <-hurricane$fitted %>%
   scale_x_date(date_breaks = "1 month", 
                date_labels = "%b") +
   ylab("Variability estimate") +
-  xlab("")
+  xlab("") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9d
 ggsave("figs/supp-figure-9d.pdf",
        plot   = supp_fig9d,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Supp figure 9e
@@ -472,13 +480,15 @@ supp_fig9e <- epidemic$fitted %>%
   scale_x_date(date_breaks = "1 month", 
                date_labels = "%b") +
   ylab("Variability estimate") +
-  xlab("")
+  xlab("") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9e
 ggsave("figs/supp-figure-9e.pdf",
        plot   = supp_fig9e,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Supp figure 9f
@@ -493,15 +503,16 @@ supp_fig9f <- normal$fitted %>%
   scale_x_date(date_breaks = "1 month", 
                date_labels = "%b") +
   ylab("Variability estimate") +
-  xlab("")
+  xlab("") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save Supp figure 9f
 ggsave("figs/supp-figure-9f.pdf",
        plot   = supp_fig9f,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ----------------------------------- ------------------------------------------------------------------------
 ### -- END Supp figure 9: Simulation study ------------------------------------------------------------------------
 ### -- ----------------------------------- ------------------------------------------------------------------------
-

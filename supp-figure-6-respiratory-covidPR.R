@@ -78,13 +78,15 @@ supp_fig6 <- fit %>%
   scale_y_continuous(limits = c(-70, 40),
                      breaks = seq(-60, 40, by=10)) +
   scale_x_date(date_breaks = "2 month", 
-               date_labels = "%b %Y")
+               date_labels = "%b %Y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save figure 5
 ggsave("figs/supp-figure-6.pdf",
        plot   = supp_fig6,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ------------------------------------------------------------ ------------------------------------------------------------------
 ### -- END Supp Figure 6: Respiratory mortality index in PR for Covid19 ------------------------------------------------------------------

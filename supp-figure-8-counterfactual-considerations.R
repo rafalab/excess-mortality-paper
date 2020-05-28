@@ -107,16 +107,14 @@ supp_fig8a <- bind_rows(disp, disp2) %>%
                date_labels = "%b %Y") +
   scale_y_continuous(limits = c(-12, 90),
                      breaks = seq(-5, 85, by=10)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp figure 8A
 ggsave("figs/supp-figure-8a.pdf",
        plot   = supp_fig8a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 supp_fig8b <- bind_rows(disp_ex, disp2_ex) %>%
@@ -136,16 +134,14 @@ supp_fig8b <- bind_rows(disp_ex, disp2_ex) %>%
   scale_y_continuous(limits = c(0, 3850),
                      labels = scales::comma,
                      breaks = seq(0, 3500, by=500)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="",
-                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp figure 8A
 ggsave("figs/supp-figure-8b.pdf",
        plot   = supp_fig8b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ----------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 8: Counterfactual consideration ------------------------------------------------------------------

@@ -59,13 +59,15 @@ supp_fig1a <- trend %>%
   geom_line() +
   ylab("Estimated trend effect") +
   xlab("Date") +
-  facet_wrap(~agegroup, scales="free_y")
-
+  facet_wrap(~agegroup, scales="free_y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
+  
 # -- Save supplemental figure 1
 ggsave("figs/supp-figure-1a.pdf",
        plot   = supp_fig1a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 1a: Trend effect by age group ------------------------------------------------------------------
@@ -99,13 +101,15 @@ supp_fig1b <- seasonal %>%
   geom_line() +
   ylab("Estimated seasonal effect") +
   xlab("Day of the year") +
-  facet_wrap(~agegroup, scales="free_y")
+  facet_wrap(~agegroup, scales="free_y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supplemental figure 2
 ggsave("figs/supp-figure-1b.pdf",
        plot   = supp_fig1b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ------------------------------------------------ ------------------------------------------------------------------
 ### -- END Supp Figure 2a: Seasonal effect by age group ------------------------------------------------------------------
