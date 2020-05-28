@@ -352,20 +352,19 @@ fig2c <- fits %>%
   mutate(abb = state.abb.2[match(state, state.name.2)]) %>%
   filter(!abb %in% c("CT", "PR")) %>%
   spread(virus, excess) %>%
-  filter(COVID_19 >= 50, Flu_18 >= 50) %>%
-  # ggplot(aes(10000 * Flu_18 / pop_flu, 10000 * COVID_19 / pop_covid, label = abb)) +
-  ggplot(aes(Flu_18, COVID_19, label = abb)) +
+  ggplot(aes(100000 * Flu_18 / pop_flu, 100000 * COVID_19 / pop_covid, label = abb)) +
   geom_point(alpha=0.50) +
   geom_point(pch=1) +
-  ggrepel::geom_text_repel(size=3.5,
-                           force=0.05) +
-  scale_y_continuous(labels = scales::comma, 
-                     trans = "log10") +
-  scale_x_continuous(labels = scales::comma,
-                     trans = "log10") +
+  ggrepel::geom_text_repel(size  = 3.2,
+                           force = 0.04) +
+  scale_y_continuous(labels = scales::comma,
+                     limits = c(0, 280), 
+                     breaks = seq(0, 280, by=40)) +
+  scale_x_continuous(limits = c(0, 30), 
+                     breaks = seq(0, 30, by=5)) +
   geom_abline(intercept = 0, slope = 1, color="#cb181d", lty=2) +
-  ylab("Covid-19 excess deaths") +
-  xlab("Seasonal flu (2018) excess deaths") +
+  ylab("Covid-19 excess deaths per 100,000") +
+  xlab("Seasonal flu (2018) excess deaths per 100,000") +
   theme(axis.text  = element_text(size=12),
         axis.title = element_text(size=13))
 
