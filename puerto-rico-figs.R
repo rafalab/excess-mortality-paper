@@ -296,7 +296,6 @@ fit <- lapply(c("0-4","60-Inf"), function(x){
 excess_plot(fit[[1]])
 excess_plot(fit[[2]])
 
-
 # Figure 2 - Excess deaths ------------------------------------------------
 the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
 ndays <- 365
@@ -319,7 +318,7 @@ e <- map_df(seq_along(interval_start), function(i){
                    end = interval_start[i] + after[i], 
                    exclude = exclude_dates,
                    control.dates = control_dates,
-                   nknots = round(npy*(before[i] + after[i])/365), 
+                   knots.per.year = npy,
                    discontinuity = disc[i],
                    model = "correlated")
     excess_cumulative(f, 
@@ -343,7 +342,7 @@ e %>%
   geom_point(aes(day, observed), alpha = 0.25, cex = 1) +
   geom_line(aes(day, fitted))
   
-  
+    
   
   
 

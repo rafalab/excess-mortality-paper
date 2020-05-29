@@ -1,10 +1,9 @@
 library(tidyverse)
 library(lubridate)
-library(excessdeaths)
+library(excessmort)
 library(directlabels)
 dslabs::ds_theme_set()
 data(cdc_state_counts)
-
 
 # Expand state abbrevaition objects ---------------------------------------
 state.name.2 <- c(state.name, "New York City", "Puerto Rico", "District of Columbia")
@@ -34,16 +33,47 @@ covid_states <- bind_rows(covid_states, ny, covid_nyc) %>%
 
 rm(covid_nyc, ny)
 
+
 # Fit excess deaths models ------------------------------------------------
 flu_season <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date <- make_date(2020, 5, 2)
-
+max_date <- max(cdc_state_counts$date) - 7 
 ## remover the latest
 counts <- cdc_state_counts %>% filter(date <= max_date)
 
-states <- setdiff(states, c("Connecticut", "North Carolina"))
-nknots <- 80
+
+## take out states with incomplete data
+states <- counts %>% 
+  filter(!is.na(outcome)) %>% 
+  group_by(state) %>% summarize(max = max(date)) %>% 
+  filter(max == max(counts$date)) %>%
+  pull(state) 
+
+## Only states, and also weird data
+states <- setdiff(states, "Puerto Rico")
+
+setdiff(counts$state, states)
+
+### check
+check <- FALSE
+if(check){
+  sapply(unique(counts$state), function(x){
+    print(x)
+    if(x == "Puerto Rico"){
+      exclude_dates <- unique(sort(c(exclude_dates, seq(make_date(2017, 9, 20), make_date(2018, 3, 31), by = "day"))))
+    }
+    ret <- counts %>% filter(state == x) %>%
+      compute_expected(exclude = exclude_dates,
+                       verbose = FALSE)
+    print(attr(ret, "frequency"))
+    print(expected_plot(ret, title = x))
+    
+    print(qplot(date, 100*(population-min(population))/min(population), data = filter(counts, state == x), main = x))
+    NULL
+  })
+}
+
+kpy <- 24
 fits <- lapply(states, function(x){
   if(x == "Puerto Rico"){
     exclude_dates <- unique(sort(c(exclude_dates, seq(make_date(2017, 9, 20), make_date(2018, 3, 31), by = "day"))))
@@ -52,15 +82,13 @@ fits <- lapply(states, function(x){
     excess_model(exclude = exclude_dates,
                  start = min(counts$date),
                  end = max_date,
-                 weekday.effect = FALSE,
-                 nknots = nknots,
+                 knots.per.year = kpy,
                  verbose = FALSE)
   ret$state <- x
   return(ret)
 })
 names(fits) <- states
   
-
 # Supplemental Figure - Show f for worse 12 -------------------------------
 df <- map_df(fits, function(f)
   with(f, tibble(state = state, 
@@ -71,7 +99,7 @@ df <- map_df(fits, function(f)
                  sd = 100* sd)))
 
 show <- df %>% group_by(state) %>%
-  filter(!state %in% "Puerto Rico") %>% # remove due to María effect.
+#  filter(!state %in% "Puerto Rico") %>% # remove due to María effect.
   summarize(max = max(fitted)) %>%
   ungroup() %>%
   arrange(desc(max)) %>%
@@ -93,7 +121,6 @@ df %>%
 
 # Figure 1C - US effect ---------------------------------------------------
 df %>% 
-  filter(!state %in% c("North Carolina", "Connecticut")) %>%
   group_by(date) %>% 
   summarize(fitted = sum(expected * fitted) / sum(expected), 
             se = sqrt(sum(expected^2 * se^2)) / sum(expected),
@@ -119,19 +146,29 @@ tmp <- covid_states %>%
   filter(date >= min(e$date)) %>%
   group_by(date) %>%
   summarize(covid = sum(death))
-us <- group_by(date) %>%
+
+us <- e %>% group_by(date) %>%
   summarize(observed = sum(observed),
             sd = sqrt(sum(sd^2)),
             fitted = sum(fitted),
-            se = sqrt(sum(se^2)),
-            covid = sum(death,na.rm = TRUE)) %>%
+            se = sqrt(sum(se^2))) %>%
   ungroup()
   
 us %>% 
   ggplot(aes(date)) +
-  geom_ribbon(aes(ymin = observed- 2*sd, ymax = observed + 2*sd), alpha = 0.5) +
-  geom_point(aes(y = observed)) +
-  geom_line(aes(x=date, y=covid), data =tmp)
+  geom_ribbon(aes(ymin = observed- 2*sd, ymax = observed + 2*sd), alpha = 0.5, fill = "blue") +
+  geom_point(aes(y = observed), col = "blue") +
+  geom_line(aes(x=date, y=covid), data =tmp) +
+  geom_hline(yintercept = 100000, lty = 2) +
+  scale_y_continuous(breaks = seq(0,120000,25000), labels = scales::comma) +
+  annotate("text",  x = make_date(2020, 05, 10), y = 110000, label = "Excess mortality\nestimate", hjust = 0, color = "blue") +
+  annotate("text",  x = make_date(2020, 05, 10), y = 70000, label = "Total reported\nCOVID-19 Deaths", hjust = 0) +
+  ylab("Total Deaths") + xlab("Date") +
+  ggtitle("Excess Mortality Estimate for USA Based on CDC data") +
+  labs(caption = "Excess mortality estimate excludes Connecticut and North Carolina due to missing data.\nIncludes all other 48 states.")+
+  theme(plot.caption = element_text(hjust = 0))
+
+ggsave("~/Desktop/excess-mort.jpg", width = 6, height = 6/1.6)
 
 
 intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
@@ -144,11 +181,9 @@ e <- map_df(states, function(x){
   fit <- counts %>% filter(state == x) %>%
     excess_model(exclude = exclude_dates,
                  intervals = intervals,
-                 weekday.effect = FALSE,
-                 nknots = 36) %>%
+                  knots.per.year =npy) %>%
     mutate(state = x)
 })
-
 
 pop1 <- counts %>%
   filter(date %in% intervals[[1]]) %>%
