@@ -29,13 +29,15 @@ supp_fig7 <- puerto_rico_counts %>%
                      limits = c(2981110, 3330000),
                      breaks = seq(3000000, 3300000, by=50000)) +
   ylab("Population") +
-  xlab("Date")
+  xlab("Date") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Supp figure 7
 ggsave("figs/supp-figure-7.pdf",
        plot   = supp_fig7,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp figure 7: Population displacement in PR ------------------------------------------------------------------

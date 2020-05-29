@@ -151,13 +151,15 @@ supp_fig3 <- tmp %>%
   xlab("") +
   ylab("Percent change in mortality") +
   facet_wrap( ~ hurricane, scale= "free_x") +
-  scale_x_date(date_breaks = "3 month", date_labels = "%b")
+  scale_x_date(date_breaks = "3 month", date_labels = "%b") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp figure 1
 ggsave("figs/supp-figure-3.pdf",
        plot   = supp_fig3,
        dpi    = 300,
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ----------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp figure 3: Individual hurricane effects ------------------------------------------------------------------

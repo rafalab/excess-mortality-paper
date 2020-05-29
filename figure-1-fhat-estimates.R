@@ -159,15 +159,17 @@ fig1a <- tmp %>%
                      breaks = seq(-125, 245, by=25)) +
   scale_y_continuous(limits = c(-5, 75),
                      breaks = seq(0, 75, by=10)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
+  # scale_color_manual(name="",
+  #                    values = c("#D55E00","#0571b0","#009E73","#cb181d","#CC79A7","#E69F00","#ca0020","gray")) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1a
 
 # -- Save figure 1A
 ggsave("figs/figure-1a.pdf",
        plot   = fig1a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
@@ -204,29 +206,34 @@ res <- map_df(c("60-Inf"), function(x){
 
 # -- Figure 1B
 fig1b <- res %>%
+  mutate(lwr=fhat-1.96*se,
+         upr=fhat+1.96*se) %>%
   filter(date >= "2014-05-01", date <= "2015-05-01") %>%
-  ggplot(aes(date, 100*fhat, color=agegroup)) +
+  ggplot(aes(date, 100*fhat, color=agegroup, fill=agegroup)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
+  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line(show.legend = F) +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  geom_dl(aes(color=agegroup, label=agegroup), 
+  geom_dl(aes(y=lwr*100, color=agegroup, label=agegroup), 
           method=list("smart.grid")) +#"last.qp"
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %Y") +
-  scale_y_continuous(limits = c(-7, 20),
-                     breaks = seq(-5, 20, by=5)) +
-  scale_color_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  scale_fill_manual(name="",
-                     values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))
+  scale_y_continuous(limits = c(-15, 30),
+                     breaks = seq(-15, 30, by=5)) +
+  # scale_color_manual(name="",
+  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
+  # scale_fill_manual(name="",
+  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))  +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1b
 
 # -- Save figure 1B
 ggsave("figs/figure-1b.pdf",
        plot   = fig1b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
@@ -326,14 +333,16 @@ fig1c <- df %>%
   geom_line() +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")
+  scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")   +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 fig1c
 
 # -- Saving figure c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- -------------------------------- ------------------------------------------------------------------
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------

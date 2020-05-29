@@ -30,15 +30,15 @@ data("puerto_rico_counts")
 nknots <- 6
 
 # -- Causes of interest
-icds   <- c("[A00,A79]")
-names  <- c("Bacterial infections")
+icds   <- c("[A00,A79]", "[J00,J99]")
+names  <- c("Bacterial infections", "Respiratory diseases")
 causes <- tibble(icds, names)
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
 
 ### -- --------------------------------------------------------- ------------------------------------------------------------------
-### -- Figure 5: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
+### -- Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
 ### -- --------------------------------------------------------- ------------------------------------------------------------------
 # -- Fitting models
 fit <- map_df(icds, function(x){
@@ -50,23 +50,36 @@ fit <- map_df(icds, function(x){
                   ungroup() %>%
                   filter(icd == x)
   
-  # -- Fitting excess model
-  tmp_fit <- excess_model(tmp_counts, 
-                          event = hurricane_dates[3],
-                          start = make_date(2017,07,01),
-                          end   = make_date(2018,07,30),
-                          exclude        = exclude_dates,
-                          control.dates  = control_dates,
-                          knots.per.year = nknots,
-                          weekday.effect = FALSE,
-                          model          = "correlated",
-                          discontinuity  = TRUE)
-  
+  if(x == "[A00,A79]"){
+    # -- Fitting excess model
+    tmp_fit <- excess_model(tmp_counts, 
+                            event = hurricane_dates[3],
+                            start = make_date(2017,07,01),
+                            end   = make_date(2018,07,01),
+                            exclude        = exclude_dates,
+                            control.dates  = control_dates,
+                            knots.per.year = nknots,
+                            weekday.effect = FALSE,
+                            model          = "correlated",
+                            discontinuity  = TRUE)
+  } else {
+    # -- Fitting excess model
+    tmp_fit <- excess_model(tmp_counts,
+                            start = make_date(2019,04,01),
+                            end   = make_date(2020,04,01),
+                            exclude        = exclude_dates,
+                            control.dates  = control_dates,
+                            knots.per.year = nknots,
+                            weekday.effect = FALSE,
+                            model          = "correlated",
+                            discontinuity  = TRUE)
+  }
   tibble(date = tmp_fit$date, expected = tmp_fit$expected, observed = tmp_fit$observed  ,fitted = tmp_fit$fitted, se = tmp_fit$se, icd=x)
 })
 
-# -- Figure 5
-fig4 <- fit %>%
+# -- Figure 4a
+fig4a <- fit %>%
+  filter(icd == "[A00,A79]") %>%
   mutate(lwr=fitted-1.96*se,
          upr=fitted+1.96*se) %>%
   left_join(causes, by=c("icd"="icds")) %>%
@@ -79,11 +92,42 @@ fig4 <- fit %>%
   scale_y_continuous(limits = c(-70, 101),
                      breaks = seq(-60, 100, by=20)) +
   scale_x_date(date_breaks = "2 month", 
-               date_labels = "%b %Y")
+               date_labels = "%b %Y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
-# -- Save figure 5
-ggsave("figs/figure-4.pdf",
-       plot   = fig4,
+# -- Save figure 4a
+ggsave("figs/figure-4a.pdf",
+       plot   = fig4a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
+
+# -- Figure 4b
+fig4b <- fit %>%
+  filter(icd == "[J00,J99]") %>%
+  mutate(lwr=fitted-1.96*se,
+         upr=fitted+1.96*se) %>%
+  left_join(causes, by=c("icd"="icds")) %>%
+  ggplot(aes(date, 100*fitted)) +
+  geom_hline(yintercept = 0, color="red3", lty=2) +
+  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50) +
+  geom_line() +
+  xlab("") +
+  ylab("Percent increase from expected mortality") +
+  scale_y_continuous(limits = c(-70, 101),
+                     breaks = seq(-60, 100, by=20)) +
+  scale_x_date(date_breaks = "2 month", 
+               date_labels = "%b %Y") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
+
+# -- Save figure 4b
+ggsave("figs/figure-4b.pdf",
+       plot   = fig4b,
+       dpi    = 300, 
+       height = 6,
+       width  = 8)
+### -- ------------------------------------------------------------- ------------------------------------------------------------------
+### -- END Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
+### -- ------------------------------------------------------------- ------------------------------------------------------------------

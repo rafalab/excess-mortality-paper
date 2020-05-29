@@ -61,13 +61,15 @@ supp_fig2a <- tibble(r=r) %>%
   stat_qq(alpha=0.50) + 
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   ylab("Sample quantiles") +
-  xlab("Theoretical quantiles")
+  xlab("Theoretical quantiles") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp-figure-2a
 ggsave("figs/supp-figure-2a.pdf",
        plot   = supp_fig2a,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ------------------------------------------------------------- -----------------------------------------------------
 ### -- END Supp Figure 2a: QQ-plot without adjusting for correlation -----------------------------------------------------
@@ -88,13 +90,15 @@ supp_fig2b <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
              linetype = 2) +
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
-             linetype = 2)
+             linetype = 2) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp-figure-2b
 ggsave("figs/supp-figure-2b.pdf",
        plot   = supp_fig2b,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- The SD is not 1
@@ -142,13 +146,15 @@ supp_fig2c <- tibble(r=V_inv %*% r) %>%
   stat_qq(alpha=0.50) + 
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   ylab("Sample quantiles") +
-  xlab("Theoretical quantiles")
+  xlab("Theoretical quantiles") +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp-figure-3c
 ggsave("figs/supp-figure-2c.pdf",
        plot   = supp_fig2c,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 ### -- ----------------------------------------------------- -----------------------------------------------------
 ### -- END Supp Figure 2c: QQ-plot adjusting for correlation -----------------------------------------------------
@@ -169,13 +175,15 @@ supp_fig2d <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
              linetype = 2) +
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
-             linetype = 2)
+             linetype = 2) +
+  theme(axis.text  = element_text(size=12),
+        axis.title = element_text(size=13))
 
 # -- Save supp-figure-2d
 ggsave("figs/supp-figure-2d.pdf",
        plot   = supp_fig2d,
        dpi    = 300, 
-       height = 4,
+       height = 6,
        width  = 8)
 
 # -- Estimated sd
