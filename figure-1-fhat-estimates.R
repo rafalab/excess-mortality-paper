@@ -11,9 +11,9 @@ dslabs::ds_theme_set()
 
 # -- Loading data
 data("puerto_rico_counts")
-data("florida_counts")
 data("new_jersey_counts")
 data("louisiana_counts")
+data("florida_counts")
 
 # -- Remove the outlier from louisana
 louisiana_counts$outcome[which.max(louisiana_counts$outcome)] <- 126
@@ -88,25 +88,31 @@ nknots <- 6
 ### -- Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- ---------------------------------------- ------------------------------------------------------------------
 # -- Loop to fit models to hurricanes
-tmp <- map_df(seq_along(count_index), function(i){
+fits <- map_df(seq_along(count_index), function(i){
   
+  print(hurricane_names[[i]])
   # -- Current index
   h <- count_index[i]
   
   if(i < 4){ # -- Here we fit model to hurricanes outside of PR
     
     # -- Fitting model
-    fit <-  excess_model(counts[[h]], 
+    fit <- suppressMessages(excess_model(counts[[h]], 
                          event          = hurricane_dates[[i]],
                          start          = hurricane_dates[[i]] - before,
                          end            = hurricane_dates[[i]] + after, 
                          exclude        = exclude_dates[[i]],
                          control.dates  = control_dates[[i]],
                          knots.per.year = nknots,
-                         model          = "correlated")
+                         harmonics      = 3,
+                         weekday.effect = TRUE,
+                         verbose        = FALSE,
+                         model          = "correlated"))
     
     # -- Dataframe with fit results
     ret <- tibble(date           = fit$date, 
+                  observed       = fit$observed,
+                  expected       = fit$expected,
                   fitted         = fit$fitted, 
                   se             = fit$se, 
                   hurricane      = hurricane_names[[i]],
@@ -118,25 +124,34 @@ tmp <- map_df(seq_along(count_index), function(i){
     tmp <- map_df(unique(counts[[h]]$agegroup), function(x){
       
       # -- Fitting model to each demographic group
-      fit <- counts[[h]] %>% 
+      fit <- suppressMessages(counts[[h]] %>% 
         filter(agegroup == x) %>%
         excess_model(event          = hurricane_dates[[i]],
                      start          = hurricane_dates[[i]] - before,
                      end            = hurricane_dates[[i]] + after, 
                      exclude        = exclude_dates[[i]],
+                     weekday.effect = TRUE,
+                     harmonics      = 3,
                      control.dates  = control_dates[[i]],
                      knots.per.year = nknots, 
-                     model          = "correlated")
+                     verbose        = FALSE,
+                     model          = "correlated"))
       
       # -- Dataframe with fit results for each demographics
-      tibble(date = fit$date, expected = fit$expected, fitted = fit$fit, se = fit$se)
+      tibble(date     = fit$date, 
+             observed = fit$observed,
+             expected = fit$expected, 
+             fitted   = fit$fit, 
+             se       = fit$se)
     })
     
     # -- Putting PR results together
     ret <- tmp %>% 
       group_by(date) %>% 
-      summarize(fitted = sum(expected * fitted) / sum(expected), 
-                se     = sqrt(sum(expected^2 * se^2)) / sum(expected)) %>%
+      summarize(fitted   = sum(expected * fitted) / sum(expected), 
+                se       = sqrt(sum(expected^2 * se^2)) / sum(expected),
+                observed  = sum(observed),
+                expected = sum(expected)) %>%
       mutate(hurricane      = hurricane_names[[i]],
              hurricane_date = hurricane_dates[[i]])
   }
@@ -145,32 +160,32 @@ tmp <- map_df(seq_along(count_index), function(i){
   mutate(hurricane = reorder(hurricane, date, min))
 
 # -- Figure 1A
-fig1a <- tmp %>% 
+fig1a <- fits %>% 
   mutate(day       = as.numeric(date - hurricane_date),
          hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
   ggplot(aes(day, fitted*100, color = hurricane)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_line(show.legend = F) +
-  geom_dl(aes(color=hurricane, label=hurricane), 
-          method=list("smart.grid")) +#"last.qp
+  geom_line() +
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
   scale_x_continuous(limits = c(-125, 245),
                      breaks = seq(-125, 245, by=25)) +
-  scale_y_continuous(limits = c(-5, 75),
+  scale_y_continuous(limits = c(-10, 75),
                      breaks = seq(0, 75, by=10)) +
-  # scale_color_manual(name="",
-  #                    values = c("#D55E00","#0571b0","#009E73","#cb181d","#CC79A7","#E69F00","#ca0020","gray")) +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.title = element_text(size=10),
+        axis.text  = element_text(size=10),
+        legend.title      = element_blank(),
+        legend.text       = element_text(size=10),
+        legend.background = element_rect(color="black"),
+        legend.position   = c(0.80, 0.60))
 fig1a
 
 # -- Save figure 1A
 ggsave("figs/figure-1a.pdf",
        plot   = fig1a,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 5,
+       width  = 7)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- -------------------------------------------- ------------------------------------------------------------------
@@ -191,14 +206,15 @@ chick_exclude <- unique(c(exclude_dates$maria, seq(start, end, by="days")))
 res <- map_df(c("60-Inf"), function(x){
   
   tmp_counts <- filter(all_counts, agegroup == x)
-  tmp_fit    <- excess_model(counts         = tmp_counts, 
-                             start          = start,
-                             end            = end,
-                             exclude        = chick_exclude,
-                             control.dates  = control_dates$maria,
-                             knots.per.year = nknots,
-                             model          = "correlated",
-                             discontinuity  = FALSE)
+  tmp_fit    <- suppressMessages(excess_model(counts         = tmp_counts, 
+                                               start          = start,
+                                               end            = end,
+                                               exclude        = chick_exclude,
+                                               control.dates  = control_dates$maria,
+                                               knots.per.year = nknots,
+                                               verbose        = FALSE,
+                                               model          = "correlated",
+                                               discontinuity  = FALSE))
   
   if(x == "0-4") { flag <- "0 to 4 years" } else {flag <- "Above 60 years" }
   tibble(date = tmp_fit$date, fhat = tmp_fit$fitted, se = tmp_fit$se, agegroup = flag)
@@ -209,32 +225,26 @@ fig1b <- res %>%
   mutate(lwr=fhat-1.96*se,
          upr=fhat+1.96*se) %>%
   filter(date >= "2014-05-01", date <= "2015-05-01") %>%
-  ggplot(aes(date, 100*fhat, color=agegroup, fill=agegroup)) +
+  ggplot(aes(date, 100*fhat)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line(show.legend = F) +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  geom_dl(aes(y=lwr*100, color=agegroup, label=agegroup), 
-          method=list("smart.grid")) +#"last.qp"
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %Y") +
   scale_y_continuous(limits = c(-15, 30),
                      breaks = seq(-15, 30, by=5)) +
-  # scale_color_manual(name="",
-  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
-  # scale_fill_manual(name="",
-  #                    values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray"))  +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=10),
+        axis.title = element_text(size=10))
 fig1b
 
 # -- Save figure 1B
 ggsave("figs/figure-1b.pdf",
        plot   = fig1b,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 5,
+       width  = 7)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------
@@ -285,7 +295,7 @@ rm(covid_nyc, ny)
 # -- Denoting periods of interest
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date      <- make_date(2020, 5, 2)
+max_date      <- make_date(2020, 5, 9)
 
 # -- Remove last dates
 counts <- cdc_state_counts %>% filter(date <= max_date)
@@ -303,7 +313,6 @@ fits <- lapply(states, function(x){
                  start          = min(counts$date),
                  end            = max_date,
                  weekday.effect = FALSE,
-                 knots.per.year = nknots,
                  verbose        = FALSE)
   ret$state <- x
   return(ret)
@@ -321,7 +330,7 @@ df <- map_df(fits, function(f)
 
 # -- Figure 1C
 fig1c <- df %>% 
-  filter(!state %in% c("North Carolina", "Connecticut")) %>%
+  filter(!state %in% c("Puerto Rico", "North Carolina", "Connecticut")) %>%
   group_by(date) %>% 
   summarize(fitted = sum(expected * fitted) / sum(expected), 
             se = sqrt(sum(expected^2 * se^2)) / sum(expected),
@@ -334,16 +343,16 @@ fig1c <- df %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")   +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=10),
+        axis.title = element_text(size=10))
 fig1c
 
 # -- Saving figure c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 5,
+       width  = 7)
 ### -- -------------------------------- ------------------------------------------------------------------
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
 ### -- -------------------------------- ------------------------------------------------------------------
