@@ -95,10 +95,17 @@ p <- counts %>% filter(date == max_date) %>% select(state, population)
 
 tab <- o %>% left_join(s, by = "state") %>% left_join(r, by = "state") %>% left_join(p, by = "state") %>%
   mutate( covid19_rate =  covid19_excess/population*10^6, flu18_rate = flu18_excess/population*10^6) %>%
-  select(state, covid19_rate, covid19_excess,  covid19_sd,
+  mutate_if(is.numeric, round) %>%
+  mutate(covid19_excess = paste0(covid19_excess, " (", covid19_sd, ")"),
+         flu18_excess = paste0(flu18_excess, " (", flu18_sd, ")")) %>%
+  select(state, 
+         covid19_excess,  
          reported_covid_19,  
-         flu18_rate,
-         flu18_excess,
-         flu18_sd) %>%
-  arrange(desc( covid19_excess_rate)) %>%
+         covid19_rate, 
+        flu18_excess, 
+        flu18_rate) %>%
+  arrange(desc( covid19_rate)) %>%
   mutate_if(is.numeric, round)
+
+library(xtable)
+print(xtable(tab, digits = 0), include.rownames=FALSE)
