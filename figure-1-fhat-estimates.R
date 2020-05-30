@@ -212,7 +212,6 @@ res <- map_df(c("60-Inf"), function(x){
                                                exclude        = chick_exclude,
                                                control.dates  = control_dates$maria,
                                                weekday.effect = TRUE,
-                                               # knots.per.year = nknots,
                                                verbose        = FALSE,
                                                model          = "correlated",
                                                discontinuity  = FALSE))
