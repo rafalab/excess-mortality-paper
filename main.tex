@@ -223,8 +223,21 @@ Next, using the CDC data we computed excess mortality for the period of the COVI
 The Cook County, Illinois, Medical Examiner's Office is making up-to-date records available online. This office investigates any human death in Cook County that falls within categories such as criminal violence, suicide, accident, diseases constituting a threat to public health, among other unusual circumstances \cite{cookcovid19}. If we consider $\mu_t$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and clearly observed the effects of the COVID-19 epidemic, in particular among individuals over 75. However, a persistent increase in mortality above normal levels is observed for individuals above 40 \textbf{(XXX ADD SUPP WITH EVERYBODY NOT BY RACE, STRATIFIED BY AGE)}. Since our model provides both estimates and standard errors of event effects, we can compare the effects for two or more groups and assess the statistical significance of the observed differences. Furthermore, we found a difference in the effect of the pandemic between white and black individuals in the months of March and April (Figure \ref{fig:cook-white-v-black}). Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 169\% (95\% CI: 134\% to 203\%) and 85\%  (95\% CI: 54\% to 115\%) on April 14 for blacks and whites, respectively. Furthermore, for the 60 to 74 age group we observed a peak percent increase of 630\% (95\% CI: 544\% to 716\%) and 497\% (95\% CI: 424\% to 571\%), respectively. Finally, the percent increase for individuals 75 years and older was 2,334\% (95\% CI: 2,056\% to 2,612\%) and 1,213\% (95\% CI: 1,092\% to 1,334\%), respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}).  The population size for other racial groups was substantially smaller and were not included in the analysis.
 
 \begin{figure}[ht]
-	\centering	
-		\includegraphics[width=1\linewidth]{figs/figure-3.pdf} 
+	\begin{tabular}{lll}
+	A&B&C\\
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-3a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-3b.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-3c.pdf}
+	\end{subfigure}\\
+	\end{tabular}
 	\caption{Comparison of estimated percent increase in mortality in Cook county, IL, for individuals above 40 between whites and blacks with corresponding 95\% confidence intervals.}
 	\label{fig:cook-white-v-black}
 \end{figure}
