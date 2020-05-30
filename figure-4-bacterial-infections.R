@@ -59,7 +59,7 @@ fit <- map_df(icds, function(x){
                             exclude        = exclude_dates,
                             control.dates  = control_dates,
                             knots.per.year = nknots,
-                            weekday.effect = FALSE,
+                            weekday.effect = TRUE,
                             model          = "correlated",
                             discontinuity  = TRUE)
   } else {
@@ -70,7 +70,7 @@ fit <- map_df(icds, function(x){
                             exclude        = exclude_dates,
                             control.dates  = control_dates,
                             knots.per.year = nknots,
-                            weekday.effect = FALSE,
+                            weekday.effect = TRUE,
                             model          = "correlated",
                             discontinuity  = TRUE)
   }
@@ -89,8 +89,8 @@ fig4a <- fit %>%
   geom_line() +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_y_continuous(limits = c(-70, 101),
-                     breaks = seq(-60, 100, by=20)) +
+  scale_y_continuous(limits = c(-70, 140),
+                     breaks = seq(-60, 140, by=30)) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %Y") +
   theme(axis.text  = element_text(size=12),
@@ -100,8 +100,8 @@ fig4a <- fit %>%
 ggsave("figs/figure-4a.pdf",
        plot   = fig4a,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 4,
+       width  = 6)
 
 # -- Figure 4b
 fig4b <- fit %>%
@@ -115,8 +115,8 @@ fig4b <- fit %>%
   geom_line() +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_y_continuous(limits = c(-70, 101),
-                     breaks = seq(-60, 100, by=20)) +
+  scale_y_continuous(limits = c(-70, 140),
+                     breaks = seq(-60, 140, by=30)) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b %Y") +
   theme(axis.text  = element_text(size=12),
@@ -126,8 +126,8 @@ fig4b <- fit %>%
 ggsave("figs/figure-4b.pdf",
        plot   = fig4b,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 4,
+       width  = 6)
 ### -- ------------------------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
 ### -- ------------------------------------------------------------- ------------------------------------------------------------------
