@@ -169,11 +169,11 @@ fig1a <- fits %>%
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
   scale_x_continuous(limits = c(-125, 245),
-                     breaks = seq(-125, 245, by=25)) +
+                     breaks = seq(-120, 244, by=40)) +
   scale_y_continuous(limits = c(-10, 75),
                      breaks = seq(0, 75, by=10)) +
-  theme(axis.title = element_text(size=10),
-        axis.text  = element_text(size=10),
+  theme(axis.title = element_text(size=13),
+        axis.text  = element_text(size=13),
         legend.title      = element_blank(),
         legend.text       = element_text(size=10),
         legend.background = element_rect(color="black"),
@@ -184,8 +184,8 @@ fig1a
 ggsave("figs/figure-1a.pdf",
        plot   = fig1a,
        dpi    = 300, 
-       height = 5,
-       width  = 7)
+       height = 4,
+       width  = 6)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- -------------------------------------------- ------------------------------------------------------------------
@@ -206,45 +206,46 @@ chick_exclude <- unique(c(exclude_dates$maria, seq(start, end, by="days")))
 res <- map_df(c("60-Inf"), function(x){
   
   tmp_counts <- filter(all_counts, agegroup == x)
-  tmp_fit    <- suppressMessages(excess_model(counts         = tmp_counts, 
+  tmp_fit    <- suppressMessages(excess_model(counts          = tmp_counts, 
                                                start          = start,
                                                end            = end,
                                                exclude        = chick_exclude,
                                                control.dates  = control_dates$maria,
-                                               knots.per.year = nknots,
+                                               weekday.effect = TRUE,
+                                               # knots.per.year = nknots,
                                                verbose        = FALSE,
                                                model          = "correlated",
                                                discontinuity  = FALSE))
   
-  if(x == "0-4") { flag <- "0 to 4 years" } else {flag <- "Above 60 years" }
-  tibble(date = tmp_fit$date, fhat = tmp_fit$fitted, se = tmp_fit$se, agegroup = flag)
+  
+  tibble(date = tmp_fit$date, fitted = tmp_fit$fitted, observed = tmp_fit$observed, expected = tmp_fit$expected, se = tmp_fit$se, agegroup = x)
 })
 
 # -- Figure 1B
 fig1b <- res %>%
-  mutate(lwr=fhat-1.96*se,
-         upr=fhat+1.96*se) %>%
-  filter(date >= "2014-05-01", date <= "2015-05-01") %>%
-  ggplot(aes(date, 100*fhat)) +
+  mutate(lwr=fitted-1.96*se,
+         upr=fitted+1.96*se) %>%
+  filter(date >= "2014-08-01", date <= "2015-08-01") %>%
+  ggplot(aes(date, 100*fitted)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line(show.legend = F) +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_x_date(date_breaks = "2 month", 
+  scale_x_date(date_breaks = "10 weeks", 
                date_labels = "%b %Y") +
-  scale_y_continuous(limits = c(-15, 30),
-                     breaks = seq(-15, 30, by=5)) +
-  theme(axis.text  = element_text(size=10),
-        axis.title = element_text(size=10))
+  scale_y_continuous(limits = c(-20, 35),
+                     breaks = seq(-20, 35, by=5)) +
+  theme(axis.text  = element_text(size=13),
+        axis.title = element_text(size=13))
 fig1b
 
 # -- Save figure 1B
 ggsave("figs/figure-1b.pdf",
        plot   = fig1b,
        dpi    = 300, 
-       height = 5,
-       width  = 7)
+       height = 4,
+       width  = 6)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------
@@ -342,17 +343,17 @@ fig1c <- df %>%
   geom_line() +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_x_date(date_breaks = "5 month", date_labels = "%b %Y")   +
-  theme(axis.text  = element_text(size=10),
-        axis.title = element_text(size=10))
+  scale_x_date(date_breaks = "8 month", date_labels = "%b %Y")   +
+  theme(axis.text  = element_text(size=13),
+        axis.title = element_text(size=13))
 fig1c
 
 # -- Saving figure c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
        dpi    = 300, 
-       height = 5,
-       width  = 7)
+       height = 4,
+       width  = 6)
 ### -- -------------------------------- ------------------------------------------------------------------
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
 ### -- -------------------------------- ------------------------------------------------------------------
