@@ -77,9 +77,6 @@ exclude_dates  <- list(irma    = hurricane_dates[["irma"]] + 0:180,
 # -- To be used as parameters in model fitting below
 before <- days(122)
 after  <- days(244)
-
-# -- Number of knots per year
-nknots <- 6
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
@@ -87,6 +84,9 @@ nknots <- 6
 ### -- ---------------------------------------- ------------------------------------------------------------------
 ### -- Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- ---------------------------------------- ------------------------------------------------------------------
+# -- Number of knots per year
+nknots <- 4
+
 # -- Loop to fit models to hurricanes
 fits <- map_df(seq_along(count_index), function(i){
   
@@ -193,50 +193,70 @@ ggsave("figs/figure-1a.pdf",
 ### -- ----------------------------------------- ------------------------------------------------------------------
 ### -- Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- ----------------------------------------- ------------------------------------------------------------------
+# -- Number of knots per year
+nknots <- 4
+
 # -- Creating breaks for age groups and collapsing data
 the_breaks <- c(0, 5, 20, 40, 60, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
 # -- Determining period of interest
-start <- lubridate::make_date(2014, 01, 01)
-end   <- lubridate::make_date(2015, 12, 31)
-chick_exclude <- unique(c(exclude_dates$maria, seq(start, end, by="days")))
+start <- c(lubridate::make_date(2014, 01, 01), lubridate::make_date(2004, 01, 01))
+end   <- c(lubridate::make_date(2015, 12, 31), lubridate::make_date(2005, 12, 31))
+exclude_dates <- list("Chikungunya" = unique(c(exclude_dates$maria, seq(start[1], end[1], by="days"))),
+                      "Flu 2005"    = unique(c(exclude_dates$maria, seq(start[2], end[2], by="days"))))
+events      <- names(exclude_dates)
+event_dates <- c(ymd("2014-08-01"), ymd("2004-11-01"))
 
 # -- Fitting model only to the groups of interest
-res <- map_df(c("60-Inf"), function(x){
+res <- map_df(seq_along(events), function(x){
   
-  tmp_counts <- filter(all_counts, agegroup == x)
+  print(events[x])
+  
+  tmp_counts <- filter(all_counts, agegroup == "60-Inf")
   tmp_fit    <- suppressMessages(excess_model(counts          = tmp_counts, 
-                                               start          = start,
-                                               end            = end,
-                                               exclude        = chick_exclude,
+                                               start          = start[x],
+                                               end            = end[x],
+                                               exclude        = exclude_dates[[x]],
                                                control.dates  = control_dates$maria,
                                                weekday.effect = TRUE,
                                                verbose        = FALSE,
+                                               knots.per.year  = nknots,
                                                model          = "correlated",
                                                discontinuity  = FALSE))
   
   
-  tibble(date = tmp_fit$date, fitted = tmp_fit$fitted, observed = tmp_fit$observed, expected = tmp_fit$expected, se = tmp_fit$se, agegroup = x)
+  tibble(date   = tmp_fit$date, 
+         fitted = tmp_fit$fitted, 
+         observed = tmp_fit$observed, 
+         expected = tmp_fit$expected, 
+         se = tmp_fit$se, 
+         event = events[x], 
+         event_date = event_dates[x])
 })
 
 # -- Figure 1B
 fig1b <- res %>%
-  mutate(lwr=fitted-1.96*se,
-         upr=fitted+1.96*se) %>%
-  filter(date >= "2014-08-01", date <= "2015-08-01") %>%
-  ggplot(aes(date, 100*fitted)) +
+  mutate(day = as.numeric(date - event_date),
+         lwr = fitted-1.96*se,
+         upr = fitted+1.96*se) %>%
+  filter(day >= 0, day <= 365) %>%
+  ggplot(aes(day, 100*fitted, color=event)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
-  geom_line(show.legend = F) +
-  xlab("") +
+  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr, color=event), lty=2, fill=NA, show.legend = F) +
+  geom_line(size=1, show.legend = T) +
+  xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
-  scale_x_date(date_breaks = "10 weeks", 
-               date_labels = "%b %Y") +
-  scale_y_continuous(limits = c(-20, 35),
-                     breaks = seq(-20, 35, by=5)) +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  scale_x_continuous(limits = c(0, 365),
+                     breaks = seq(0, 365, by=40)) + 
+  scale_y_continuous(limits = c(-12, 25),
+                     breaks = seq(-12, 24, by=4)) +
+  theme(axis.title = element_text(size=13),
+        axis.text  = element_text(size=13),
+        legend.title      = element_blank(),
+        legend.text       = element_text(size=10),
+        legend.background = element_rect(color="black"),
+        legend.position   = c(0.80, 0.80))
 fig1b
 
 # -- Save figure 1B
@@ -347,10 +367,10 @@ fig1c <- df %>%
         axis.title = element_text(size=13))
 fig1c
 
-# -- Saving figure c
+# -- Saving figure 1c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
-       dpi    = 300, 
+       dpi    = 300,
        height = 4,
        width  = 6)
 ### -- -------------------------------- ------------------------------------------------------------------

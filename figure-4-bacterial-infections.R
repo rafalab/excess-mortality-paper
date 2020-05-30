@@ -69,7 +69,7 @@ fit <- map_df(icds, function(x){
                             end   = make_date(2020,04,01),
                             exclude        = exclude_dates,
                             control.dates  = control_dates,
-                            knots.per.year = nknots,
+                            # knots.per.year = nknots,
                             weekday.effect = TRUE,
                             model          = "correlated",
                             discontinuity  = TRUE)

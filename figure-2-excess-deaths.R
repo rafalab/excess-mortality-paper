@@ -39,15 +39,15 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
 ndays  <- 420
-knots  <- c(6, 6, 6, 12, 12)
-disc   <- c(TRUE, TRUE, TRUE, FALSE, FALSE)
+knots  <- c(4, 4, 4, 4, 4)
+disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 365) 
 after  <- c(420, 420, 420, 420, 105)
-interval_start <- c(hurricane_dates[1], # Hugo
-                    hurricane_dates[2], # Georges
+interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
-                    Chikungunya = make_date(2014, 8, 1),
-                    "Covid-19"  = make_date(2020, 1, 1))
+                    Chikungunya = make_date(2014,08,01),
+                    "Flu-2005"  = make_date(2004,11,01),
+                    "Covid-19"  = make_date(2020,01,01))
 
 # -- Outer loop that goes through events in PR
 excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
@@ -138,24 +138,25 @@ fig2a <- excess_deaths_pr %>%
          upr = fitted+1.96*se) %>%
   filter(event != "Hugo") %>%
   mutate(day = as.numeric(date - event_day)) %>%
-  mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19"))) %>% 
+  mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19", "Flu-2005"))) %>% 
   ggplot(aes(color = event, fill = event)) +
-  geom_ribbon(aes(day, 
-                  ymin = lwr, 
-                  ymax = upr), alpha = 0.50, show.legend = F, color="transparent") + 
+  # geom_ribbon(aes(day, 
+  #                 ymin = lwr, 
+  #                 ymax = upr), alpha = 0.50, show.legend = F, color="transparent") + 
   geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
-  geom_line(aes(day, fitted), show.legend = F) +
-  geom_dl(aes(x=day,y=fitted, color=event, label=event), 
-          method=list("last.points")) +
+  geom_line(aes(day, fitted), size=1, show.legend = T) +
+  # geom_dl(aes(x=day,y=fitted, color=event, label=event), 
+  #         method=list("smart.grid")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits = c(0, ndays+90),
-                     breaks = seq(0, ndays+90, by=50)) +
-  scale_y_continuous(limits = c(-380, 4000),
-                     breaks = seq(0, 4000, by=500),
+  scale_x_continuous(limits = c(0, ndays),
+                     breaks = seq(0, ndays, by=50)) +
+  scale_y_continuous(limits = c(-400, 3500),
+                     breaks = seq(0, 3500, by=500),
                      labels = scales::comma) +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.title = element_text(size=13),
+        axis.text  = element_text(size=13),
+        legend.title      = element_blank())
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
@@ -435,9 +436,6 @@ fig2d <- excess_deaths_cook %>%
   scale_x_date(date_breaks = "10 days", 
                date_labels = "%b %d",
                limits = c(ymd("2020-03-01"), ymd("2020-05-30"))) +
-  # scale_y_continuous(limits = c(-20, 1550),
-  #                    breaks = seq(0, 1500, by=150),
-  #                    labels = scales::comma) +
   scale_color_manual(name="",
                      values = c("#D55E00","#0571b0","#009E73","#56B4E9","#CC79A7","#E69F00","#ca0020","gray")) +
   scale_fill_manual(name="",
