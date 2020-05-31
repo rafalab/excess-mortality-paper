@@ -192,8 +192,9 @@ Although mortality records for the time period of the COVID-19 pandemic are not 
  
 \subsection{Excess mortality estimates}
 \label{subsec:excess-mortality}
-Once we have fit our model, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following the day hurricanes Georges, and Mar\'ia made landfall. We also computed these quantities for the 365 days following the start of the detected effects from the 2005 flu season and 2014 Chikungunya outbreak. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020 to April 15 2020. For Mar\'ia the excess death curve grew for 201 days with a point estimate on April 09, 2018 of 3,282 (95\% CI: 2,825 to 3,740). For Georges the excess death curve grew for 79 days with a point estimate of 1,155 (95\% CI: 891 to 1,419) on December 9, 1998 (Figure \ref{fig:excess-deaths}A). For the 2005 flu season the excess death curve grows for 144 days, until March 25, 2005, with a point estimate of XXXX (95\% CI: XXXX) on XXXX (Figure \ref{fig:excess-deaths}A). For the Chikungunya outbreak the excess death curve grows for 201 days, until February 18, 2015, and then decreases until December 5, 2015, 491 days later. The decrease is consistent with the \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. On January 28, 2015, when the excess death stabilizes, the point estimate was 1,532XXX IS THIS RIGHT? DOES NOT MATCH FIGURE. CHECK VERY CAREFULLY THAT WRITTE NUMBER MATCH FIGURESXXX (95\% 1,126 to 1,938)
+Once we have fit our model, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following the day hurricanes Georges, and Mar\'ia made landfall. We also computed these quantities for the 365 days following the start of the detected effects from the 2005 flu season and 2014 Chikungunya outbreak. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020 to April 15 2020, the last day for which the death registry has complete data (typically, it takes 90 days for 99\% of deaths to be registered). 
 
+For Mar\'ia the excess death curve grew for 201 days after landfall, with a point estimate on April 9, 2018 of 3,282 (95\% CI: 2,825 to 3,740) (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). For Georges the excess death curve grew for 79 days after landfall, with a point estimate on December 9, 1998 of 1,155 (95\% CI: 891 to 1,419)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). For the period of October 10, 2004 to March 28, 2005, identified to have unusually mortality rates and including the 2005 flue season, we observe a point estimate of XXXX (95\% CI: XXXX)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). The period August, 7, 2014 to February 28, 2015 was identified to have unusually mortality rates and including the time of the Chikungunya outbreak. However, we also noted a decrease in cumulative deaths from February 28, 2015 to May, 2, 2015 consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. For this entire period August, 7, 2014 to May, 2, 2015, we observe point estimate for excess mortality of XXXX (95\% CI: XXXX)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX).
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -215,7 +216,7 @@ Once we have fit our model, we can compute excess mortality estimates for any ti
     \label{fig:excess-deaths}
 \end{figure}
 
-Next, using the CDC data we computed excess mortality for the period of the COVID-19 pandemic for which we have data, specifically for the week ending on March 15, 2020 to the week ending on May 9, 2020. When we compared these numbers to the reported numbers of COVID-19 deaths \cite{smith2020coronavirus}, we find a difference of 29,246 (95\% CI: 27,317 to 31,175) deaths (Figure \ref{fig:excess-deaths}B, \textbf{Table XX}). We also note that in the US, the number of excess deaths during the COVID-19 pandemic are much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, Table \ref{tab:covid19-states}). We also note that the difference is mostly driven by New York, New Jersey, Massachusetts, Michigan, and Illinois (Figure \ref{fig:excess-deaths}C, Supplemental Figure \ref{supp-fig:covid19-states}).
+Next, using the CDC data we computed excess mortality for the period of the COVID-19 pandemic for which we have data, specifically for the week ending on March 15, 2020 to the week ending on May 9, 2020. When we compared these numbers to the reported numbers of COVID-19 deaths \cite{smith2020coronavirus}, we find a difference of 29,246 (95\% CI: 27,317 to 31,175) deaths (Figure \ref{fig:excess-deaths}B, \ref{tab:covid19-states}). We also note that in the US, the number of excess deaths during the COVID-19 pandemic are much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, Table \ref{tab:covid19-states}). We also note that 58\% of the cases come from the four northeast states: New York, New Jersey, Massachusetts, and Pennsylvania (Supplemental Figure \ref{supp-fig:covid19-states}).
 
 \begin{table}
 \centering
@@ -277,9 +278,11 @@ New York City & 24470 (127) & 19324 & 2939 & 732 (122) & 88 \\
   Alaska & -44 (30) & 8 & -61 & -4 (31) & -5 \\ 
   Oklahoma & -424 (111) & 270 & -107 & 582 (107) & 147 \\ 
   North Dakota & -123 (39) & 35 & -160 & 32 (40) & 41 \\ 
+ \hline
+  Total & 111456 (1041) & 75228 & 353 & 34167 (1017) & 108 \\ 
   \hline
  \end{tabular}
- \caption{Excess mortality estimates for the weeks ending on 2020-03-14 to 2020-05-09 (COVID-19) and  2017-12-16 to 2018-02-1 (2018 Flu). The standard deviation for excess mortality for these periods is included in parenthesis. The states are ordered by the per-million excess mortality rate. Connecticut and North Carolina are excluded due to missing data. Numbers for New York do not include New York City which is listed separately.}
+ \caption{Excess mortality estimates for the weeks ending on March 14, 2020 to May 5, 2020 (COVID-19) and  December 16, 2017 to February 10, 2018 (2018 Flu). The standard deviation for excess mortality for these periods is included in parenthesis. The states are ordered by the per-million excess mortality rate. Connecticut and North Carolina are excluded due to missing data. Numbers for New York do not include New York City which is listed separately.}
  \label{tab:covid19-states}
  \normalsize
 \end{table}
@@ -354,7 +357,7 @@ Exploration data analysis after fitting a standard Poisson model demonstrates th
 		\includegraphics[width=1\linewidth]{figs/figure-5c.pdf}
 	\end{subfigure}\\
 	\end{tabular}
-	\caption{Comparison of estimated percent increase in mortality in Cook county, Illinois, for individuals above 40 between whites and blacks with corresponding 95\% confidence intervals.}
+	\caption{}
 	\label{fig:cook-white-v-black}
 \end{figure}
 
@@ -453,7 +456,7 @@ We used the model to demonstrate that the indirect effects for Hurricane María 
 the U.S. Army Corps of Engineers admitted that faulty design specifications, incomplete sections,
 and substandard construction of levee segments, contributed to the damage and a \$14.5 billion invested was made to construct stronger levees. In contrast, after Hurricane Georges resulted in similar excess mortality toll, as far as we know, no systematic effort was put in place to improve, for example, Puerto Rico’s electrical grid nor it's data collection infrastructure. On the contrary, it appears that the grid continued to deteriorate for the next 19 years. While Puerto Rico seems to have \emph{dodged a bullet} during the COVID-19 pandemic, Puerto Rico’s health system does not appear to be ready to withstand another shock to its fragile infrastructure.
 
-Our analysis of CDC data demonstrated that by May 9, 2020 excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 75\% of these deaths occurred in 6 states New York (XX ADD NUMBER), New Jersey (ADD NUMBER), Massachusetts (ADD NUMBER) , Illinois (ADD NUMBER), Michigan (ADD NUMBER) and Pennsylvania (ADD NUMBER), MARYLAND (including DC) XXZ???. It is important to note that the weekly death counts used in our analysis are ajusted for missing data by the CDC [CITE PAGE DESCRIBING XXX]. The accuracy of our results depends on the accuracy of this adjustment. 
+Our analysis of CDC data demonstrated that by May 9, 2020 excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (35,653) and three of its neighbors: New Jersey (14,537), Massachusetts (6,159), and Pennsylvania (8,383). Note that Connecticut, the other neighnoring state, was not included in the analysis due to missing data. It is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC [CITE PAGE DESCRIBING XXX]. The accuracy of our results depends on the accuracy of this adjustment. 
 
 Finally, we used our model to compare the effects of the pandemic in blacks and whites in cook county and found a disturbing trend, with elderly blacks affected much more severly than their white counterparts. Note that this analysis was not based on total mortality counts, but counts calculated from the Medical Examiner. Our conclusions assume that COVID-19 cases from whites and blacks are equally likely to be included in the Medical Examiner dataset. 
 
