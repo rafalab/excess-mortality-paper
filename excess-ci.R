@@ -112,5 +112,6 @@ tmp %>% filter(event == "Flu-2005") %>%
 
 ## Chikungunya start, max, start of decrease, end
 tmp %>% filter(event == "Chikungunya") %>%
-  top_n(4, -abs(days_to_max))
+  top_n(6, -abs(days_to_max)) %>% 
+  slice(-c(1:2))
 
