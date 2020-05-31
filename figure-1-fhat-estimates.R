@@ -75,8 +75,8 @@ exclude_dates  <- list(irma    = hurricane_dates[["irma"]] + 0:180,
                        maria   = puerto_rico_out_dates)
 
 # -- To be used as parameters in model fitting below
-before <- days(122)
-after  <- days(244)
+before <- days(365)
+after  <- days(365)
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
@@ -104,7 +104,6 @@ fits <- map_df(seq_along(count_index), function(i){
                          exclude        = exclude_dates[[i]],
                          control.dates  = control_dates[[i]],
                          knots.per.year = nknots,
-                         harmonics      = 3,
                          weekday.effect = TRUE,
                          verbose        = FALSE,
                          model          = "correlated"))
@@ -131,7 +130,6 @@ fits <- map_df(seq_along(count_index), function(i){
                      end            = hurricane_dates[[i]] + after, 
                      exclude        = exclude_dates[[i]],
                      weekday.effect = TRUE,
-                     harmonics      = 3,
                      control.dates  = control_dates[[i]],
                      knots.per.year = nknots, 
                      verbose        = FALSE,

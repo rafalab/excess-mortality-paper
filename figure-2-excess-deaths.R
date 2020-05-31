@@ -38,11 +38,11 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- Figure 2A: Excess deaths in PR ------------------------------------------------------------------
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
-ndays  <- 420
+ndays  <- 365
 knots  <- c(4, 4, 4, 4, 4)
 disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 365) 
-after  <- c(420, 420, 420, 420, 105)
+after  <- c(365, 365, 365, 365, 105)
 interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
                     Chikungunya = make_date(2014,08,01),
@@ -140,17 +140,14 @@ fig2a <- excess_deaths_pr %>%
   mutate(day = as.numeric(date - event_day)) %>%
   mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19", "Flu-2005"))) %>% 
   ggplot(aes(color = event, fill = event)) +
-  # geom_ribbon(aes(day, 
-  #                 ymin = lwr, 
-  #                 ymax = upr), alpha = 0.50, show.legend = F, color="transparent") + 
-  geom_point(aes(day, observed), size=1, alpha = 0.25, show.legend = F) +
-  geom_line(aes(day, fitted), size=1, show.legend = T) +
-  # geom_dl(aes(x=day,y=fitted, color=event, label=event), 
-  #         method=list("smart.grid")) +
+  geom_point(aes(day, observed), size=0.10, alpha = 0.25, show.legend = F) +
+  geom_line(aes(day, fitted), show.legend = F) +
+  geom_dl(aes(x=day,y=fitted, color=event, label=event),
+          method=list("last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits = c(0, ndays),
-                     breaks = seq(0, ndays, by=50)) +
+  scale_x_continuous(limits = c(0, ndays+80),
+                     breaks = seq(0, ndays+80, by=50)) +
   scale_y_continuous(limits = c(-400, 3500),
                      breaks = seq(0, 3500, by=500),
                      labels = scales::comma) +
