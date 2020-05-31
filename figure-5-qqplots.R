@@ -148,10 +148,12 @@ fig5b <- res %>%
                      breaks = seq(-3, 3, by=1)) +
   theme(axis.title = element_text(size=13),
         axis.text  = element_text(size=13),
+        legend.text  = element_text(size=13),
         legend.title = element_blank(),
+        legend.direction = "horizontal",
         legend.background = element_rect(fill="white",
                                          color="black"),
-        legend.position = c(0.80, 0.40))
+        legend.position = c(0.50, 0.90))
 
 ggsave("figs/figure-5b.pdf",
        plot   = fig5b,
