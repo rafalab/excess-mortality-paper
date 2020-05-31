@@ -25,6 +25,7 @@ names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
                    seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
                    seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
                    seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
@@ -44,7 +45,7 @@ trend <- map_df(levels(all_counts$agegroup), function(x){
   # -- Fit mean model
   fit <- compute_expected(counts, 
                           exclude         = exclude_dates,
-                          weekday.effect  = FALSE,
+                          weekday.effect  = TRUE,
                           keep.components = TRUE, 
                           verbose         = FALSE)
   
@@ -58,17 +59,18 @@ supp_fig1a <- trend %>%
   ggplot(aes(date, trend)) +
   geom_line() +
   ylab("Estimated trend effect") +
-  xlab("Date") +
+  xlab("") +
   facet_wrap(~agegroup, scales="free_y") +
-  theme(axis.text  = element_text(size=12),
+  theme(axis.text.y = element_text(size=13),
+        axis.text.x = element_text(size=13, angle=45, hjust=1),
         axis.title = element_text(size=13))
   
 # -- Save supplemental figure 1
 ggsave("figs/supp-figure-1a.pdf",
        plot   = supp_fig1a,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 4,
+       width  = 6)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 1a: Trend effect by age group ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------
@@ -85,7 +87,7 @@ seasonal <- map_df(levels(all_counts$agegroup), function(x){
   # -- Fit mean model
   fit <- compute_expected(counts, 
                           exclude         = exclude_dates,
-                          weekday.effect  = FALSE,
+                          weekday.effect  = TRUE,
                           keep.components = TRUE, 
                           verbose         = FALSE)
   
@@ -101,7 +103,7 @@ supp_fig1b <- seasonal %>%
   geom_line() +
   ylab("Estimated seasonal effect") +
   xlab("Day of the year") +
-  facet_wrap(~agegroup, scales="free_y") +
+  facet_wrap(~agegroup) +
   theme(axis.text  = element_text(size=12),
         axis.title = element_text(size=13))
 
@@ -109,8 +111,8 @@ supp_fig1b <- seasonal %>%
 ggsave("figs/supp-figure-1b.pdf",
        plot   = supp_fig1b,
        dpi    = 300, 
-       height = 6,
-       width  = 8)
+       height = 4,
+       width  = 6)
 ### -- ------------------------------------------------ ------------------------------------------------------------------
 ### -- END Supp Figure 2a: Seasonal effect by age group ------------------------------------------------------------------
 ### -- ------------------------------------------------ ------------------------------------------------------------------

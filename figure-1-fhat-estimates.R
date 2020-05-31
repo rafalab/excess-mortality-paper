@@ -48,10 +48,9 @@ count_index <- c(1, 2, 3, 4, 4, 4)
 control_dates <- list(irma    = seq(make_date(2015, 01, 01), make_date(2016, 12, 31), by = "day"),
                       katrina = seq(make_date(2003, 01, 01), make_date(2005, 08, 01), by = "day"),
                       sandy   = seq(make_date(2007, 01, 01), make_date(2012, 10, 01), by = "day"),
-                      hugo    = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"),
-                      georges = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"),
-                      maria   = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"))
-
+                      hugo    = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"),
+                      georges = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"),
+                      maria   = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"))
 
 # -- Period of effect for hurricanes in Puerto Rico
 puerto_rico_hurricane_dates       <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
@@ -62,6 +61,7 @@ puerto_rico_out_dates <- c(
   seq(puerto_rico_hurricane_dates[1], puerto_rico_hurricane_effect_ends[1], by = "day"),
   seq(puerto_rico_hurricane_dates[2], puerto_rico_hurricane_effect_ends[2], by = "day"),
   seq(puerto_rico_hurricane_dates[3], puerto_rico_hurricane_effect_ends[3], by = "day"),
+  seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))

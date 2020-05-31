@@ -19,12 +19,13 @@ names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
                    seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
                    seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
                    seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
 
 # -- Control dates
-control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
+control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
 
 # -- Loading PR data and creating age groups
 data("puerto_rico_counts")
@@ -82,7 +83,8 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
     ungroup()
   
   # -- Determine period of effect
-  dates <- filter(fit, date >= interval_start[i], fitted-1.96*se >= 0)$date
+  # dates <- filter(fit, date >= interval_start[i], fitted-1.96*se >= 0)$date
+  dates <- filter(fit, date >= interval_start[i], fitted >= 0)$date
   ind   <- suppressWarnings(min(which(diff(dates) > 1)))
   
   # -- Find last day
@@ -92,6 +94,15 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
   } else {
     last_day <- ymd(dates[ind])
   }
+  
+  p <- fit %>%
+    ggplot(aes(date, fitted)) +
+    geom_hline(yintercept = 0, color="gray") +
+    geom_ribbon(aes(ymin=fitted-1.96*se, ymax=fitted+1.96*se), alpha=0.50) +
+    geom_line() +
+    ggtitle(names(interval_start)[i]) +
+    geom_vline(xintercept = last_day, color="red")
+  print(p)
   
   # -- Period of indirect effect
   message(paste0("\nPeriod of indirect effect: ",last_day - interval_start[i], " days"))
@@ -146,11 +157,11 @@ fig2a <- excess_deaths_pr %>%
           method=list("last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits = c(0, ndays+80),
-                     breaks = seq(0, ndays+80, by=50)) +
-  scale_y_continuous(limits = c(-400, 3500),
-                     breaks = seq(0, 3500, by=500),
-                     labels = scales::comma) +
+  # scale_x_continuous(limits = c(0, ndays+80),
+  #                    breaks = seq(0, ndays+80, by=50)) +
+  # scale_y_continuous(limits = c(-400, 3500),
+  #                    breaks = seq(0, 3500, by=500),
+  #                    labels = scales::comma) +
   theme(axis.title = element_text(size=13),
         axis.text  = element_text(size=13),
         legend.title      = element_blank())
