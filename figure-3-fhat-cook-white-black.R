@@ -112,6 +112,7 @@ fig3b <- cook %>%
                                          fill     = "white",
                                          linetype = "solid"),
         legend.title     = element_blank(),
+        legend.text      = element_text(size=13),
         legend.position  = c(0.50, 0.90),
         legend.direction = "horizontal",
         legend.text      = element_text(size=13),
