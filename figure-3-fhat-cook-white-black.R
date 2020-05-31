@@ -115,7 +115,6 @@ fig3b <- cook %>%
         legend.text      = element_text(size=13),
         legend.position  = c(0.50, 0.90),
         legend.direction = "horizontal",
-        legend.text      = element_text(size=13),
         axis.text  = element_text(size=13),
         axis.title = element_text(size=13))
 
