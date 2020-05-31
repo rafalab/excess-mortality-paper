@@ -87,31 +87,52 @@ fs <- map_df(seq_along(interval_start), function(i){
 })
 
 ## eye test
-
-fs %>% ggplot(aes(date,fitted))+geom_line() + facet_wrap(~event, scales = "free")
+fs %>% 
+  ggplot(aes(date,fitted)) + 
+  geom_line() + 
+  facet_wrap(~event, scales = "free")
   
 ## Look for 0s and max
-tmp <- fs %>% group_by(event) %>%
+tmp <- fs %>% 
+  group_by(event) %>%
   mutate(max = fitted == max(fitted),
-         max_date = date[which.max(fitted)], days_to_max = as.numeric(date - max_date),
-  sign_change = abs(sign(fitted) != lag(sign(fitted)))>0) %>%
-  ungroup %>%
+         max_date = date[which.max(fitted)], 
+         days_to_max = as.numeric(date - max_date),
+         sign_change = abs(sign(fitted) != lag(sign(fitted)))>0) %>%
+  ungroup() %>%
   filter(sign_change | max) 
+
   
 ## after goerges, first day crossing 0
-tmp %>% filter(event == "Georges" & days_to_max > 0) %>%
+tmp %>% 
+  filter(event == "Georges" & days_to_max > 0) %>%
   top_n(1, -days_to_max)  
 
 ## after maria, first day crossing 0
-tmp %>% filter(event == "Maria" & days_to_max > 0) %>%
+tmp %>% 
+  filter(event == "Maria" & days_to_max > 0) %>%
   top_n(1, -days_to_max)  
 
 ## flu 2005 start max, and end of bump
-tmp %>% filter(event == "Flu-2005") %>%
+tmp %>% 
+  filter(event == "Flu-2005") %>%
   top_n(3, -abs(days_to_max))
 
 ## Chikungunya start, max, start of decrease, end
-tmp %>% filter(event == "Chikungunya") %>%
+tmp %>% 
+  filter(event == "Chikungunya") %>%
   top_n(6, -abs(days_to_max)) %>% 
   slice(-c(1:2))
+
+
+
+fs %>%
+  filter(event == "Flu-2005") %>%
+  ggplot(aes(date, fitted)) +
+  geom_line() +
+  geom_hline(yintercept = 0, lty=2) +
+  geom_vline(xintercept = ymd("2004-10-24"), color="red") +
+  geom_vline(xintercept = ymd("2005-01-12"), color="red") +
+  geom_vline(xintercept = ymd("2005-03-29"), color="red")
+
 
