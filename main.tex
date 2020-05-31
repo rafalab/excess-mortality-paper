@@ -338,7 +338,26 @@ Limitations of our approaches for detecting and monitoring health crises in real
 \label{subsec:natural-variability}
 Exploration data analysis after fitting a standard Poisson model demonstrates that the daily data measurements are correlated (Supplemental Figure \ref{supp-fig:correlated-errors}). We note that uncertainty estimates are underestimated. Assuming independence, when in fact variables are correlated, leads to underestimates of the standard error of sums or averages. By accounting for this correlation allows our approach to better estimate the uncertainty in excess mortality estimates, which is a sum. To demonstrate this, we compared our model to a standard Poisson model [XXXCITE EXCESS MORT PAPER WITH JUST POISSONXXX] and a over-dispersed Poisson model [XXX CITE EXCESS MORT PAPER WITH OVERDISPERSED POISSONXXX] both assuming independent outcomes. We fit each of the three models to the Puerto Rico data and randomly selected 100 intervals of size $L = XXX, XXX, and XXX$ from periods with not events and computed the total number of deaths in that interval $S_l = \sum_{t \in L} Y_t$. We then used the fitted models to estimate the expected value $\hat{\mbox{E}}(S_l)$ and standard error  and $\hat{\mbox{SE}}(S_l)$ and form a z-statistic $Z_l = [S_l - \hat{\mbox{E}}(S_l)]/\hat{\mbox{SE}}(S_l)$. The Central Limit Theorem predicts that, if the expected value and standard errors are estimated correctly, $Z_l$ is approximately normal with expected value 0 and standard error 1. We found that the Poisson and over-dispersed Poisson model underestimate the variance of this sum, while modeling the correction improves our standard error estimates (\textbf{XXXFIGXXX}). 
 
-\textbf{XXX MAKE THE TWO MAIN RESULTS MAIN FIGURS: qqplots of 2 or 3 value of L XXX}
+\begin{figure}[ht]
+	\begin{tabular}{lll}
+	A&B&C\\
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-5a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-5b.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.3\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/figure-5c.pdf}
+	\end{subfigure}\\
+	\end{tabular}
+	\caption{Comparison of estimated percent increase in mortality in Cook county, Illinois, for individuals above 40 between whites and blacks with corresponding 95\% confidence intervals.}
+	\label{fig:cook-white-v-black}
+\end{figure}
+
 
 \section{Methods}
 \label{sec:methods}
