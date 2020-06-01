@@ -194,7 +194,7 @@ Although mortality records for the time period of the COVID-19 pandemic are not 
 \label{subsec:excess-mortality}
 Once we have fit our model, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following the day hurricanes Georges, and Mar\'ia made landfall. We also computed these quantities for the 365 days following the start of the detected effects from the 2005 flu season and 2014 Chikungunya outbreak. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020 to April 15 2020, the last day for which the death registry has complete data (typically, it takes 90 days for 99\% of deaths to be registered). 
 
-For Mar\'ia the excess death curve grew for 201 days after landfall, with a point estimate on April 9, 2018 of 3,282 (95\% CI: 2,825 to 3,740) (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). For Georges the excess death curve grew for 79 days after landfall, with a point estimate on December 9, 1998 of 1,155 (95\% CI: 891 to 1,419)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). For the period of October 10, 2004 to March 28, 2005, identified to have unusually mortality rates and including the 2005 flue season, we observe a point estimate of XXXX (95\% CI: XXXX)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX). The period August, 7, 2014 to February 28, 2015 was identified to have unusually mortality rates and including the time of the Chikungunya outbreak. However, we also noted a decrease in cumulative deaths from February 28, 2015 to May, 2, 2015 consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. For this entire period August, 7, 2014 to May, 2, 2015, we observe point estimate for excess mortality of XXXX (95\% CI: XXXX)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure XXX).
+For Mar\'ia the excess death curve grew for 198 days after landfall, with a point estimate on April 6, 2018 of 3,284 (95\% CI: 2,896 to 3,673) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). For Georges the excess death curve grew for 96 days after landfall, with a point estimate on December 26, 1998 of 1,201 (95\% CI: 946 to 1,457)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). For the period of October 10, 2004 to March 28, 2005, identified to have unusually high mortality rates and including the 2005 flu season, we observe a point estimate of 1,133 (95\% CI: 795 to 1,471) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). The period of August, 7, 2014 to February 28, 2015 associated with a Chikungunya outbreak was also identified to have unusually high mortality rates. However, we also noted a decrease in cumulative deaths from February 28, 2015 to May, 1, 2015 consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. For this entire period, August, 7, 2014 to May, 2, 2015, we observe a point estimate for excess mortality of 1,308 (95\% CI: 877 to 1,739) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}).
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -212,7 +212,7 @@ For Mar\'ia the excess death curve grew for 201 days after landfall, with a poin
 		\includegraphics[width=1\linewidth]{figs/figure-2c.pdf}
 	\end{subfigure}\\
 	\end{tabular}
-    \caption{Cumulative excess mortality estimates. A) Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on Sep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Nov 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, the COVID-19 pandemic, and the 2005 Flu season, respectively.  B) Estimated cumulative excess mortality and reported COVID-19 cumulative deaths in the United States. C) State-specific cumulative excess death estimates for COVID-19 plotted against the excess mortality estimates for the 2018 Flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season}
+    \caption{Cumulative excess mortality estimates. A) Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on Sep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Oct 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, the COVID-19 pandemic, and the 2005 Flu season, respectively.  B) Estimated cumulative excess mortality and reported COVID-19 cumulative deaths in the United States. C) State-specific cumulative excess death estimates for COVID-19 plotted against the excess mortality estimates for the 2018 Flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season}
     \label{fig:excess-deaths}
 \end{figure}
 
@@ -291,7 +291,7 @@ New York City & 24470 (127) & 19324 & 2939 & 732 (122) & 88 \\
 
 \subsection{Across group comparisons}
 \label{subsec:group-comparison}
-Since our model provides both estimates and standard errors of event effects, we can compare the effects for two or more groups and assess the statistical significance of the observed differences. We demonstrate how this can be used by comparing black and white populations during the COVID-19 pandemic in Cook County, Illinois. At the time of writing, the Cook County Medical Examiner's Office was making up-to-date records available online including demographic information for each individual. This office investigates any human death in Cook County that falls within categories such as criminal violence, suicide, accident, diseases constituting a threat to public health, among other unusual circumstances \cite{cookcovid19}. If we consider $\mu_t$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and clearly observed the effects of the COVID-19 epidemic, in particular among individuals over 75,  however, a persistent increase in mortality above normal levels is observed for individuals above 40 \textbf{(XXX ADD SUPP WITH EVERYBODY NOT BY RACE, STRATIFIED BY AGE)}.  Furthermore, we found a difference in the effect  between white and black individuals in the months of March and April (Figure \ref{fig:cook-white-v-black}). Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 169\% (95\% CI: 134\% to 203\%) and 85\%  (95\% CI: 54\% to 115\%) on April 14 for blacks and whites, respectively. Furthermore, for the 60 to 74 age group we observed a peak percent increase of 630\% (95\% CI: 544\% to 716\%) and 497\% (95\% CI: 424\% to 571\%), respectively. Finally, the percent increase for individuals 75 years and older was 2,334\% (95\% CI: 2,056\% to 2,612\%) and 1,213\% (95\% CI: 1,092\% to 1,334\%), respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}).  The population size for other racial groups was substantially smaller and were not included in the analysis.
+Since our model provides both estimates and standard errors of event effects, we can compare the effects for two or more groups and assess the statistical significance of the observed differences. We demonstrate how this can be used by comparing black and white populations during the COVID-19 pandemic in Cook County, Illinois. At the time of writing, the Cook County Medical Examiner's Office was making up-to-date records available online including demographic information for each individual. This office investigates any human death in Cook County that falls within categories such as criminal violence, suicide, accident, diseases constituting a threat to public health, among other unusual circumstances \cite{cookcovid19}. If we consider $\mu_t$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and clearly observed the effects of the COVID-19 epidemic, in particular among individuals over 75,  however, a persistent increase in mortality above normal levels is observed for individuals above 40 (Supplemental Figure \ref{supp-fig:cook-agegroups}).  Furthermore, we found a difference in the effect  between white and black individuals in the months of March and April (Figure \ref{fig:cook-white-v-black}). Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 169\% (95\% CI: 134\% to 203\%) and 85\%  (95\% CI: 54\% to 115\%) on April 14 for blacks and whites, respectively. Furthermore, for the 60 to 74 age group we observed a peak percent increase of 630\% (95\% CI: 544\% to 716\%) and 497\% (95\% CI: 424\% to 571\%), respectively. Finally, the percent increase for individuals 75 years and older was 2,334\% (95\% CI: 2,056\% to 2,612\%) and 1,213\% (95\% CI: 1,092\% to 1,334\%), respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}).  The population size for other racial groups was substantially smaller and were not included in the analysis.
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -317,7 +317,7 @@ Since our model provides both estimates and standard errors of event effects, we
 \subsection{An index based on relative proportion of specific causes of death}
 \label{subsec:causes-deaths}
 
-Limitations of our approaches for detecting and monitoring health crises in real-time are that it requires 1) complete death count data and 2) an estimate of population displacement. Note that incomplete death counts or underestimates of population displacement will result in an underestimate of the death rate. However, if we redefine $Y_t$ as the number of deaths due to a specific cause at time $t$ and $N_t$ as the total number of recorded deaths at time $t$, then the estimate of $f$ can be interpreted as the percent increase in the proportion of deaths due to that cause, even if the data is incomplete. The underlying cause of death for the Puerto Rico mortality data was coded using the tenth version of the International Classifications of Diseases (ICD10) codes \cite{world2004icd}. Because deaths due to bacterial infections have been reported to increase after natural disasters in locations with poor public health infrastructure \cite{ligon2006infectious, cook200810th}, we defined an index based on ICD10 codes between A00 and A79 as bacterial infections. We found that deaths attributable to this cause were elevated for at least 2 months after the landfall of hurricane Mar\'ia in Puerto Rico (Figure \ref{fig:fhat-bacteria}A) pointing the possibility that this index could be used in real-time to detect challenges to the health system. During the COVID-19 pandemic, if under-reporting is occurring, one would expect causes related to the respiratory system to increase. A similar index for respiratory diseases defined as ICD10 codes between J00 and J99 computed for the COVID-19 pandemic shows no anomalies  (Figure \ref{fig:fhat-bacteria}B).
+Limitations of our approaches for detecting and monitoring health crises in real-time are that it requires 1) complete death count data and 2) an estimate of population displacement. Note that incomplete death counts or underestimates of population displacement will result in an underestimate of the death rate. However, if we redefine $Y_t$ as the number of deaths due to a specific cause at time $t$ and $N_t$ as the total number of recorded deaths at time $t$, then the estimate of $f$ can be interpreted as the percent increase in the proportion of deaths due to that cause, even if the data is incomplete. The underlying cause of death for the Puerto Rico mortality data was coded using the tenth version of the International Classifications of Diseases (ICD10) codes \cite{world2004icd}. Because deaths due to bacterial infections have been reported to increase after natural disasters in locations with poor public health infrastructure \cite{ligon2006infectious, cook200810th}, we defined an index based on ICD10 codes between A00 and A79 as bacterial infections. We found that deaths attributable to this cause were elevated after the landfall of hurricane Mar\'ia in Puerto Rico (Figure \ref{fig:mortality-index}A) pointing the possibility that this index could be used in real-time to detect challenges to the health system. During the COVID-19 pandemic, if under-reporting is occurring, one would expect causes related to the respiratory system to increase. A similar index for respiratory diseases defined as ICD10 codes between J00 and J99 computed for the COVID-19 pandemic shows no anomalies  (Figure \ref{fig:mortality-index}B).
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -332,14 +332,14 @@ Limitations of our approaches for detecting and monitoring health crises in real
 	\end{subfigure}&\\
     \end{tabular}
 	\caption{Cause-specific mortality index. The solid-black line corresponds to the percent change in proportion of mortality, $\hat{f}(t)$, attributable to a cause of interest. The shaded area represents a 95\% confidence interval for $\hat{f}(t)$. A) Bacterial infections mortality index defined as ICD10 codes between A00 and A79 for the days around Hurricane Mar\'ia. B) Respiratory diseases mortality index defined as ICD10 codes between J00 and J99 for the dates around the COVID-19 pandemic in Puerto Rico.}
-	\label{fig:fhat-bacteria}
+	\label{fig:mortality-index}
 \end{figure}
 
 
 
 \subsection{Natural Variability and Correlated Counts}
 \label{subsec:natural-variability}
-Exploration data analysis after fitting a standard Poisson model demonstrates that the daily data measurements are correlated (Supplemental Figure \ref{supp-fig:correlated-errors}). We note that uncertainty estimates are underestimated. Assuming independence, when in fact variables are correlated, leads to underestimates of the standard error of sums or averages. By accounting for this correlation allows our approach to better estimate the uncertainty in excess mortality estimates, which is a sum. To demonstrate this, we compared our model to a standard Poisson model [XXXCITE EXCESS MORT PAPER WITH JUST POISSONXXX] and a over-dispersed Poisson model [XXX CITE EXCESS MORT PAPER WITH OVERDISPERSED POISSONXXX] both assuming independent outcomes. We fit each of the three models to the Puerto Rico data and randomly selected 100 intervals of size $L = XXX, XXX, and XXX$ from periods with not events and computed the total number of deaths in that interval $S_l = \sum_{t \in L} Y_t$. We then used the fitted models to estimate the expected value $\hat{\mbox{E}}(S_l)$ and standard error  and $\hat{\mbox{SE}}(S_l)$ and form a z-statistic $Z_l = [S_l - \hat{\mbox{E}}(S_l)]/\hat{\mbox{SE}}(S_l)$. The Central Limit Theorem predicts that, if the expected value and standard errors are estimated correctly, $Z_l$ is approximately normal with expected value 0 and standard error 1. We found that the Poisson and over-dispersed Poisson model underestimate the variance of this sum, while modeling the correction improves our standard error estimates (\textbf{XXXFIGXXX}). 
+Exploration data analysis after fitting a standard Poisson model demonstrates that the daily data measurements are correlated (Supplemental Figure \ref{supp-fig:correlated-errors}). Assuming independence, when in fact variables are correlated, leads to underestimates of the standard error of sums or averages. Cumulative excess mortality is the sum of excess deaths during a period of interest, therefore accounting for correlation allows our approach to better estimate the uncertainty of this quantity. To demonstrate this, we compared our model to a standard Poisson model and a over-dispersed Poisson model both assuming independent outcomes \cite{farrington1996statistical,hohle2008count,noufaily2013improved,salmon2016monitoring}. We fit each of the three models to the Puerto Rico data and randomly selected 100 intervals of sizes $L$ = 10, 50, and 100 days from periods with no events and computed the total number of deaths in each interval $S_l = \sum_{t \in L} Y_t$. We then used the fitted models to estimate the expected value $\hat{\mbox{E}}(S_l)$ and standard error  and $\hat{\mbox{SE}}(S_l)$ and form a z-statistic $Z_l = [S_l - \hat{\mbox{E}}(S_l)]/\hat{\mbox{SE}}(S_l)$. The Central Limit Theorem predicts that, if the expected value and standard errors are estimated correctly, $Z_l$ is approximately normal with expected value 0 and standard error 1. We found that the Poisson and over-dispersed Poisson model underestimate the variance of this sum, while modeling the correction improves our standard error estimates (Figure \ref{fig:deaths-qqplots}). 
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -357,8 +357,8 @@ Exploration data analysis after fitting a standard Poisson model demonstrates th
 		\includegraphics[width=1\linewidth]{figs/figure-5c.pdf}
 	\end{subfigure}\\
 	\end{tabular}
-	\caption{}
-	\label{fig:cook-white-v-black}
+	\caption{Accounting for correlation in the error structure improves uncertainty estimates. We fitted our model along with a Poisson and over-dispersed Poisson GLM to Puerto Rico data and randomly picked 100 intervals of varying sizes to compute z-scores of total number of deaths. Each plot shows the Pearson residual quantiles versus theoretical quantiles from the standard normal distribution. A) Intervals of 10 days. B) Intervals of 50 days. C) Intervals of 100 days.}
+	\label{fig:deaths-qqplots}
 \end{figure}
 
 
@@ -488,15 +488,24 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 % Supp figure 2: F hat for all six hurricanes
 \begin{suppfigure}[ht]
 	\centering
-	\includegraphics[width=1\linewidth]{figs/supp-figure-3.pdf} 
+	\includegraphics[width=1\linewidth]{figs/supp-figure-2.pdf} 
     \caption{Estimated event effects as percent increase over expected mortality for the six hurricanes.}
 	\label{supp-fig:hurricane-effects}
 \end{suppfigure}
 
 % Supp figure 3: Fhat for age groups during chikungungya: NEED TO ADD FLU 2005
 \begin{suppfigure}[ht]
-	\centering
-	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
+	\begin{tabular}{lll}
+	A&B\\
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-3a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.49\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-3b.pdf}
+	\end{subfigure}&\\
+    \end{tabular}
     \caption{Estimated event effects as percent increase over expected mortality during the Chikungunya epidemic in Puerto Rico for six age groups. The points are percetage above or below expectation for the daily counts.}
 	\label{supp-fig:chikungunya-agegroups}
 \end{suppfigure}
@@ -504,32 +513,47 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 % Supp figure 4: Top 12 jurisdiction most affected by covid 19 in USA
 \begin{suppfigure}[ht]
 	\centering
-	\includegraphics[width=1\linewidth]{figs/supp-figure-5.pdf} 
-	\caption{Estimated event effects as percent increase over expected mortality for New York City and 11 states in the United States with the largest percent icrease in mortality rates during the COVID-19 pandemic. Note that no data was provided for Connecticut or North Carolina.}
+	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
+	\caption{Estimated event effects as percent increase over expected mortality for New York City and 11 states in the United States with the largest percent increase in mortality rates during the COVID-19 pandemic. Note that no data was provided for Connecticut or North Carolina.}
 	\label{supp-fig:covid19-states}
 \end{suppfigure}
 
+% Supp figure 5: Excess deaths with 95 CI
+\begin{suppfigure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{figs/supp-figure-5.pdf} 
+	\caption{}
+	\label{supp-fig:excess-deaths}
+\end{suppfigure}
 
-% Supp figure 2: QQ plots and ACF
+% Supp figure 6: Cook county effect by age groups
+\begin{suppfigure}[ht]
+	\centering
+	\includegraphics[width=1\linewidth]{figs/supp-figure-6.pdf} 
+	\caption{}
+	\label{supp-fig:cook-agegroups}
+\end{suppfigure}
+
+% Supp figure 7: QQ plots and ACF
 \begin{suppfigure}[ht]
 	\begin{tabular}{lll}
 	A&B\\
 	\begin{subfigure}[t]{0.49\linewidth}
 		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-2a.pdf} 
+		\includegraphics[width=1\linewidth]{figs/supp-figure-7a.pdf} 
 	\end{subfigure}&
 	\begin{subfigure}[t]{0.49\linewidth}
 		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-2b.pdf}
+		\includegraphics[width=1\linewidth]{figs/supp-figure-7b.pdf}
 	\end{subfigure}&\\
 	C&D\\
 	\begin{subfigure}[t]{0.49\linewidth}
 		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-2c.pdf}
+		\includegraphics[width=1\linewidth]{figs/supp-figure-7c.pdf}
 	\end{subfigure}&
 	\begin{subfigure}[t]{0.49\linewidth}
     	\centering
-	    \includegraphics[width=1\linewidth]{figs/supp-figure-2d.pdf}
+	    \includegraphics[width=1\linewidth]{figs/supp-figure-7d.pdf}
     \end{subfigure}\\
     \end{tabular}
     \caption{Evidence of correlated errors. A) A Poisson GLM was fitted to death daily counts from XX-XX year olds from Puerto Rico from an interval with no known natural dissasters or outbreaks (XXXX-XX-XX to XXXX-XX-XX). The plot shows the Pearson residuals quantiles versus theoretical quantiles from the normal distribution. One can see that the tail of the empirical data are larger than the theoretical values. B) The sample autocorrelation function for these Pearson residuals with the red-dash lines represent a 95\% confidence interval centered at zero. C) As A) but for residuals after prewhitening based on an estimate of the covariance matrix. D) As B) but for the prewhittened residuals.}
