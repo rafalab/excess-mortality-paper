@@ -22,10 +22,11 @@ hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
 names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 
 # -- Control & exclude periods
-control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
+control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
 exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
                    seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
                    seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
                    seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
@@ -44,10 +45,12 @@ counts <- puerto_rico_counts %>%
             ungroup()
 
 # -- Computing expected mortality counts
-counts <- compute_expected(counts, exclude = exclude_dates, weekday.effect = FALSE)
+counts <- compute_expected(counts, exclude = exclude_dates, weekday.effect = TRUE)
 
 # -- Dates for model check
-example_dates <- control_dates[year(control_dates) <= 2005]
+example_dates <- control_dates[year(control_dates) >= 2005]
+first(example_dates)
+last(example_dates)
 
 # -- Computing z scores for example dates (H0 true)
 r <- tibble(date = counts$date, observed = counts$outcome, expected = counts$expected) %>%
@@ -62,15 +65,15 @@ supp_fig7a <- tibble(r=r) %>%
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   xlab("Sample quantiles") +
   ylab("Theoretical quantiles") +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save supp-figure-7a
 ggsave("figs/supp-figure-7a.pdf",
        plot   = supp_fig7a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ------------------------------------------------------------- -----------------------------------------------------
 ### -- END Supp Figure 7a: QQ-plot without adjusting for correlation -----------------------------------------------------
 ### -- ------------------------------------------------------------- -----------------------------------------------------
@@ -91,15 +94,15 @@ supp_fig7b <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
              linetype = 2) +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save supp-figure-7b
 ggsave("figs/supp-figure-7b.pdf",
        plot   = supp_fig7b,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- The SD is not 1
 sd(r)
@@ -125,7 +128,7 @@ mu <- tmp$expected
 n <- length(r)
 
 # -- Estimating AR(p) with control dates
-arfit <- excessdeaths:::fit_ar(tmp,  control.dates = control_dates)
+arfit <- excessmort:::fit_ar(tmp,  control.dates = control_dates)
 
 # -- Estimated rhos
 rhos <- ARMAacf(ar = arfit$ar, ma = 0, lag.max = n)
@@ -147,15 +150,15 @@ supp_fig7c <- tibble(r=V_inv %*% r) %>%
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   xlab("Sample quantiles") +
   ylab("Theoretical quantiles") +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save supp-figure-7c
 ggsave("figs/supp-figure-7c.pdf",
        plot   = supp_fig7c,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ----------------------------------------------------- -----------------------------------------------------
 ### -- END Supp Figure 7c: QQ-plot adjusting for correlation -----------------------------------------------------
 ### -- ----------------------------------------------------- -----------------------------------------------------
@@ -176,15 +179,15 @@ supp_fig7d <- tibble(acf = auto_cor$acf, lag = auto_cor$lag) %>%
   geom_hline(yintercept = -qnorm((1+0.95)/2)/sqrt(auto_cor$n.used), 
              colour = "#cb181d",
              linetype = 2) +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save supp-figure-2d
 ggsave("figs/supp-figure-7d.pdf",
        plot   = supp_fig7d,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- Estimated sd
 sd(V_inv %*% r)
