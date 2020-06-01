@@ -108,23 +108,23 @@ fig5a <- res %>%
   mutate(a = excess / sd) %>%
   ungroup() %>%
   ggplot(aes(sample = a, color = model)) +
-  stat_qq(alpha=0.50, size=1, show.legend = FALSE) +
   geom_abline(lty=2) +
+  stat_qq(alpha=0.50, size=1, show.legend = FALSE) +
   ylab("Sample quantiles") +
   xlab("Theoretical quantiles") +
   scale_y_continuous(limits = c(-6.7,6.7),
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13))
+  theme(axis.title = element_text(size=16),
+        axis.text  = element_text(size=16))
 
 
 ggsave("figs/figure-5a.pdf",
        plot   = fig5a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- Figure 5B
 fig5b <- res %>%
@@ -146,8 +146,8 @@ fig5b <- res %>%
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13),
+  theme(axis.title = element_text(size=16),
+        axis.text  = element_text(size=16),
         legend.text  = element_text(size=13),
         legend.title = element_blank(),
         legend.direction = "horizontal",
@@ -158,8 +158,8 @@ fig5b <- res %>%
 ggsave("figs/figure-5b.pdf",
        plot   = fig5b,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- Figure 5C
 fig5c <- res %>%
@@ -181,14 +181,14 @@ fig5c <- res %>%
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13))
+  theme(axis.title = element_text(size=16),
+        axis.text  = element_text(size=16))
 
 ggsave("figs/figure-5c.pdf",
        plot   = fig5c,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ------------ ------------------------------------------------------------------
 ### -- END Figure 5 ------------------------------------------------------------------
 ### -- ------------ ------------------------------------------------------------------
