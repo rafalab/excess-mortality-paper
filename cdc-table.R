@@ -104,8 +104,30 @@ tab <- o %>% left_join(s, by = "state") %>% left_join(r, by = "state") %>% left_
          covid19_rate, 
         flu18_excess, 
         flu18_rate) %>%
-  arrange(desc( covid19_rate)) %>%
-  mutate_if(is.numeric, round)
+  arrange(desc( covid19_rate)) 
 
+total <- o %>% left_join(s, by = "state") %>% left_join(r, by = "state") %>% left_join(p, by = "state") %>%
+  summarize(state = "USA",
+            covid19_excess = sum(covid19_excess),
+            covid19_sd = sqrt(sum(covid19_sd^2)),
+            reported_covid_19 = sum(reported_covid_19),
+            covid19_rate = sum(covid19_excess)/sum(population)*10^6,
+            flu18_excess = sum(flu18_excess),
+            flu18_sd = sqrt(sum(flu18_sd^2)),
+            flu18_rate = sum(flu18_excess)/sum(population)*10^6) %>%
+  mutate_if(is.numeric, round) %>%
+  mutate(covid19_excess = paste0(covid19_excess, " (", covid19_sd, ")"),
+         flu18_excess = paste0(flu18_excess, " (", flu18_sd, ")")) %>%
+  select(state, 
+         covid19_excess,  
+         reported_covid_19,  
+         covid19_rate, 
+         flu18_excess, 
+         flu18_rate) 
+  
+tab <- bind_rows(tab, total)
+  
+            
 library(xtable)
 print(xtable(tab, digits = 0), include.rownames=FALSE)
+
