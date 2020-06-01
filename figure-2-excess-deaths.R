@@ -40,7 +40,7 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
 ndays  <- 365
-knots  <- c(4, 4, 4, 4, 4)
+knots  <- c(4, 4, 4, 4, 12)
 disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 365) 
 after  <- c(365, 365, 365, 365, 105)
