@@ -47,7 +47,7 @@ after  <- c(365, 365, 365, 365, 105)
 interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
                     Chikungunya = make_date(2014,08,01),
-                    "Flu-2005"  = make_date(2004,11,01),
+                    "Flu-2005"  = make_date(2004,10,01),
                     "Covid-19"  = make_date(2020,01,01))
 
 # -- Outer loop that goes through events in PR
@@ -157,21 +157,21 @@ fig2a <- excess_deaths_pr %>%
           method=list("last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  # scale_x_continuous(limits = c(0, ndays+80),
-  #                    breaks = seq(0, ndays+80, by=50)) +
-  # scale_y_continuous(limits = c(-400, 3500),
-  #                    breaks = seq(0, 3500, by=500),
-  #                    labels = scales::comma) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13),
+  scale_x_continuous(limits = c(0, ndays+80),
+                     breaks = seq(0, ndays+80, by=100)) +
+  scale_y_continuous(limits = c(-400, 3500),
+                     breaks = seq(0, 3500, by=1000),
+                     labels = scales::comma) +
+  theme(axis.title = element_text(size=18),
+        axis.text  = element_text(size=18),
         legend.title      = element_blank())
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
        plot   = fig2a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ---------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2A: Excess deaths in PR ------------------------------------------------------------------
 ### -- ---------------------------------- ------------------------------------------------------------------
@@ -292,20 +292,20 @@ fig2b <- us %>%
   ylab("Cumulative excess deaths") +
   xlab("") +
   scale_y_continuous(limits = c(-3000, 111000),
-                     breaks = seq(0, 110000, by=10000),
+                     breaks = seq(0, 110000, by=20000),
                      labels = scales::comma) +
   scale_x_date(date_breaks = "2 week",
                date_labels = "%b %d",
                limits = c(ymd("2020-03-07"), ymd("2020-05-17"))) +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save figure 2B
 ggsave("figs/figure-2b.pdf",
        plot   = fig2b,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ---------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2B: Excess deaths in US ------------------------------------------------------------------
 ### -- ---------------------------------- ------------------------------------------------------------------
@@ -371,15 +371,15 @@ fig2c <- fits %>%
   scale_x_continuous(labels = scales::comma) +
   ylab("Covid-19 excess deaths") +
   xlab("Seasonal flu (2018) excess deaths") +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Save figure 2C
 ggsave("figs/figure-2c.pdf",
        plot   = fig2c,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------

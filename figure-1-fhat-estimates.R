@@ -170,8 +170,8 @@ fig1a <- fits %>%
                      breaks = seq(-120, 244, by=40)) +
   scale_y_continuous(limits = c(-10, 75),
                      breaks = seq(0, 75, by=10)) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13),
+  theme(axis.title = element_text(size=17),
+        axis.text  = element_text(size=18),
         legend.title      = element_blank(),
         legend.text       = element_text(size=10),
         legend.background = element_rect(color="black"),
@@ -182,8 +182,8 @@ fig1a
 ggsave("figs/figure-1a.pdf",
        plot   = fig1a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- -------------------------------------------- ------------------------------------------------------------------
@@ -246,13 +246,13 @@ fig1b <- res %>%
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
   scale_x_continuous(limits = c(0, 365),
-                     breaks = seq(0, 365, by=40)) + 
+                     breaks = seq(0, 365, by=50)) + 
   scale_y_continuous(limits = c(-12, 25),
-                     breaks = seq(-12, 24, by=4)) +
-  theme(axis.title = element_text(size=13),
-        axis.text  = element_text(size=13),
+                     breaks = seq(-12, 24, by=6)) +
+  theme(axis.title = element_text(size=17),
+        axis.text  = element_text(size=18),
         legend.title      = element_blank(),
-        legend.text       = element_text(size=10),
+        legend.text       = element_text(size=13),
         legend.background = element_rect(color="black"),
         legend.position   = c(0.80, 0.80))
 fig1b
@@ -261,8 +261,8 @@ fig1b
 ggsave("figs/figure-1b.pdf",
        plot   = fig1b,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- --------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- --------------------------------------------- ------------------------------------------------------------------
@@ -361,16 +361,17 @@ fig1c <- df %>%
   xlab("") +
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "8 month", date_labels = "%b %Y")   +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.text.y  = element_text(size=18),
+        axis.text.x  = element_text(size=18),
+        axis.title = element_text(size=18))
 fig1c
 
 # -- Saving figure 1c
 ggsave("figs/figure-1c.pdf",
        plot   = fig1c,
        dpi    = 300,
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- -------------------------------- ------------------------------------------------------------------
 ### -- Figure 1C: Fhat estimate for USA ------------------------------------------------------------------
 ### -- -------------------------------- ------------------------------------------------------------------

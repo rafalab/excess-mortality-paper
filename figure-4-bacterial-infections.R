@@ -15,19 +15,22 @@ hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
 names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
 
 # -- Control & exclude periods
-control_dates <- seq(as.Date("2002-01-01"), as.Date("2013-12-31"), by = "day")
+control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
 exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
                    seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
                    seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
+                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
                    seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
                    seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
                    seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+
+
 
 # -- Loading data
 data("puerto_rico_counts")
 
 # -- Number of knots per year
-nknots <- 6
+nknots <- 4
 
 # -- Causes of interest
 icds   <- c("[A00,A79]", "[J00,J99]")
@@ -91,17 +94,17 @@ fig4a <- fit %>%
   ylab("Percent increase from expected mortality") +
   scale_y_continuous(limits = c(-70, 140),
                      breaks = seq(-60, 140, by=30)) +
-  scale_x_date(date_breaks = "2 month", 
+  scale_x_date(date_breaks = "3 month", 
                date_labels = "%b %Y") +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=17))
 
 # -- Save figure 4a
 ggsave("figs/figure-4a.pdf",
        plot   = fig4a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- Figure 4b
 fig4b <- fit %>%
@@ -117,17 +120,17 @@ fig4b <- fit %>%
   ylab("Percent increase from expected mortality") +
   scale_y_continuous(limits = c(-70, 140),
                      breaks = seq(-60, 140, by=30)) +
-  scale_x_date(date_breaks = "2 month", 
+  scale_x_date(date_breaks = "3 month", 
                date_labels = "%b %Y") +
-  theme(axis.text  = element_text(size=12),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=17))
 
 # -- Save figure 4b
 ggsave("figs/figure-4b.pdf",
        plot   = fig4b,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ------------------------------------------------------------- ------------------------------------------------------------------
 ### -- END Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
 ### -- ------------------------------------------------------------- ------------------------------------------------------------------

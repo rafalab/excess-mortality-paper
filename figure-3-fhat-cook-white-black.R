@@ -84,15 +84,15 @@ fig3a <- cook %>%
         legend.position  = c(0.50, 0.95),
         legend.direction = "horizontal",
         legend.text      = element_text(size=13),
-        axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+        axis.text  = element_text(size=18),
+        axis.title = element_text(size=17))
 
 # -- Save figure 3a
 ggsave("figs/figure-3a.pdf",
        plot   = fig3a,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 
 # -- Figure 3b
 fig3b <- cook %>%
@@ -115,8 +115,8 @@ fig3b <- cook %>%
         legend.text      = element_text(size=13),
         legend.position  = c(0.50, 0.90),
         legend.direction = "horizontal",
-        axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+        axis.text  = element_text(size=18),
+        axis.title = element_text(size=17))
 
 # -- Save figure 3b
 ggsave("figs/figure-3b.pdf",
@@ -146,8 +146,8 @@ fig3c <- cook %>%
         legend.position  = c(0.50, 0.90),
         legend.direction = "horizontal",
         legend.text      = element_text(size=13),
-        axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+        axis.text  = element_text(size=18),
+        axis.title = element_text(size=17))
 
 # -- Save figure 3b
 ggsave("figs/figure-3c.pdf",

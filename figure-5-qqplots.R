@@ -116,8 +116,8 @@ fig5a <- res %>%
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=16),
-        axis.text  = element_text(size=16))
+  theme(axis.title = element_text(size=18),
+        axis.text  = element_text(size=18))
 
 
 ggsave("figs/figure-5a.pdf",
@@ -146,8 +146,8 @@ fig5b <- res %>%
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=16),
-        axis.text  = element_text(size=16),
+  theme(axis.title = element_text(size=18),
+        axis.text  = element_text(size=18),
         legend.text  = element_text(size=13),
         legend.title = element_blank(),
         legend.direction = "horizontal",
@@ -181,8 +181,8 @@ fig5c <- res %>%
                      breaks = seq(-6, 6, by=3)) +
   scale_x_continuous(limits = c(-3,3),
                      breaks = seq(-3, 3, by=1)) +
-  theme(axis.title = element_text(size=16),
-        axis.text  = element_text(size=16))
+  theme(axis.title = element_text(size=18),
+        axis.text  = element_text(size=18))
 
 ggsave("figs/figure-5c.pdf",
        plot   = fig5c,
