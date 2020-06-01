@@ -363,7 +363,7 @@ fig1c <- df %>%
   scale_x_date(date_breaks = "8 month", date_labels = "%b %Y")   +
   theme(axis.text.y  = element_text(size=18),
         axis.text.x  = element_text(size=18),
-        axis.title = element_text(size=18))
+        axis.title = element_text(size=17))
 fig1c
 
 # -- Saving figure 1c
