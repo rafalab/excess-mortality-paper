@@ -28,10 +28,11 @@ supp_fig8 <- puerto_rico_counts %>%
   scale_y_continuous(labels = scales::comma,
                      limits = c(2981110, 3330000),
                      breaks = seq(3000000, 3300000, by=50000)) +
+  scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
   ylab("Population") +
-  xlab("Date") +
-  theme(axis.text  = element_text(size=16),
-        axis.title = element_text(size=16))
+  xlab("") +
+  theme(axis.text  = element_text(size=18),
+        axis.title = element_text(size=18))
 
 # -- Supp figure 8
 ggsave("figs/supp-figure-8.pdf",
