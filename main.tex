@@ -427,7 +427,7 @@ Using these estimates we can form an estimate $\hat{\Sigma}$ which we will consi
 In the third step we treat $\hat{\Sigma}$ as known, assume $f(t)$ can be modeled as a natural cubic spline, and use iteratively re-weighted least squares to obtain an estimate $\hat{f}(t)$. To account for non-continuities due to direct effects from natural disasters we permit the spline to be discontinuous at the event day. 
 
 \subsection{Approximation for uncorrelated data}
-Note that our model can be easily adapted to be fitted to weekly data. In this case there is no need to include weekday effect parameters $w(t)$ and much less need for a correlation structure for the errors (Supplemental Figure XXXX). 
+Note that our model can be easily adapted to be fitted to weekly data. In this case there is no need to include weekday effect parameters $w(t)$ and much less need for a correlation structure for the errors (Supplemental Figure \ref{supp-fig:weekly-correlated}). 
 
 \subsection{Excess death estimates}
 \label{subsec:excess-deaths}
@@ -488,7 +488,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-2.pdf} 
-    \caption{Estimated event effects as percent increase over expected mortality for the six hurricanes.}
+    \caption{Estimated hurricane effects as percent increase over expected mortality for the six hurricanes. The solid line corresponds to percent change from expected mortality and the shaded region represents a 95\% confidence interval.}
 	\label{supp-fig:hurricane-effects}
 \end{suppfigure}
 
@@ -505,7 +505,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 		\includegraphics[width=1\linewidth]{figs/supp-figure-3b.pdf}
 	\end{subfigure}&\\
     \end{tabular}
-    \caption{Estimated event effects as percent increase over expected mortality during the Chikungunya epidemic in Puerto Rico for six age groups. The points are percetage above or below expectation for the daily counts.}
+    \caption{Estimated event effects as percent increase over expected mortality. The solid line corresponds to percent change from expected mortality and the shaded region represents a 95\% confidence interval. A) Percent change during the Chikungunya epidemic in Puerto Rico for six age groups. B) Percent change during the 2005 flu season in Puerto Rico.}
 	\label{supp-fig:chikungunya-agegroups}
 \end{suppfigure}
 
@@ -513,7 +513,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
-	\caption{Estimated event effects as percent increase over expected mortality for New York City and 11 states in the United States with the largest percent increase in mortality rates during the COVID-19 pandemic. Note that no data was provided for Connecticut or North Carolina.}
+	\caption{Estimated event effects as percent increase over expected mortality for New York City and 8 states in the United States with the largest percent increase in mortality rates during the COVID-19 pandemic. The solid line corresponds to percent change from expected mortality and the shaded region represents a 95\% confidence interval. Note that no data was provided for Connecticut or North Carolina.}
 	\label{supp-fig:covid19-states}
 \end{suppfigure}
 
@@ -521,7 +521,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-5.pdf} 
-	\caption{}
+	\caption{Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on Sep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Oct 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, the COVID-19 pandemic, and the 2005 Flu season, respectively. The solid line corresponds to the cumulative excess death estimates and the shaded region represents a 95\% confidence interval.}
 	\label{supp-fig:excess-deaths}
 \end{suppfigure}
 
@@ -529,7 +529,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-6.pdf} 
-	\caption{}
+	\caption{Estimated effect of the COVID-19 pandemic in Cook county, IL, as percent increase over expected mortality stratified by age groups. The solid line corresponds to percent change from expected mortality and the shaded region represents a 95\% confidence interval.}
 	\label{supp-fig:cook-agegroups}
 \end{suppfigure}
 
@@ -584,22 +584,9 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 		\centering
 		\includegraphics[width=1\linewidth]{figs/supp-figure-9c.pdf}
 	\end{subfigure}\\
-	D&E&F\\
-	\begin{subfigure}[t]{0.30\linewidth}
-		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-9d.pdf} 
-	\end{subfigure}&
-	\begin{subfigure}[t]{0.30\linewidth}
-		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-9e.pdf}
-	\end{subfigure}&
-	\begin{subfigure}[t]{0.30\linewidth}
-		\centering
-		\includegraphics[width=1\linewidth]{figs/supp-figure-9f.pdf}
-	\end{subfigure}\\	
     \end{tabular}
     \caption{Simulation study: XXX NEEDS CAPTION XXX}
-    \label{fig:simulation}
+    \label{supp-fig:weekly-correlated}
 \end{suppfigure}
 
 \end{document}
