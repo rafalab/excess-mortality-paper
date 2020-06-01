@@ -373,11 +373,11 @@ Finally, we obtained individual level mortality data from the Cook County, IL, m
 
 \subsection{Population Estimates}
 \label{subsec:population}
-Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Mar\'ia in Puerto Rico, we use population proportion estimates from Teralytics (Supplemental Figure \ref{supp-fig:pop-displacement-pr}). Teralytics is a tech-company that works with governments and private clients to assess human movement by partnering with mobile network operators. From them we obtained island-wide daily population proportion estimates relative to an undisclosed baseline from May 31, 2017 to April 30, 2018 on the basis of all subscribers of a major, undisclosed, telecommunications company that created events in Puerto Rico. Due to structural damage post Hurricane Maria proportion estimates for four weeks after the storm were not provided. We imputed missing data with linear interpolation of observed values, computed population estimates by multiplying the US census population estimate on July 19, 2017, Teralytics baseline date, times the aforementioned proportions, and obtained smooth estimates by fitting a \textit{loess} regression.
+Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Mar\'ia in Puerto Rico, we use population proportion estimates from Teralytics. Teralytics is a tech-company that works with governments and private clients to assess human movement by partnering with mobile network operators. From them we obtained island-wide daily population proportion estimates relative to an undisclosed baseline from May 31, 2017 to April 30, 2018 on the basis of all subscribers of a major, undisclosed, telecommunications company that created events in Puerto Rico. Due to structural damage post Hurricane Maria proportion estimates for four weeks after the storm were not provided. We imputed missing data with linear interpolation of observed values, computed population estimates by multiplying the US census population estimate on July 19, 2017, Teralytics baseline date, times the aforementioned proportions, and obtained smooth estimates by fitting a \textit{loess} regression (Supplemental Figure \ref{supp-fig:pop-displacement-pr}).
 
 \subsection{Statistical model}
 \label{subsec:statistical-model}
-We assume the mortality counts at $t$ follows a generalized linear mixed model defined above, in the Results section. Specifically, we assume:
+We assume the mortality counts at $t$ follows a generalized linear mixed model defined above, in section \ref{subsec:model-based}. Specifically, we assume:
 \begin{equation*}
     Y_t \mid \varepsilon_t \propto \mbox{Poisson}\left\{ \mu_t 
     \left[1 + f(t)\right]  \varepsilon_t \right\}, \mbox{ for } t = 1, \dots,T 
@@ -400,11 +400,11 @@ Here $\sigma$ corresponds to the standard deviation associated with natural vari
 We start by modeling the yearly trend $\alpha(t)$ with natural cubic splines with a knot every seven years. We model the seasonal effect $s(t)$ with a harmonic model with 2 harmonics. Finally, $w(t)$
 represents seven parameters, one for each day of the week. 
 
-Because natural disasters and outbreaks are rare, we assume that for the majority of time points $f(t)$ is 0, which implies that 
+Natural disasters and outbreaks are rare, hence we assume that for the majority of time points $f(t)$ is 0, which implies that 
 \begin{equation*}
     Y_t \mid \varepsilon_t \propto \mbox{Poisson}(\mu_t  \varepsilon_t )
 \end{equation*}
-and that, for example, for $N = T / 365$ years of daily data we would have $T$ data points to fit a model with at most N/7 + 6 + 4 + 1 parameters. For seven years of data this translates into 2,556 data points and 13 parameters. As a result, we can obtain highly precise estimates even in the presence of the extra dispersion introduced by $\varepsilon$. We therefore fit a Poisson Generalized Linear Model to regions that we know do not include natural disasters or outbreaks and, in the next step consider the MLE, $\hat{\alpha}(t)$, $\hat{w}(t)$, and $\hat{s}(t)$ as fixed.
+and that, for example, for $N = T / 365$ years of daily data we would have $T$ data points to fit a model with at most N/7 + 7 + 4 + 1 parameters. For seven years of data this translates into 2,556 data points and 13 parameters. As a result, we can obtain highly precise estimates even in the presence of the extra dispersion introduced by $\varepsilon$. We therefore fit a Poisson Generalized Linear Model to regions that we know do not include natural disasters or outbreaks and, in the next step consider the MLE, $\hat{\alpha}(t)$, $\hat{w}(t)$, and $\hat{s}(t)$ as fixed.
 
 In the second step we estimate $\Sigma$, and to do this we select a control contiguous region for which we know $f(t)=0$. To estimate the $\sigma^2$ and the autoregressive parameters we can use the law of total variance to note that the observed percent change from the mean
 \begin{equation*}
@@ -559,10 +559,10 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
     \label{supp-fig:correlated-errors}
 \end{suppfigure}
 
-% Supp figure 7: Population displacement in Puerto Rico
+% Supp figure 8: Population displacement in Puerto Rico
 \begin{suppfigure}[ht]
 	\centering
-	\includegraphics[width=1\linewidth]{figs/supp-figure-7.pdf} 
+	\includegraphics[width=1\linewidth]{figs/supp-figure-8.pdf} 
 	\caption{Estimated population displacement in Puerto Rico after Hurricane Mar\'ia.}
 	\label{supp-fig:pop-displacement-pr}
 \end{suppfigure}
