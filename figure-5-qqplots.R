@@ -65,7 +65,7 @@ for(i in seq_along(d)){
     ungroup() %>%
     ggplot(aes(sample = a, color = model)) +
     geom_abline(lty=2) +
-    stat_qq(alpha=0.50, size=1, show.legend = FALSE) +
+    stat_qq(alpha=0.50, size=3, show.legend = FALSE) +
     ylab("Sample quantiles") +
     xlab("Theoretical quantiles") +
     scale_y_continuous(limits = c(-8,8),
@@ -88,7 +88,7 @@ for(i in seq_along(d)){
       ungroup() %>%
       ggplot(aes(sample = a, color = model)) +
       geom_abline(lty=2) +
-      stat_qq(alpha=0.50, size=1, show.legend = T) +
+      stat_qq(alpha=0.50, size=3, show.legend = T) +
       ylab("Sample quantiles") +
       xlab("Theoretical quantiles") +
       scale_y_continuous(limits = c(-8,8),
