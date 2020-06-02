@@ -1,37 +1,10 @@
 ### -- ------ ------------------------------------------------------------------
 ### -- Set up ------------------------------------------------------------------
 ### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessmort)
-dslabs::ds_theme_set()
+source("pr-init.R")
 
-# -- Loading data
-data("puerto_rico_counts")
-
-# -- Hurricanes information
-hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
-hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
-names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
-
-# -- Control & exclude periods
-control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
-exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
-                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
-                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
-                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
-                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
-
-# -- Daily mortality
-counts <- puerto_rico_counts %>%
-            group_by(date) %>%
-            summarize(outcome    = sum(outcome),
-                      population = sum(population)) %>%
-            ungroup()
+# -- Daily mortality for 75 and over
+counts <- filter(all_counts, agegroup == "75-Inf")
 
 # -- Available dates
 dates <- counts$date
@@ -98,9 +71,7 @@ excess_simulation <- function(counts,
   
   # -- Computing true excess deaths
   true_excess <- tibble(date = dates, true_excess = res$expected*f)
-  # true_excess <- tibble(date = dates, true_excess = res$expected*f) %>%
-  #   filter(true_excess != 0)
-  
+
   # -- Simulating data
   message("Simulating data")
   sims    <- lapply(1:num_sims, function(i){
@@ -150,7 +121,7 @@ excess_simulation <- function(counts,
     sim <- sim %>%
       rename(tmp     = outcome,
              outcome = deaths)
-    
+
     # -- Fitting model
     tmp <- suppressMessages(excess_model(
       counts         = sim,
@@ -170,10 +141,7 @@ excess_simulation <- function(counts,
                       filter(fitted-1.96*se <= 0) %>%
                       slice(1) %>%
                       .$date)
-    # end_day <- tmp$detected_intervals$end[nrow(tmp$detected_intervals)]
-    # if(is.na(end_day)){end_day <- event_day + 30}
-    # if(end_day < event_day){end_day <- event_day + 1}
-    
+
     # -- Index for period of indirect effect
     # idx_period <- seq(as.Date(event_day), as.Date(end_day), by=1)
     idx_period <- seq(as.Date(event_day, format="%y-%m-%d"), as.Date(end_day, format="%y-%m-%d"), by="1 day")
@@ -358,10 +326,10 @@ excess_simulation <- function(counts,
 # -- Scenario 1: Hurricane like event
 set.seed(1)
 hurricane <- excess_simulation(counts        = counts,
-                               effect        = 0.35, 
+                               effect        = 0.55, 
                                period_effect = 150,
-                               num_sims      = 100,
-                               nknots        = 4,
+                               num_sims      = 200,
+                               nknots        = 6,
                                model         = "correlated",
                                type          = "correlated",
                                md            = md,
@@ -370,9 +338,9 @@ hurricane <- excess_simulation(counts        = counts,
 # -- Scenario 2: Epidemic like event
 set.seed(1)
 epidemic <- excess_simulation(counts        = counts,
-                              effect        = 0.35, 
+                              effect        = 0.55, 
                               period_effect = 75,
-                              num_sims      = 100,
+                              num_sims      = 200,
                               nknots        = 12,
                               model         = "correlated",
                               type          = "correlated",
@@ -382,10 +350,10 @@ epidemic <- excess_simulation(counts        = counts,
 # -- Scenario 3: No event
 set.seed(1)
 normal <- excess_simulation(counts        = counts,
-                            effect        = 0.35, 
+                            effect        = 0.55, 
                             period_effect = 75,
-                            num_sims      = 100,
-                            nknots        = 4,
+                            num_sims      = 200,
+                            nknots        = 6,
                             model         = "correlated",
                             type          = "correlated",
                             md            = md,
@@ -468,14 +436,15 @@ hurricane$fitted <- hurricane$fitted %>%
   mutate(sd_fitted = sd(fitted)) %>%
   ungroup()
 
-supp_fig10d <- hurricane$fitted %>%
+supp_fig10d <- 2
+hurricane$fitted %>%
   ggplot() +
   geom_line(aes(date, 100*se, group = sim), color="gray", alpha=0.50) +
   geom_line(aes(date, 100*sd_fitted), color="red", data = unique(filter(select(hurricane$fitted, date, sd_fitted), date >= "1998-04-01", date <= "1999-04-01"))) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(1, 7),
-                     breaks = seq(1, 7, by=1)) +
+  # scale_y_continuous(limits = c(1, 7),
+  #                    breaks = seq(1, 7, by=1)) +
   ylab("Variability estimate") +
   xlab("") +
   theme(axis.text  = element_text(size=18),

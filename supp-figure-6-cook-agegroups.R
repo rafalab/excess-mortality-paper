@@ -61,17 +61,16 @@ supp_fig6 <- cook %>%
                      breaks = seq(0, 2000, by=1000),
                      labels = scales::comma) +
   facet_wrap(~agegroup) +
-  theme(axis.text.y = element_text(size=13),
-        axis.text.x = element_text(size=13, angle=45, hjust=1),
-        strip.text = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.text.y = element_text(size=15),
+        axis.text.x = element_text(size=15, angle=45, hjust=1),
+        axis.title = element_text(size=17))
 
 # -- Save figure 6
 ggsave("figs/supp-figure-6.pdf",
        plot   = supp_fig6,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ----------------------------------------------------- ------------------------------------------------------------------
 ### -- Figure 3: END Cook county Covid19 fhat white vs black ------------------------------------------------------------------
 ### -- ----------------------------------------------------- ------------------------------------------------------------------

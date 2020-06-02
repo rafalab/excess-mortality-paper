@@ -1,15 +1,9 @@
 ### -- ------ ------------------------------------------------------------------
 ### -- Set up ------------------------------------------------------------------
 ### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessdeaths)
-dslabs::ds_theme_set()
+source("pr-init.R")
 
 # -- Loading data
-data("puerto_rico_counts")
 data("new_jersey_counts")
 data("louisiana_counts")
 data("florida_counts")
@@ -51,19 +45,12 @@ control_dates <- list(irma    = seq(make_date(2015, 01, 01), make_date(2016, 12,
                       georges = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"),
                       maria   = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"))
 
-
 # -- Period of effect for hurricanes in Puerto Rico
 puerto_rico_hurricane_dates       <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
 puerto_rico_hurricane_effect_ends <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
 
 # -- Dates to exclude for hurricanes in Puerto Rico
-puerto_rico_out_dates <- c(
-  seq(puerto_rico_hurricane_dates[1], puerto_rico_hurricane_effect_ends[1], by = "day"),
-  seq(puerto_rico_hurricane_dates[2], puerto_rico_hurricane_effect_ends[2], by = "day"),
-  seq(puerto_rico_hurricane_dates[3], puerto_rico_hurricane_effect_ends[3], by = "day"),
-  seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-  seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-  seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+puerto_rico_out_dates <- exclude_dates
 
 # -- Dates to exclude for each hurricane
 exclude_dates  <- list(irma    = hurricane_dates[["irma"]] + 0:180,
@@ -78,7 +65,7 @@ before <- days(365)
 after  <- days(365)
 
 # -- Number of knots per year
-nknots <- 4
+nknots <- 6
 ### -- ---------- ------------------------------------------------------------------
 ### -- END Set up ------------------------------------------------------------------
 ### -- ---------- ------------------------------------------------------------------
@@ -156,15 +143,15 @@ supp_fig2 <- tmp %>%
   ylab("Percent increase from expected mortality") +
   facet_wrap( ~ hurricane, scale= "free_x") +
   scale_x_date(date_breaks = "3 month", date_labels = "%b") +
-  theme(axis.text  = element_text(size=13),
-        axis.title = element_text(size=13))
+  theme(axis.text  = element_text(size=15),
+        axis.title = element_text(size=17))
 
 # -- Save supp figure 1
 ggsave("figs/supp-figure-2.pdf",
        plot   = supp_fig2,
        dpi    = 300,
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ----------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp figure 2: Individual hurricane effects ------------------------------------------------------------------
 ### -- ----------------------------------------------- ------------------------------------------------------------------

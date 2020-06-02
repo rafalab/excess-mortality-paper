@@ -1,23 +1,9 @@
-### -- ------ ------------------------------------------------------------------
-### -- Set up ------------------------------------------------------------------
-### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(scales)
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessmort)
-dslabs::ds_theme_set()
-
-# -- Loading data
-data("puerto_rico_counts")
-### -- ---------- ------------------------------------------------------------------
-### -- END Set up ------------------------------------------------------------------
-### -- ---------- ------------------------------------------------------------------
-
 ### -- -------------------------------------------- ------------------------------------------------------------------
 ### -- Supp figure 8: Population displacement in PR ------------------------------------------------------------------
 ### -- -------------------------------------------- ------------------------------------------------------------------
+# -- Set up
+source("pr-init.R")
+
 supp_fig8 <- puerto_rico_counts %>%
   group_by(date) %>%
   summarize(population = sum(population)) %>%
@@ -31,7 +17,7 @@ supp_fig8 <- puerto_rico_counts %>%
   scale_x_date(date_breaks = "3 months", date_labels = "%b %Y") +
   ylab("Population") +
   xlab("") +
-  theme(axis.text  = element_text(size=18),
+  theme(axis.text  = element_text(size=15),
         axis.title = element_text(size=18))
 
 # -- Supp figure 8

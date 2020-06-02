@@ -37,8 +37,6 @@ hurricane_names <-  list(irma    = "FL: Irma",
 # -- To be used below
 count_index <- c(1, 2, 3, 4, 4, 4)
 
-control_dates
-
 # -- Control dates for each hurricane
 control_dates <- list(irma    = seq(make_date(2015, 01, 01), make_date(2016, 12, 31), by = "day"),
                       katrina = seq(make_date(2003, 01, 01), make_date(2005, 08, 01), by = "day"),

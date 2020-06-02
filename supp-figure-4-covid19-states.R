@@ -112,16 +112,16 @@ supp_fig4 <- df %>%
   xlab("") +
   scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
   facet_wrap(~state, scales="free_y") +
-  theme(axis.text.y = element_text(size=13),
-        axis.text.x = element_text(size=13, angle=45, hjust=1),
-        axis.title = element_text(size=13))
+  theme(axis.text.y = element_text(size=15),
+        axis.text.x = element_text(size=15, angle=45, hjust=1),
+        axis.title = element_text(size=17))
 
 # -- Saving figure 4
 ggsave("figs/supp-figure-4.pdf",
        plot   = supp_fig4,
        dpi    = 300, 
-       height = 4,
-       width  = 6)
+       height = 5,
+       width  = 7)
 ### -- ---------------------------------------------- ------------------------------------------------------------------
 ### -- END Supp Figure 5: Fhat for worse 12 US states ------------------------------------------------------------------
 ### -- ---------------------------------------------- ------------------------------------------------------------------
