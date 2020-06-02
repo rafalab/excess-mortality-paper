@@ -78,7 +78,7 @@ for(i in seq_along(d)){
     theme(axis.title = element_text(size=18),
           axis.text  = element_text(size=18))
   
-  fn <- paste0("figs/figuure-5",letters[i], ".pdf")
+  fn <- paste0("figs/figure-5",letters[i], ".pdf")
   ggsave(fn, plot = fig, dpi  = 300, height = 5, width  = 7)
   
 }
