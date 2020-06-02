@@ -309,7 +309,7 @@ Since our model provides both estimates and standard errors of event effects, we
 		\includegraphics[width=1\linewidth]{figs/figure-3c.pdf}
 	\end{subfigure}\\
 	\end{tabular}
-	\caption{Comparison of estimated percent increase in mortality in Cook county, Illinois, for individuals above 40 between whites and blacks with corresponding 95\% confidence intervals.}
+	\caption{Comparison of estimated percent increase in mortality in Cook county, Illinois, for individuals above 40 between whites and blacks with corresponding 95\% confidence intervals. A) 40 to 59 age group. B) 60 to 74 age group. C) 75 and over age group.}
 	\label{fig:cook-white-v-black}
 \end{figure}
 
@@ -364,7 +364,8 @@ Limitations of our approaches for detecting and monitoring health crises in real
 \section{Methods}
 \label{sec:methods}
 
-In this section we provided a description of the model and estimation procedure applied to obtain results. All details of our analysis are available by examining the code which is made available on GitHub: https://github.com/rafalab/excess-mortality-paper
+In this section we provided a description of the model and estimation procedure applied to obtain results. All details of our analysis are available by examining the code which is made available on GitHub: \url{https://github.com/rafalab/excess-mortality-paper}
+The code for the R package implementing the methods is also available on GitHub: \url{https://github.com/rafalab/excessmort}
 
 \subsection{Mortality Data}
 \label{subsec:mortality-data}
@@ -373,11 +374,11 @@ Finally, we obtained individual level mortality data from the Cook County, IL, m
 
 \subsection{Population Estimates}
 \label{subsec:population}
-Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Mar\'ia in Puerto Rico, we use population proportion estimates from Teralytics. Teralytics is a tech-company that works with governments and private clients to assess human movement by partnering with mobile network operators. From them we obtained island-wide daily population proportion estimates relative to an undisclosed baseline from May 31, 2017 to April 30, 2018 on the basis of all subscribers of a major, undisclosed, telecommunications company that created events in Puerto Rico. Due to structural damage post Hurricane Maria proportion estimates for four weeks after the storm were not provided. We imputed missing data with linear interpolation of observed values, computed population estimates by multiplying the US census population estimate on July 19, 2017, Teralytics baseline date, times the aforementioned proportions, and obtained smooth estimates by fitting a \textit{loess} regression (Supplemental Figure \ref{supp-fig:pop-displacement-pr}).
+Yearly population estimates for Puerto Rico were obtained from the Puerto Rico Statistical Institute. Yearly population estimates for other US states were obtained from the US Census bureau. We computed daily population estimates via linear interpolation of the available data. To obtain an estimate of the population displacement after Hurricane Mar\'ia in Puerto Rico, we use population proportion estimates from Teralytics. Teralytics is a company that works with governments and private clients to assess human movement by partnering with mobile network operators. This company provided daily population proportion estimates relative to an undisclosed baseline from May 31, 2017 to April 30, 2018. This was based on all subscribers of a major, undisclosed, telecommunications company in Puerto Rico. Due to structural damage post Hurricane Maria proportion estimates for the four weeks after the storm were not provided. We imputed missing data with linear interpolation of observed values. We then computed population estimates by multiplying the US census population estimate on July 19, 2017, Teralytics baseline date, times the aforementioned proportions, and obtained using local regression (Supplemental Figure \ref{supp-fig:pop-displacement-pr}).
 
 \subsection{Statistical model}
 \label{subsec:statistical-model}
-We assume the mortality counts at $t$ follows a generalized linear mixed model defined above, in section \ref{subsec:model-based}. Specifically, we assume:
+We assume the mortality counts at $t$ follows a generalized linear mixed model defined in Section  \ref{subsec:model-based}. Specifically, we assume:
 \begin{equation*}
     Y_t \mid \varepsilon_t \propto \mbox{Poisson}\left\{ \mu_t 
     \left[1 + f(t)\right]  \varepsilon_t \right\}, \mbox{ for } t = 1, \dots,T 
@@ -437,7 +438,7 @@ in $I$:
 \begin{equation*}
     \mbox{Excess deaths} = \sum_{t = a}^b \hat{\mu}_t \hat{f}(t) 
 \end{equation*}
-We construct a 95\% confidence interval using the fact that if we define $H$ as the \emph{hat matrix} that gives us 
+We construct a 95\% confidence interval using the fact that the sum $\sum_{t = a}^b \hat{\mu}_t \hat{f}(t)$ is approximately normally distributed, and if we define $H$ as the \emph{hat matrix}, we can compute the variace with:
 $\{ \hat{f}(a), \dots \hat{f}(b) \}^\top = H (Y_1, \dots, Y_T)^\top$ then
 
  \begin{equation*}
@@ -446,19 +447,19 @@ $\{ \hat{f}(a), \dots \hat{f}(b) \}^\top = H (Y_1, \dots, Y_T)^\top$ then
  
 \subsection{Simulation study}
 \label{subsec:simulations}
-To assess our procedure we conducted a Monte Carlo simulation. We start by denoting: 1) an event day, $t_0$, which may correspond to a hurricane landfall or peak-day of an epidemic, 2) an effect size, $\gamma$, that represents the percent change from expected mortality at event day, and 3) a period of effect, $I$, which constitutes the number of days with unusually high levels of mortality. Second, we use a normal distribution centered at $t_0$ and manipulated so as to have the maximum density value equal to $\gamma$ and ensure that the standard deviation is equal to $I/3$ to estimate the true percent change in mortality, $f(t)$. Then we compute $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and use $\hat{\mu}_t\left[1+f(t)\right]$ as a foundation to generate data for day $t$. To induce correlation we estimate the order and coefficients of an AR process using data from an interval with no known events (January 2006 to December 2013) and $\sigma = 0.05$. Finally, we generate data $Y_t^* \sim \mbox{Poisson}\left(\hat{\mu}_t[1+f(t)][1 - \hat{\varepsilon}_t]\right)$, where $\hat{\varepsilon}_t$ is a simulated value from the AR process mentioned above at day $t$. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expect our estimate of $f(t)$ to be centered around 0. For each scenario we ran 100 simulations with parameters described in \textbf{Supplemental Table XXX}. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (Supplemental Figure \ref{supp-fig:simulations}).
+To assess our procedure we conducted a Monte Carlo simulation. We start by denoting: 1) an event day, $t_0$, which may correspond to a hurricane landfall or peak-day of an epidemic, 2) an effect size, $\theta$, that represents the percent change from expected mortality at event day, and 3) a period of effect, $L$, which constitutes the number of days with unusually high levels of mortality. Second, we use a normal distribution centered at $t_0$ and scaled so that the value equals $\theta$ and that the standard deviation is equal to $L/3$ to estimate the true percent change in mortality, $f(t)$. Then we compute $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and generate a Poisson counts for eathc $t$ with rate $\hat{\mu}_t\left[1+f(t)\right]$. To induce correlation we estimate the order and coefficients of an AR process with coefficients obtained from e using data from an interval with no known events (January 2006 to December 2013) and $\sigma = 0.05$. Finally, we generate data $Y_t^* \sim \mbox{Poisson}\left(\hat{\mu}_t[1+f(t)][1 - \hat{\varepsilon}_t]\right)$, where $\hat{\varepsilon}_t$ is a simulated value from the AR process mentioned above at day $t$. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expect our estimate of $f(t)$ to be centered around 0. For each scenario we ran 100 simulations with $t_0 = $ September 21, 1998, $\theta = 0.35$, and $I=150$ days. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (Supplemental Figure \ref{supp-fig:simulations}).
 
 \section{Discussion}
 We have introduced methods and software useful for estimating excess mortality from weekly or daily counts. The engine of our approach is a statistical model that accounts for long-term trends, seasonal and day of the week effects, as well natural variation. An important contribution of this new approach are the improved uncertainty estimates permitted by modeling correlated errors, and 
 the model accounts for natural variability with correlated errors, an empirically motivated assumption. Another advance is the use splines in a way that permits us to account for both direct and indirect effects. Users of our method should be aware that the choice of knots can change the results of the analysis and we implemented exploratory data analysis ensure that these choices were appropriate. We also note that the results of our analysis are also affected by the population size, $N_t$ which we are themselves estimates. We also note that a change in our uncertainty cut-offs may result in some of the increases considered to be due to natural variability to be considered events with $f(t)>0$. We also need to consider the possibility that estimated hurricane effects that go into the winter may include effects of an undetected flu season.
 
-We used the model to demonstrate that the indirect effects for Hurricane María on Puerto Rico were like nothing seen in seven previous hurricanes. We also demonstrated that the 2005 flu season and the 2014 Chikungunya epidemic had substantial excess mortality in Puerto Rico. These results suggest a lack of robustness of the Puerto Rico's health system. In New Orleans in 2006, shortly after Katrina,
+We used the model to demonstrate that the indirect effects for Hurricane Mar\'ia on Puerto Rico were like nothing seen in seven previous hurricanes. We also demonstrated that the 2005 flu season and the 2014 Chikungunya epidemic had substantial excess mortality in Puerto Rico. These results suggest a lack of robustness of the Puerto Rico's health system. In New Orleans in 2006, shortly after Katrina,
 the U.S. Army Corps of Engineers admitted that faulty design specifications, incomplete sections,
 and substandard construction of levee segments, contributed to the damage and a \$14.5 billion invested was made to construct stronger levees. In contrast, after Hurricane Georges resulted in similar excess mortality toll, as far as we know, no systematic effort was put in place to improve, for example, Puerto Rico’s electrical grid nor it's data collection infrastructure. On the contrary, it appears that the grid continued to deteriorate for the next 19 years. While Puerto Rico seems to have \emph{dodged a bullet} during the COVID-19 pandemic, its health system does not appear to be ready to withstand another shock to its fragile infrastructure.
 
-Our analysis of CDC data demonstrated that by May 9, 2020 excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (35,653) and three of its neighbors: New Jersey (14,537), Pennsylvania (8,383), and Massachusetts (6,159). Note that Connecticut, the other neighnoring state, was not included in the analysis due to missing data. It is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC [CITE PAGE DESCRIBING XXX]. The accuracy of our results depends on the accuracy of this adjustment. 
+Our analysis of CDC data demonstrated that by May 9, 2020 excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (35,653) and three of its neighbors: New Jersey (14,537), Pennsylvania (8,383), and Massachusetts (6,159). Note that Connecticut, the other neighboring state, was not included in the analysis due to missing data. It is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC \cite{cdc2020covid19}. The accuracy of our results depends on the accuracy of this adjustment. 
 
-Finally, we used our model to compare the effects of the pandemic in blacks and whites in cook county and found a disturbing trend, with elderly blacks affected much more severly than their white counterparts. Note that this analysis was not based on total mortality counts, but counts calculated from the Medical Examiner. Our conclusions assume that COVID-19 cases from whites and blacks are equally likely to be included in the Medical Examiner dataset. 
+Finally, we used our model to compare the effects of the pandemic in blacks and whites in cook county and found a disturbing trend, with elderly blacks affected much more severely than their white counterparts. Note that this analysis was not based on total mortality counts, but counts calculated from the Medical Examiner. Our conclusions assume that COVID-19 cases from whites and blacks are equally likely to be included in the Medical Examiner dataset. 
 
 \bibliographystyle{unsrt}
 \bibliography{ref.bib}
@@ -516,14 +517,6 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 	\includegraphics[width=1\linewidth]{figs/supp-figure-4.pdf} 
 	\caption{Estimated event effects as percent increase over expected mortality for New York City and 8 states in the United States with the largest percent increase in mortality rates during the COVID-19 pandemic. The solid line corresponds to percent change from expected mortality and the shaded region represents a 95\% confidence interval. Note that no data was provided for Connecticut or North Carolina.}
 	\label{supp-fig:covid19-states}
-\end{suppfigure}
-
-% Supp figure 5: Excess deaths with 95 CI
-\begin{suppfigure}[ht]
-	\centering
-	\includegraphics[width=1\linewidth]{figs/supp-figure-5.pdf} 
-	\caption{Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on Sep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Oct 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, the COVID-19 pandemic, and the 2005 Flu season, respectively. The solid line corresponds to the cumulative excess death estimates and the shaded region represents a 95\% confidence interval.}
-	\label{supp-fig:excess-deaths}
 \end{suppfigure}
 
 % Supp figure 6: Cook county effect by age groups
@@ -620,7 +613,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 		\includegraphics[width=1\linewidth]{figs/supp-figure-10f.pdf}
 	\end{subfigure}\\
     \end{tabular}
-    \caption{Simulation study as described in section \ref{subsec:simulations}. For all three scenarios, the event day $(t_0)$, the effect size $(\gamma)$, and the period of effect $(I)$ are September 21, 1998, 35\%, and 150 days, respectively. For each scenario we ran 100 simulations. The gray lines represents the estimates of each simulation and the red line corresponds to the truth }
+    \caption{Simulation study as described in section \ref{subsec:simulations}. For all three scenarios, the event day $(t_0)$, the effect size $(\theta)$, and the period of effect $(I)$ are September 21, 1998, 35\%, and 150 days, respectively. For each scenario we ran 100 simulations. The gray lines represents the estimates of each simulation and the red line corresponds to the truth }
     \label{supp-fig:simulations}
 \end{suppfigure}
 
@@ -637,7 +630,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 Parameters & Hurricane & Epidemic & No event\\
 \hline
 Event day $(t_0)$ & Sep 21, 1998 & Sep 21, 1998 & Sep 21, 1998\\ 
-Effect size $(\gamma)$ & 35\% & 35\% & 35\% \\ 
+Effect size $(\theta)$ & 35\% & 35\% & 35\% \\ 
 Length of period $(I)$& 150 & 150 & 150     \\ 
  \hline
   Total & 111456 (1041) & 75228 & 353 \\ 
