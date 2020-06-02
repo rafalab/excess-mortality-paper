@@ -6,14 +6,13 @@ source("pr-init.R")
 
 # -- Set up to be used below
 ndays  <- 365
-knots  <- c(6, 6, 6, 6, 12)
-disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
-before <- c(365, 365, 365, 365, 365) 
-after  <- c(365, 365, 365, 365, 105)
+knots  <- c(6, 6, 6, 12)
+disc   <- c(TRUE, TRUE, FALSE, FALSE)
+before <- c(365, 365, 365, 365) 
+after  <- c(365, 365, 365, 105)
 interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
-                    Chikungunya = make_date(2014,08,01),
-                    "Flu-2005"  = make_date(2004,10,01),
+                    Chikungunya = make_date(2014,07,14),
                     "Covid-19"  = make_date(2020,01,01))
 
 # -- Outer loop that goes through events in PR
@@ -113,24 +112,25 @@ excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
 fig2a <- excess_deaths_pr %>%
   mutate(lwr = fitted-1.96*se,
          upr = fitted+1.96*se) %>%
-  filter(event != "Hugo") %>%
   mutate(day = as.numeric(date - event_day)) %>%
   mutate(event = factor(event, levels = c("Maria", "Georges", "Hugo", "Chikungunya", "Covid-19", "Flu-2005"))) %>% 
   ggplot(aes(color = event, fill = event)) +
+  geom_ribbon(aes(day, ymin=lwr, ymax=upr), alpha=0.50, color=NA, show.legend = F) +
   geom_point(aes(day, observed), size=0.10, alpha = 0.25, show.legend = F) +
   geom_line(aes(day, fitted), show.legend = F) +
   geom_dl(aes(x=day,y=fitted, color=event, label=event),
-          method=list("last.points")) +
+          method=list(cex=1.5, "last.points")) +
   ylab("Cumulative excess deaths") +
   xlab("Days after the event") +
-  scale_x_continuous(limits = c(0, ndays+80),
-                     breaks = seq(0, ndays+80, by=100)) +
-  scale_y_continuous(limits = c(-400, 3500),
-                     breaks = seq(0, 3500, by=1000),
+  scale_x_continuous(limits = c(0, ndays+110),
+                     breaks = seq(0, ndays+110, by=100)) +
+  scale_y_continuous(limits = c(-400, 4000),
+                     breaks = seq(0, 4000, by=1000),
                      labels = scales::comma) +
   theme(axis.title = element_text(size=18),
         axis.text  = element_text(size=18),
         legend.title      = element_blank())
+
 
 # -- Save figure 2A
 ggsave("figs/figure-2a.pdf",
@@ -254,7 +254,7 @@ fig2b <- us %>%
                   ymax=upr), alpha=0.50, show.legend = F, color="transparent") +
   geom_line(show.legend = F) +
   geom_dl(aes(color=type, label=type), 
-          method=list("last.qp")) +
+          method=list("last.qp", cex=1.5)) +
   ylab("Cumulative excess deaths") +
   xlab("") +
   scale_y_continuous(limits = c(-3000, 111000),
@@ -262,7 +262,7 @@ fig2b <- us %>%
                      labels = scales::comma) +
   scale_x_date(date_breaks = "2 week",
                date_labels = "%b %d",
-               limits = c(ymd("2020-03-07"), ymd("2020-05-17"))) +
+               limits = c(ymd("2020-03-07"), ymd("2020-05-24"))) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 
@@ -330,7 +330,7 @@ fig2c <- fits %>%
   geom_abline(intercept = 0, slope = 1, color="#cb181d", lty=2) +
   geom_point(alpha=0.50) +
   geom_point(pch=1) +
-  ggrepel::geom_text_repel(size  = 3.2,
+  ggrepel::geom_text_repel(size  = 4.5,
                            force = 0.06, 
                            data = filter(fits, Flu_18 >= 1000 | COVID_19 >= 5000)) +
   scale_y_continuous(labels = scales::comma) +

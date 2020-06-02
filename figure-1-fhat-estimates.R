@@ -161,7 +161,7 @@ fig1a <- fits %>%
   theme(axis.title = element_text(size=17),
         axis.text  = element_text(size=18),
         legend.title      = element_blank(),
-        legend.text       = element_text(size=10),
+        legend.text       = element_text(size=13),
         legend.background = element_rect(color="black"),
         legend.position   = c(0.80, 0.60))
 fig1a
@@ -187,8 +187,8 @@ the_breaks <- c(0, 5, 20, 40, 60, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
 # -- Event dates
-event_dates <- c(ymd("2014-08-01"), ymd("2004-10-01"))
-events      <- c("Chikungunya", "Flu 2005")
+event_dates <- ymd("2014-07-14")
+events      <- "Chikungunya"
 
 # -- Fitting model only to the groups of interest
 res <- map_df(seq_along(events), function(x){
@@ -222,22 +222,18 @@ fig1b <- res %>%
   mutate(day = as.numeric(date - event_date),
          lwr = fitted-1.96*se,
          upr = fitted+1.96*se) %>%
-  ggplot(aes(day, 100*fitted, color=event)) +
+  filter(day >= -120, day <= 360) %>%
+  ggplot(aes(date, 100*fitted)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
-  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr, color=event), lty=2, fill=NA, show.legend = F) +
-  geom_line(size=1, show.legend = T) +
+  geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50) +
+  geom_line(size=1, show.legend = F) +
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
-  scale_x_continuous(limits = c(-120, 360),
-                     breaks = seq(-100, 300, by=100)) +
+  scale_x_date(date_breaks = "4 months", date_labels = "%b %Y") +
   scale_y_continuous(limits = c(-13, 30),
                      breaks = seq(-10, 30, by=10)) +
   theme(axis.title = element_text(size=17),
-        axis.text  = element_text(size=18),
-        legend.title      = element_blank(),
-        legend.text       = element_text(size=13),
-        legend.background = element_rect(color="black"),
-        legend.position   = c(0.80, 0.80))
+        axis.text  = element_text(size=18))
 fig1b
 
 # -- Save figure 1B
