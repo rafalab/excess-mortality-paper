@@ -25,8 +25,12 @@ supp_fig7a <- tibble(r=r) %>%
   ggplot(aes(sample=r)) +
   stat_qq(alpha=0.50) + 
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
-  xlab("Sample quantiles") +
-  ylab("Theoretical quantiles") +
+  ylab("Sample quantiles") +
+  xlab("Theoretical quantiles") +
+  scale_y_continuous(limits = c(-4, 5),
+                     breaks = seq(-4, 5, by=2)) +
+  scale_x_continuous(limits = c(-4, 4),
+                     breaks = seq(-4, 4, by=2)) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 
@@ -112,6 +116,10 @@ supp_fig7c <- tibble(r=V_inv %*% r) %>%
   geom_abline(intercept = 0, slope = 1, color="red", lty=2) +
   xlab("Sample quantiles") +
   ylab("Theoretical quantiles") +
+  scale_y_continuous(limits = c(-4, 5),
+                     breaks = seq(-4, 5, by=2)) +
+  scale_x_continuous(limits = c(-4, 4),
+                     breaks = seq(-4, 4, by=2)) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 
