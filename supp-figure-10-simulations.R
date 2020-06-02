@@ -328,7 +328,7 @@ set.seed(1)
 hurricane <- excess_simulation(counts        = counts,
                                effect        = 0.55, 
                                period_effect = 150,
-                               num_sims      = 200,
+                               num_sims      = 100,
                                nknots        = 6,
                                model         = "correlated",
                                type          = "correlated",
@@ -340,7 +340,7 @@ set.seed(1)
 epidemic <- excess_simulation(counts        = counts,
                               effect        = 0.55, 
                               period_effect = 75,
-                              num_sims      = 200,
+                              num_sims      = 100,
                               nknots        = 12,
                               model         = "correlated",
                               type          = "correlated",
@@ -352,7 +352,7 @@ set.seed(1)
 normal <- excess_simulation(counts        = counts,
                             effect        = 0.55, 
                             period_effect = 75,
-                            num_sims      = 200,
+                            num_sims      = 100,
                             nknots        = 6,
                             model         = "correlated",
                             type          = "correlated",
@@ -371,8 +371,8 @@ supp_fig10a <- hurricane$fitted %>%
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(-15, 50),
-                     breaks = seq(-10, 50, by=10)) +
+  scale_y_continuous(limits = c(-23, 80),
+                     breaks = seq(-20, 80, by=20)) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=17))
 
@@ -394,8 +394,8 @@ supp_fig10b <- epidemic$fitted %>%
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(-15, 50),
-                     breaks = seq(-10, 50, by=10)) +
+  scale_y_continuous(limits = c(-23, 80),
+                     breaks = seq(-20, 80, by=20)) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=17))
 
@@ -417,8 +417,8 @@ supp_fig10c <- normal$fitted %>%
   ylab("Percent increase from expected mortality") +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(-15, 50),
-                     breaks = seq(-10, 50, by=10)) +
+  scale_y_continuous(limits = c(-23, 80),
+                     breaks = seq(-20, 80, by=20)) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=17))
 
@@ -436,15 +436,14 @@ hurricane$fitted <- hurricane$fitted %>%
   mutate(sd_fitted = sd(fitted)) %>%
   ungroup()
 
-supp_fig10d <- 2
-hurricane$fitted %>%
+supp_fig10d <- hurricane$fitted %>%
   ggplot() +
   geom_line(aes(date, 100*se, group = sim), color="gray", alpha=0.50) +
   geom_line(aes(date, 100*sd_fitted), color="red", data = unique(filter(select(hurricane$fitted, date, sd_fitted), date >= "1998-04-01", date <= "1999-04-01"))) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  # scale_y_continuous(limits = c(1, 7),
-  #                    breaks = seq(1, 7, by=1)) +
+  scale_y_continuous(limits = c(1.9, 9),
+                     breaks = seq(2, 9, by=1)) +
   ylab("Variability estimate") +
   xlab("") +
   theme(axis.text  = element_text(size=18),
@@ -470,8 +469,8 @@ supp_fig10e <- epidemic$fitted %>%
   geom_line(aes(date, 100*sd_fitted), color="red", data = unique(filter(select(epidemic$fitted, date, sd_fitted), date >= "1998-04-01", date <= "1999-04-01"))) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(1, 7),
-                     breaks = seq(1, 7, by=1)) +
+  scale_y_continuous(limits = c(1.9, 9),
+                     breaks = seq(2, 9, by=1)) +
   ylab("Variability estimate") +
   xlab("") +
   theme(axis.text  = element_text(size=18),
@@ -497,8 +496,8 @@ supp_fig10f <- normal$fitted %>%
   geom_line(aes(date, 100*sd_fitted), color="red", data = unique(filter(select(normal$fitted, date, sd_fitted), date >= "1998-04-01", date <= "1999-04-01"))) +
   scale_x_date(date_breaks = "2 month", 
                date_labels = "%b") +
-  scale_y_continuous(limits = c(1, 7),
-                     breaks = seq(1, 7, by=1)) +
+  scale_y_continuous(limits = c(1.9, 9),
+                     breaks = seq(2, 9, by=1)) +
   ylab("Variability estimate") +
   xlab("") +
   theme(axis.text  = element_text(size=18),
