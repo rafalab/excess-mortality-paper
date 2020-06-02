@@ -191,14 +191,14 @@ event_dates <- ymd("2014-07-14")
 events      <- "Chikungunya"
 
 # -- Fitting model only to the groups of interest
-res <- map_df(seq_along(events), function(x){
+res <- map_df(levels(all_counts$agegroup), function(x){
   
-  print(events[x])
+  print(x)
   
-  tmp_counts <- filter(all_counts, agegroup == "60-Inf")
+  tmp_counts <- filter(all_counts, agegroup == x)
   tmp_fit    <- suppressMessages(excess_model(counts          = tmp_counts, 
-                                               start          = event_dates[x] - before,
-                                               end            = event_dates[x] + after,
+                                               start          = event_dates - before,
+                                               end            = event_dates + after,
                                                exclude        = exclude_dates$maria,
                                                control.dates  = control_dates$maria,
                                                weekday.effect = TRUE,
@@ -208,17 +208,22 @@ res <- map_df(seq_along(events), function(x){
                                                discontinuity  = FALSE))
   
   
-  tibble(date   = tmp_fit$date, 
-         fitted = tmp_fit$fitted, 
-         observed = tmp_fit$observed, 
-         expected = tmp_fit$expected, 
-         se = tmp_fit$se, 
-         event = events[x], 
-         event_date = event_dates[x])
+  tibble(date       = tmp_fit$date, 
+         fitted     = tmp_fit$fitted, 
+         observed   = tmp_fit$observed, 
+         expected   = tmp_fit$expected, 
+         se         = tmp_fit$se, 
+         event      = events, 
+         event_date = event_dates,
+         agegroup   = x)
 })
 
 # -- Figure 1B
 fig1b <- res %>%
+  group_by(date) %>%
+  summarize(fitted     = sum(fitted * expected) / sum(expected),
+            se         = sqrt(sum(se^2 * expected^2)) / sum(expected),
+            event_date = event_date[1]) %>%
   mutate(day = as.numeric(date - event_date),
          lwr = fitted-1.96*se,
          upr = fitted+1.96*se) %>%
@@ -234,6 +239,7 @@ fig1b <- res %>%
                      breaks = seq(-10, 30, by=10)) +
   theme(axis.title = element_text(size=17),
         axis.text  = element_text(size=18))
+
 fig1b
 
 # -- Save figure 1B
