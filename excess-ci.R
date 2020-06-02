@@ -39,10 +39,10 @@ all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 ### -- Figure 2A: Excess deaths in PR ------------------------------------------------------------------
 ### -- ------------------------------ ------------------------------------------------------------------
 # -- Set up to be used below
-knots  <- rep(12, 5)
+knots  <- rep(6, 5)
 disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 365) 
-after  <- c(365, 365, 365, 365, 70)
+after  <- c(365, 365, 365, 365, 70)*c(2,2,2,2,1)
 
 interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
@@ -57,6 +57,7 @@ fs <- map_df(seq_along(interval_start), function(i){
   # -- Fitting the model to each age group
   message("Fitting model to estimate period of effect")
   if(names(interval_start)[i] %in% c("Georges", "Maria")) groups <- unique(all_counts$agegroup) else groups <- unique(all_counts$agegroup)[5:6]
+  #groups <- unique(all_counts$agegroup)
   tmp <- map_df(groups, function(x){
     cat(".")
     ev <- NULL
@@ -89,6 +90,7 @@ fs <- map_df(seq_along(interval_start), function(i){
 ## eye test
 fs %>% 
   ggplot(aes(date,fitted)) + 
+  geom_ribbon(aes(ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25)+
   geom_line() + 
   facet_wrap(~event, scales = "free")
   
@@ -121,7 +123,7 @@ tmp %>%
 ## Chikungunya start, max, start of decrease, end
 tmp %>% 
   filter(event == "Chikungunya") %>%
-  top_n(6, -abs(days_to_max)) %>% 
+  top_n(6, -abs(days_to_max)) %>%
   slice(-c(1:2))
 
 
@@ -136,3 +138,38 @@ fs %>%
   geom_vline(xintercept = ymd("2005-03-29"), color="red")
 
 
+
+### Just 2005
+groups <- unique(all_counts$agegroup) 
+tmp <- map_df(groups, function(x){
+  f <- all_counts %>% 
+    filter(agegroup == x) %>%
+    excess_model(start          = make_date(2004,1,1),
+                 end            = make_date(2007,1,1),
+                 exclude        = exclude_dates,
+                 control.dates  = control_dates,
+                 knots.per.year = 6,
+                 weekday.effect = TRUE,
+                 model          = "correlated",
+                 discontinuity  = FALSE, 
+                 verbose = FALSE)
+  tibble(date = f$date, expected = f$expected, fitted = f$fitted, se = f$se, agegroup = x)
+})
+
+# -- Computing marginal effect
+fit <- tmp %>% 
+  group_by(date) %>% 
+  summarize(fitted = sum(expected * fitted) / sum(expected), 
+            se     = sqrt(sum(expected^2 * se^2)) / sum(expected)) %>%
+  ungroup() %>% 
+  mutate(event = names(interval_start)[i])
+
+fit %>% 
+  ggplot(aes(date,fitted)) + 
+  geom_ribbon(aes(ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25)+
+  geom_line() 
+
+
+tmp %>%  ggplot(aes(date,fitted)) + 
+  geom_ribbon(aes(ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25)+
+  geom_line() + facet_wrap(~agegroup, scale = "free_y")
