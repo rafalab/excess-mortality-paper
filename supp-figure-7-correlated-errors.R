@@ -1,7 +1,6 @@
 ### -- --------------------------------------------------------- -----------------------------------------------------
 ### -- Supp Figure 7a: QQ-plot without adjusting for correlation -----------------------------------------------------
 ### -- --------------------------------------------------------- -----------------------------------------------------
-
 # -- Set up 
 source("pr-init.R")
 counts <- filter(all_counts, agegroup == "75-Inf")
@@ -10,7 +9,7 @@ counts <- filter(all_counts, agegroup == "75-Inf")
 counts <- compute_expected(counts, exclude = exclude_dates, weekday.effect = TRUE)
 
 # -- Dates for model check
-example_dates <- control_dates[year(control_dates) >= 2005]
+example_dates <- control_dates[year(control_dates) > 2005]
 first(example_dates)
 last(example_dates)
 
