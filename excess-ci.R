@@ -91,48 +91,4 @@ tmp %>%
   top_n(5, -abs(days_to_max)) %>%
   slice(-1)
 
-fs %>%
-  filter(event == "Flu-2005") %>%
-  ggplot(aes(date, fitted)) +
-  geom_line() +
-  geom_hline(yintercept = 0, lty=2) +
-  geom_vline(xintercept = ymd("2004-10-24"), color="red") +
-  geom_vline(xintercept = ymd("2005-01-12"), color="red") +
-  geom_vline(xintercept = ymd("2005-03-29"), color="red")
-
-
-
-### Just 2005
-groups <- unique(all_counts$agegroup) 
-tmp <- map_df(groups, function(x){
-  f <- all_counts %>% 
-    filter(agegroup == x) %>%
-    excess_model(start          = make_date(2004,1,1),
-                 end            = make_date(2007,1,1),
-                 exclude        = exclude_dates,
-                 control.dates  = control_dates,
-                 knots.per.year = 6,
-                 weekday.effect = TRUE,
-                 model          = "correlated",
-                 discontinuity  = FALSE, 
-                 verbose = FALSE)
-  tibble(date = f$date, expected = f$expected, fitted = f$fitted, se = f$se, agegroup = x)
-})
-
-# -- Computing marginal effect
-fit <- tmp %>% 
-  group_by(date) %>% 
-  summarize(fitted = sum(expected * fitted) / sum(expected), 
-            se     = sqrt(sum(expected^2 * se^2)) / sum(expected)) %>%
-  ungroup() %>% 
-  mutate(event = names(interval_start)[i])
-
-fit %>% 
-  ggplot(aes(date,fitted)) + 
-  geom_ribbon(aes(ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25)+
-  geom_line() 
-
-
-tmp %>%  ggplot(aes(date,fitted)) + 
-  geom_ribbon(aes(ymin = fitted - 2*se, ymax = fitted + 2*se), alpha = 0.25)+
-  geom_line() + facet_wrap(~agegroup, scale = "free_y")
+f

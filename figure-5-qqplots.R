@@ -14,7 +14,7 @@ d <- c(10, 50, 100)
 
 # -- Dates to choose from
 counts <- filter(all_counts, agegroup == "75-Inf")
-idx <- counts$date[between(dates, first(control_dates), last(control_dates))]
+idx <- counts$date[between(counts$date, first(control_dates), last(control_dates))]
 
 # -- Fitting models
 res <- map_df(d, function(i){
