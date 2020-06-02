@@ -123,7 +123,7 @@
 \setcounter{page}{0}
 
 \begin{abstract}
-Monitoring health systems during and after natural disasters, epidemics, or outbreaks is critical for guiding policy decisions and interventions. In the case of natural disasters the effects on public health can be \textit{direct} or \textit{indirect}. Direct effects are defined as those resulting from the immediate destruction such as drowning and trauma from flying debris, while indirect effects are delayed, longer lasting, and, often harder to measure or detect. In the case of outbreaks and epidemics, lack of comprehensive testing or reporting can lead to challenges in measuring direct effects, while indirect effects can arise due to, for example, increased stress levels or reduced access to health services. When the effects are long lasting and difficult to detect, in the short term, the accumulated effects can actually be devastating. Improved access to mortality data provides an opportunity to develop data-driven approaches that can help monitor health systems and quantify the effects of natural disasters, epidemics, or outbreaks. Here we describe a statistical methodology and software that facilitates data-driven approaches. Our work was motivated by events occurring in Puerto Rico after the passage of Hurricane Mar\'ia, but can be applied in other contexts such as estimating the effects of an epidemic in the presence of inaccurate reporting of cases. We demonstrate the utility of our tools by applying it to data related to six hurricanes and data related to the COVID-19 pandemic. We also searched for other unusual events during the last 35 years in Puerto Rico. We demonstrate that the effects of hurricanes in Puerto Rico are substantially worse than in other states, that the 2005 flu and the 2014 Chikungunya outbreak resulted in an unusually high mortality rate in Puerto Rico, that in the United States the excess mortality during the COVID-19 pandemic already exceeded 100,000 on May 9, 2020, and that the effects of this pandemic was worse for elderly black individuals compared to whites of the same age. We make our tools available through free and open source \verb+excessmort+ R package.
+Monitoring health systems during and after natural disasters, epidemics, or outbreaks is critical for guiding policy decisions and interventions. In the case of natural disasters the effects on public health can be \textit{direct} or \textit{indirect}. Direct effects are defined as those resulting from the immediate destruction such as drowning and trauma from flying debris, while indirect effects are delayed, longer lasting, and, often harder to measure or detect. In the case of outbreaks and epidemics, lack of comprehensive testing or reporting can lead to challenges in measuring direct effects, while indirect effects can arise due to, for example, increased stress levels or reduced access to health services. When the effects are long lasting and difficult to detect, in the short term, the accumulated effects can actually be devastating. Improved access to mortality data provides an opportunity to develop data-driven approaches that can help monitor health systems and quantify the effects of natural disasters, epidemics, or outbreaks. Here we describe a statistical methodology and software that facilitates data-driven approaches. Our work was motivated by events occurring in Puerto Rico after the passage of Hurricane Mar\'ia, but can be applied in other contexts such as estimating the effects of an epidemic in the presence of inaccurate reporting of cases. We demonstrate the utility of our tools by applying it to data related to six hurricanes and data related to the COVID-19 pandemic. We also searched for other unusual events during the last 35 years in Puerto Rico. We demonstrate that the effects of hurricanes in Puerto Rico are substantially worse than in other states, that the 2014 Chikungunya outbreak resulted in an unusually high mortality rate in Puerto Rico, that in the United States the excess mortality during the COVID-19 pandemic already exceeded 100,000 on May 9, 2020, and that the effects of this pandemic was worse for elderly black individuals compared to whites of the same age. We make our tools available through free and open source \verb+excessmort+ R package.
 \end{abstract}
 
 \newpage
@@ -179,13 +179,13 @@ Using our approach, we found that the death rate in Puerto Rico increased by 69\
 		\includegraphics[width=1\linewidth]{figs/figure-1c.pdf}
 	\end{subfigure}\\
     \end{tabular}
-    \caption{Estimated event effects as percent increase over expected mortality. A) Comparison of six hurricanes. B) Estimated increase and point-wise confidence intervals among individuals 60 or over during the Chikungunya epidemic in Puerto Rico (Aug 2014 - Feb 2015) and the 2005 flu season (November 2004 - Apr 2005). C) Estimated increase and confidence interval for the the United States from January 2017 through May 2020.}
+    \caption{Estimated event effects as percent increase over expected mortality. A) Comparison of six hurricanes. B) Estimated increase and point-wise confidence intervals  during the Chikungunya epidemic in Puerto Rico. C) Estimated increase and confidence interval for the the United States from January 2017 through May 2020.}
     \label{fig:fhat-estimates}
 \end{figure}
 
 \subsection{Quantifying the effects of epidemics}
 \label{subsec:epidemics}
-Our approach can also be used to detect and quantify the effects of epidemics or outbreaks. As an example, we fit our model to Puerto Rico mortality data from 1985 to 2020 and, apart from the hurricane seasons mentioned in the previous section, we detected two periods with an unusual increase in mortality rates: November 2004 - April 2005 and August 2014 - February 2015. These periods coincide with the 2005 flu season and the 2014-2015 Chikungunya outbreak \cite{sharp2016surveillance, hsu2019risk}. The effects were particularly strong on individuals over 60 years (Figure \ref{fig:fhat-estimates}B, Supplemental Figure \ref{supp-fig:chikungunya-agegroups}). Note that for the Chikungunya period we also detected a strong effect for the  0 to 4 years age group. 
+Our approach can also be used to detect and quantify the effects of epidemics or outbreaks. As an example, we fit our model to Puerto Rico mortality data from 1985 to 2020 and, apart from the hurricane seasons mentioned in the previous section, we detected an unusual increase in mortality rates July 2014 - February 2015. These period coincide with the 2014-2015 Chikungunya outbreak \cite{sharp2016surveillance, hsu2019risk}  (Figure \ref{fig:fhat-estimates}B. The effects were particularly strong on individuals over 60 years, Supplemental Figure and for the  0 to 4 years age group \ref{supp-fig:chikungunya-agegroups}).
 
 Although mortality records for the time period of the COVID-19 pandemic are not yet complete, the Center for Disease Control and Prevention (CDC) has implement a correction to the most recent counts and are making weekly state-level data from January 2017 to May 12, 2020 publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates clearly detects the COVID-19 pandemic for several states, as well as the 2018 flu epidemics (Supplemental Figure \ref{supp-fig:covid19-states}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 flu season
 (Figure \ref{fig:fhat-estimates}C).
@@ -194,7 +194,7 @@ Although mortality records for the time period of the COVID-19 pandemic are not 
 \label{subsec:excess-mortality}
 Once we have fit our model, we can compute excess mortality estimates for any time period as well as standard errors that take into account, not just sample variability associated with count processes, but natural variation as well. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following the day hurricanes Georges, and Mar\'ia made landfall. We also computed these quantities for the 365 days following the start of the detected effects from the 2005 flu season and 2014 Chikungunya outbreak. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020 to April 15 2020, the last day for which the death registry has complete data (typically, it takes 90 days for 99\% of deaths to be registered). 
 
-For Mar\'ia the excess death curve grew for 198 days after landfall, with a point estimate on April 6, 2018 of 3,284 (95\% CI: 2,896 to 3,673) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). For Georges the excess death curve grew for 96 days after landfall, with a point estimate on December 26, 1998 of 1,201 (95\% CI: 946 to 1,457)  (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). For the period of October 10, 2004 to March 28, 2005, identified to have unusually high mortality rates and including the 2005 flu season, we observe a point estimate of 1,133 (95\% CI: 795 to 1,471) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}). The period of August, 7, 2014 to February 28, 2015 associated with a Chikungunya outbreak was also identified to have unusually high mortality rates. However, we also noted a decrease in cumulative deaths from February 28, 2015 to May, 1, 2015 consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. For this entire period, August, 7, 2014 to May, 1, 2015, we observe a point estimate for excess mortality of 1,308 (95\% CI: 877 to 1,739) (Figure \ref{fig:excess-deaths}A, Supplemental Figure \ref{supp-fig:excess-deaths}).
+For Mar\'ia the excess death curve grew for over six months after landfall, with a point estimate March 20, six months after landfall, of XXX3,284 (95\% CI: 2,896 to 3,673), and for Georges the excess death curve grew for over three months landfall, with a point estimate on December 21, 1998, three months after landfall, of XXX1,201 (95\% CI: 946 to 1,457) (Figure \ref{fig:excess-deaths}A. The period of July 14 to February 20, 2015, associated with a Chikungunya outbreak was also identified to have unusually high mortality rates. However, we also noted a decrease in cumulative deaths for several months after the February 20 consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. A year after the start of the Chikinungy epidemic, on July 13, 2015 we observe a point estimate for excess mortality of XXXX1,308 (95\% CI: 877 to 1,739) (Figure \ref{fig:excess-deaths}A). We note that for the period of March 15, 2020 to April 15, 2020, associated with the COVID-19 pandemic, we do not observe an effect as nearly as large as for these other three events.
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -212,7 +212,7 @@ For Mar\'ia the excess death curve grew for 198 days after landfall, with a poin
 		\includegraphics[width=1\linewidth]{figs/figure-2c.pdf}
 	\end{subfigure}\\
 	\end{tabular}
-    \caption{Cumulative excess mortality estimates. A) Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on Sep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Oct 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, the COVID-19 pandemic, and the 2005 Flu season, respectively.  B) Estimated cumulative excess mortality and reported COVID-19 cumulative deaths in the United States. C) State-specific cumulative excess death estimates for COVID-19 plotted against the excess mortality estimates for the 2018 Flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season}
+    \caption{Cumulative excess mortality estimates. A) Daily excess death estimates and 95\% confidence intervals for events in Puerto Rico starting on XXXSep 20, 2017, Sep 21, 1998, Aug 1, 2014, Mar 1, 2020, and Oct 1, 2004 for Hurricane Mar\'ia, Hurricane Georges, the Chikungunya epidemic, and the COVID-19 pandemic, respectively.  B) Estimated cumulative excess mortality and reported COVID-19 cumulative deaths in the United States. C) State-specific cumulative excess death estimates for COVID-19 plotted against the excess mortality estimates for the 2018 Flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season}
     \label{fig:excess-deaths}
 \end{figure}
 
@@ -317,7 +317,7 @@ Since our model provides both estimates and standard errors of event effects, we
 
 \subsection{Natural Variability and Correlated Counts}
 \label{subsec:natural-variability}
-Exploration data analysis after fitting a standard Poisson model demonstrates that the daily data measurements are correlated (Supplemental Figure \ref{supp-fig:correlated-errors}). Assuming independence, when in fact variables are correlated, leads to underestimates of the standard error of sums or averages. Cumulative excess mortality is the sum of excess deaths during a period of interest, therefore accounting for correlation allows our approach to better estimate the uncertainty of this quantity. To demonstrate this, we compared our model to a standard Poisson model and a over-dispersed Poisson model both assuming independent outcomes \cite{farrington1996statistical,hohle2008count,noufaily2013improved,salmon2016monitoring}. We fit each of the three models to the Puerto Rico data and randomly selected 100 intervals of sizes $L$ = 10, 50, and 100 days from periods with no events and computed the total number of deaths in each interval $S_l = \sum_{t \in L} Y_t$. We then used the fitted models to estimate the expected value $\hat{\mbox{E}}(S_l)$ and standard error  and $\hat{\mbox{SE}}(S_l)$ and form a z-statistic $Z_l = [S_l - \hat{\mbox{E}}(S_l)]/\hat{\mbox{SE}}(S_l)$. The Central Limit Theorem predicts that, if the expected value and standard errors are estimated correctly, $Z_l$ is approximately normal with expected value 0 and standard error 1. We found that the Poisson and over-dispersed Poisson model underestimate the variance of this sum, while modeling the correction improves our standard error estimates (Figure \ref{fig:deaths-qqplots}). 
+Exploration data analysis after fitting a standard Poisson model demonstrates that the daily data measurements are correlated (Supplemental Figure \ref{supp-fig:correlated-errors}). Assuming independence, when in fact variables are correlated, leads to underestimates of the standard error of sums or averages. Cumulative excess mortality is the sum of excess deaths during a period of interest, therefore accounting for correlation allows our approach to better estimate the uncertainty of this quantity. To demonstrate this, we compared our model to a standard Poisson model and a over-dispersed Poisson model both assuming independent outcomes \cite{farrington1996statistical,hohle2008count,noufaily2013improved,salmon2016monitoring}. We fit each of the three models to the Puerto Rico data for indiviuals 75 and over, and randomly selected 100 intervals of sizes $L$ = 10, 50, and 100 days from periods with no events and computed the total number of deaths in each interval $S_l = \sum_{t \in L} Y_t$. We then used the fitted models to estimate the expected value $\hat{\mbox{E}}(S_l)$ and standard error  and $\hat{\mbox{SE}}(S_l)$ and form a z-statistic $Z_l = [S_l - \hat{\mbox{E}}(S_l)]/\hat{\mbox{SE}}(S_l)$. The Central Limit Theorem predicts that, if the expected value and standard errors are estimated correctly, $Z_l$ is approximately normal with expected value 0 and standard error 1. We found that the Poisson and over-dispersed Poisson model underestimate the variance of this sum, while modeling the correction improves our standard error estimates (Figure \ref{fig:deaths-qqplots}). 
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -445,15 +445,16 @@ $\{ \hat{f}(a), \dots \hat{f}(b) \}^\top = H (Y_1, \dots, Y_T)^\top$ then
  \end{equation*}
  
 \subsection{Simulation study}
-To assess our procedure we conducted a Monte Carlo simulation. We start by denoting: 1) an event day, $t_0$, which may correspond to a hurricane landfall or peak-day of an epidemic, 2) an effect size, $\gamma$, that represents the percent change from expected mortality at event day, and 3) a period of effect, $I$, which constitutes the number of days with unusually high levels of mortality. Second, we use a normal distribution centered at $t_0$ and manipulated so as to have the maximum density value equal to $\gamma$ and ensure that the standard deviation is equal to $I/3$ to estimate the true percent change in mortality, $f(t)$. Then we compute $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and use $\hat{\mu}_t\left[1+f(t)\right]$ as a foundation to generate data for day $t$. To induce correlation we estimate the order and coefficients of an AR process using data from an interval with no known events (January 2006 to December 2013) and $\sigma = 0.05$. Finally, we generate data $Y_t^* \sim \mbox{Poisson}\left(\hat{\mu}_t[1+f(t)][1 - \hat{\varepsilon}_t]\right)$, where $\hat{\varepsilon}_t$ is a simulated value from the AR process mentioned above at day $t$. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expect our estimate of $f(t)$ to be centered around 0. For each scenario we ran 100 simulations with parameters described in \textbf{Supplemental Table XXX}. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (Supplemental Figure \ref{fig:simulation}).
+\label{subsec:simulations}
+To assess our procedure we conducted a Monte Carlo simulation. We start by denoting: 1) an event day, $t_0$, which may correspond to a hurricane landfall or peak-day of an epidemic, 2) an effect size, $\gamma$, that represents the percent change from expected mortality at event day, and 3) a period of effect, $I$, which constitutes the number of days with unusually high levels of mortality. Second, we use a normal distribution centered at $t_0$ and manipulated so as to have the maximum density value equal to $\gamma$ and ensure that the standard deviation is equal to $I/3$ to estimate the true percent change in mortality, $f(t)$. Then we compute $\hat{\mu}_t$ for $t=1,\ldots, T$, using the Puerto Rico mortality data with model (\ref{eq:mean-model}) and use $\hat{\mu}_t\left[1+f(t)\right]$ as a foundation to generate data for day $t$. To induce correlation we estimate the order and coefficients of an AR process using data from an interval with no known events (January 2006 to December 2013) and $\sigma = 0.05$. Finally, we generate data $Y_t^* \sim \mbox{Poisson}\left(\hat{\mu}_t[1+f(t)][1 - \hat{\varepsilon}_t]\right)$, where $\hat{\varepsilon}_t$ is a simulated value from the AR process mentioned above at day $t$. We considered three scenarios: 1) a hurricane-like event where we expect mortality to increase rapidly and stay above normal levels for some time, 2) an epidemic-like event in which mortality increases slowly until reaching some plateau and then decreasing to normal levels, and 3) a time period of no event in which we expect our estimate of $f(t)$ to be centered around 0. For each scenario we ran 100 simulations with parameters described in \textbf{Supplemental Table XXX}. Our implementation produces accurate and precise results for both $f$ and $\Sigma$ (Supplemental Figure \ref{supp-fig:simulations}).
 
 \section{Discussion}
 We have introduced methods and software useful for estimating excess mortality from weekly or daily counts. The engine of our approach is a statistical model that accounts for long-term trends, seasonal and day of the week effects, as well natural variation. An important contribution of this new approach are the improved uncertainty estimates permitted by modeling correlated errors, and 
-the model accounts for natural variability with correlated errors, an empirically motivated assumption. Another advance is the use splines in a way that permits us to account for both direct and indirect effects. Users of our method should be aware that the choice of knots can change the results of the analysis and we implemented exploratory data analysis ensure that these choices were appropriate. We also note that the results of our analysis are also affected by the population size, $N_t$ which we are themselves estimates. 
+the model accounts for natural variability with correlated errors, an empirically motivated assumption. Another advance is the use splines in a way that permits us to account for both direct and indirect effects. Users of our method should be aware that the choice of knots can change the results of the analysis and we implemented exploratory data analysis ensure that these choices were appropriate. We also note that the results of our analysis are also affected by the population size, $N_t$ which we are themselves estimates. We also note that a change in our uncertainty cut-offs may result in some of the increases considered to be due to natural variability to be considered events with $f(t)>0$. We also need to consider the possibility that estimated hurricane effects that go into the winter may include effects of an undetected flu season.
 
-We used the model to demonstrate that the indirect effects for Hurricane María on Puerto Rico were like nothing seen in seven previous hurricanes. We also demonstrated that the 2005 flu season and the 2014 Chikungunya epidemic had substnatial excess mortality in Puerto Rico. These results suggest a lack of robustness of the Puerto Rico's health system. In New Orleans in 2006, shortly after Katrina,
+We used the model to demonstrate that the indirect effects for Hurricane María on Puerto Rico were like nothing seen in seven previous hurricanes. We also demonstrated that the 2005 flu season and the 2014 Chikungunya epidemic had substantial excess mortality in Puerto Rico. These results suggest a lack of robustness of the Puerto Rico's health system. In New Orleans in 2006, shortly after Katrina,
 the U.S. Army Corps of Engineers admitted that faulty design specifications, incomplete sections,
-and substandard construction of levee segments, contributed to the damage and a \$14.5 billion invested was made to construct stronger levees. In contrast, after Hurricane Georges resulted in similar excess mortality toll, as far as we know, no systematic effort was put in place to improve, for example, Puerto Rico’s electrical grid nor it's data collection infrastructure. On the contrary, it appears that the grid continued to deteriorate for the next 19 years. While Puerto Rico seems to have \emph{dodged a bullet} during the COVID-19 pandemic, Puerto Rico’s health system does not appear to be ready to withstand another shock to its fragile infrastructure.
+and substandard construction of levee segments, contributed to the damage and a \$14.5 billion invested was made to construct stronger levees. In contrast, after Hurricane Georges resulted in similar excess mortality toll, as far as we know, no systematic effort was put in place to improve, for example, Puerto Rico’s electrical grid nor it's data collection infrastructure. On the contrary, it appears that the grid continued to deteriorate for the next 19 years. While Puerto Rico seems to have \emph{dodged a bullet} during the COVID-19 pandemic, its health system does not appear to be ready to withstand another shock to its fragile infrastructure.
 
 Our analysis of CDC data demonstrated that by May 9, 2020 excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (35,653) and three of its neighbors: New Jersey (14,537), Pennsylvania (8,383), and Massachusetts (6,159). Note that Connecticut, the other neighnoring state, was not included in the analysis due to missing data. It is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC [CITE PAGE DESCRIBING XXX]. The accuracy of our results depends on the accuracy of this adjustment. 
 
@@ -568,7 +569,7 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
 \end{suppfigure}
 
 
-% Supp figure 9: Simulation study
+% Supp figure 9: Model comparison with weekly data
 \begin{suppfigure}[ht]
 	\begin{tabular}{lll}
 	A&B&C\\
@@ -589,5 +590,63 @@ Finally, we used our model to compare the effects of the pandemic in blacks and 
     \label{supp-fig:weekly-correlated}
 \end{suppfigure}
 
-\end{document}
+% Supp figure 10: Simulation study
+\begin{suppfigure}[ht]
+	\begin{tabular}{lll}
+	A&B&C\\
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10a.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10b.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10c.pdf}
+	\end{subfigure}\\
+	D&E&F\\
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10d.pdf} 
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10e.pdf}
+	\end{subfigure}&
+	\begin{subfigure}[t]{0.30\linewidth}
+		\centering
+		\includegraphics[width=1\linewidth]{figs/supp-figure-10f.pdf}
+	\end{subfigure}\\
+    \end{tabular}
+    \caption{Simulation study as described in section \ref{subsec:simulations}. For all three scenarios, the event day $(t_0)$, the effect size $(\gamma)$, and the period of effect $(I)$ are September 21, 1998, 35\%, and 150 days, respectively. For each scenario we ran 100 simulations. The gray lines represents the estimates of each simulation and the red line corresponds to the truth }
+    \label{supp-fig:simulations}
+\end{suppfigure}
 
+\newpage
+
+% Supp table ??: Simulations
+\begin{table}
+\centering
+% \tiny
+\begin{tabular}{|l|lll|}
+  \hline
+ & \multicolumn{3}{c|}{Scenarios} \\
+\hline
+Parameters & Hurricane & Epidemic & No event\\
+\hline
+Event day $(t_0)$ & Sep 21, 1998 & Sep 21, 1998 & Sep 21, 1998\\ 
+Effect size $(\gamma)$ & 35\% & 35\% & 35\% \\ 
+Length of period $(I)$& 150 & 150 & 150     \\ 
+ \hline
+  Total & 111456 (1041) & 75228 & 353 \\ 
+  \hline
+ \end{tabular}
+ \caption{Excess mortality estimates for the weeks ending on March 14, 2020 to May 5, 2020 (COVID-19) and  December 16, 2017 to February 10, 2018 (2018 Flu). The standard deviation for excess mortality for these periods is included in parenthesis. The states are ordered by the per-million excess mortality rate. Connecticut and North Carolina are excluded due to missing data. Numbers for New York do not include New York City which is listed separately.}
+ \label{tab:covid19-states}
+ \normalsize
+\end{table}
+
+
+\end{document}
