@@ -345,7 +345,6 @@ fig1c <- df %>%
   geom_line() +
   xlab("") +
   ylab("Percent increase from expected mortality") +
-  scale_x_date(date_breaks = "8 month", date_labels = "%b %Y")   +
   theme(axis.text.y  = element_text(size=18),
         axis.text.x  = element_text(size=18),
         axis.title = element_text(size=17))
