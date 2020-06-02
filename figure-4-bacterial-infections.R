@@ -1,48 +1,17 @@
-### -- ------ ------------------------------------------------------------------
-### -- Set up ------------------------------------------------------------------
-### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(scales)
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessmort)
-dslabs::ds_theme_set()
-
-# -- Hurricanes information
-hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
-hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
-names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
-
-# -- Control & exclude periods
-control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
-exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
-                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
-                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
-                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
-                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
-
-
-
-# -- Loading data
-data("puerto_rico_counts")
+### -- --------------------------------------------------------- ------------------------------------------------------------------
+### -- Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
+### -- --------------------------------------------------------- ------------------------------------------------------------------
+# -- Set up
+source("pr-init.R")
 
 # -- Number of knots per year
-nknots <- 4
+nknots <- 6
 
 # -- Causes of interest
 icds   <- c("[A00,A79]", "[J00,J99]")
 names  <- c("Bacterial infections", "Respiratory diseases")
 causes <- tibble(icds, names)
-### -- ---------- ------------------------------------------------------------------
-### -- END Set up ------------------------------------------------------------------
-### -- ---------- ------------------------------------------------------------------
 
-### -- --------------------------------------------------------- ------------------------------------------------------------------
-### -- Figure 4: Mortality index: F-hat for bacterial infections ------------------------------------------------------------------
-### -- --------------------------------------------------------- ------------------------------------------------------------------
 # -- Fitting models
 fit <- map_df(icds, function(x){
   

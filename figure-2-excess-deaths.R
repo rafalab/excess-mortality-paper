@@ -1,46 +1,12 @@
-### -- ------ ------------------------------------------------------------------
-### -- Set up ------------------------------------------------------------------
-### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(scales)
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessmort)
-library(directlabels)
-dslabs::ds_theme_set()
-
-# -- Hurricanes information
-hurricane_dates        <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
-hurricane_effect_ends  <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
-names(hurricane_dates) <- c("Hugo", "Georges", "Maria")
-
-# -- Exclude dates
-exclude_dates <- c(seq(hurricane_dates[1], hurricane_effect_ends[1], by = "day"),
-                   seq(hurricane_dates[2], hurricane_effect_ends[2], by = "day"),
-                   seq(hurricane_dates[3], hurricane_effect_ends[3], by = "day"),
-                   seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
-                   seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-                   seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-                   seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
-
-# -- Control dates
-control_dates <- seq(as.Date("2006-01-01"), as.Date("2013-12-31"), by = "day")
-
-# -- Loading PR data and creating age groups
-data("puerto_rico_counts")
-the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
-all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
-### -- ---------- ------------------------------------------------------------------
-### -- END Set up ------------------------------------------------------------------
-### -- ---------- ------------------------------------------------------------------
-
 ### -- ------------------------------ ------------------------------------------------------------------
 ### -- Figure 2A: Excess deaths in PR ------------------------------------------------------------------
 ### -- ------------------------------ ------------------------------------------------------------------
+# -- Set up
+source("pr-init.R")
+
 # -- Set up to be used below
 ndays  <- 365
-knots  <- c(4, 4, 4, 4, 12)
+knots  <- c(6, 6, 6, 6, 12)
 disc   <- c(TRUE, TRUE, FALSE, FALSE, FALSE)
 before <- c(365, 365, 365, 365, 365) 
 after  <- c(365, 365, 365, 365, 105)

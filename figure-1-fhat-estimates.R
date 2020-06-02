@@ -1,16 +1,9 @@
 ### -- ------ ------------------------------------------------------------------
 ### -- Set up ------------------------------------------------------------------
 ### -- ------ ------------------------------------------------------------------
-# -- Libraries
-library(ggpubr)
-library(tidyverse)
-library(lubridate)
-library(excessmort)
-library(directlabels)
-dslabs::ds_theme_set()
+source("pr-init.R")
 
 # -- Loading data
-data("puerto_rico_counts")
 data("new_jersey_counts")
 data("louisiana_counts")
 data("florida_counts")
@@ -44,27 +37,22 @@ hurricane_names <-  list(irma    = "FL: Irma",
 # -- To be used below
 count_index <- c(1, 2, 3, 4, 4, 4)
 
+control_dates
+
 # -- Control dates for each hurricane
 control_dates <- list(irma    = seq(make_date(2015, 01, 01), make_date(2016, 12, 31), by = "day"),
                       katrina = seq(make_date(2003, 01, 01), make_date(2005, 08, 01), by = "day"),
                       sandy   = seq(make_date(2007, 01, 01), make_date(2012, 10, 01), by = "day"),
-                      hugo    = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"),
-                      georges = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"),
-                      maria   = seq(make_date(2006, 01, 01), make_date(2013, 12, 31), by = "day"))
+                      hugo    = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"),
+                      georges = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"),
+                      maria   = seq(make_date(2002, 01, 01), make_date(2013, 12, 31), by = "day"))
 
 # -- Period of effect for hurricanes in Puerto Rico
 puerto_rico_hurricane_dates       <- as.Date(c("1989-09-18","1998-09-21","2017-09-20"))
 puerto_rico_hurricane_effect_ends <- as.Date(c("1990-03-18","1999-03-21","2018-03-20"))
 
 # -- Dates to exclude for hurricanes in Puerto Rico
-puerto_rico_out_dates <- c(
-  seq(puerto_rico_hurricane_dates[1], puerto_rico_hurricane_effect_ends[1], by = "day"),
-  seq(puerto_rico_hurricane_dates[2], puerto_rico_hurricane_effect_ends[2], by = "day"),
-  seq(puerto_rico_hurricane_dates[3], puerto_rico_hurricane_effect_ends[3], by = "day"),
-  seq(as.Date("2004-09-01"), as.Date("2005-12-31"), by = "day"),
-  seq(as.Date("2014-09-01"), as.Date("2015-03-21"), by = "day"),
-  seq(as.Date("2001-01-01"), as.Date("2001-01-15"), by = "day"),
-  seq(as.Date("2020-01-01"), lubridate::today(), by = "day"))
+puerto_rico_out_dates <- exclude_dates
 
 # -- Dates to exclude for each hurricane
 exclude_dates  <- list(irma    = hurricane_dates[["irma"]] + 0:180,
@@ -85,7 +73,7 @@ after  <- days(365)
 ### -- Figure 1A: Fhat estimates for hurricanes ------------------------------------------------------------------
 ### -- ---------------------------------------- ------------------------------------------------------------------
 # -- Number of knots per year
-nknots <- 4
+nknots <- 6
 
 # -- Loop to fit models to hurricanes
 fits <- map_df(seq_along(count_index), function(i){
@@ -166,9 +154,9 @@ fig1a <- fits %>%
   geom_line() +
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
-  scale_x_continuous(limits = c(-125, 245),
-                     breaks = seq(-120, 244, by=40)) +
-  scale_y_continuous(limits = c(-10, 75),
+  scale_x_continuous(limits = c(-120, 360),
+                     breaks = seq(-100, 300, by=100)) +
+  scale_y_continuous(limits = c(-6, 75),
                      breaks = seq(0, 75, by=10)) +
   theme(axis.title = element_text(size=17),
         axis.text  = element_text(size=18),
@@ -192,19 +180,15 @@ ggsave("figs/figure-1a.pdf",
 ### -- Figure 1B: Fhat estimates for Chikungunya ------------------------------------------------------------------
 ### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Number of knots per year
-nknots <- 4
+nknots <- 6
 
 # -- Creating breaks for age groups and collapsing data
 the_breaks <- c(0, 5, 20, 40, 60, Inf)
 all_counts <- collapse_counts_by_age(puerto_rico_counts, the_breaks)
 
-# -- Determining period of interest
-start <- c(lubridate::make_date(2014, 01, 01), lubridate::make_date(2004, 01, 01))
-end   <- c(lubridate::make_date(2015, 12, 31), lubridate::make_date(2005, 12, 31))
-exclude_dates <- list("Chikungunya" = unique(c(exclude_dates$maria, seq(start[1], end[1], by="days"))),
-                      "Flu 2005"    = unique(c(exclude_dates$maria, seq(start[2], end[2], by="days"))))
-events      <- names(exclude_dates)
-event_dates <- c(ymd("2014-08-01"), ymd("2004-11-01"))
+# -- Event dates
+event_dates <- c(ymd("2014-08-01"), ymd("2004-10-01"))
+events      <- c("Chikungunya", "Flu 2005")
 
 # -- Fitting model only to the groups of interest
 res <- map_df(seq_along(events), function(x){
@@ -213,13 +197,13 @@ res <- map_df(seq_along(events), function(x){
   
   tmp_counts <- filter(all_counts, agegroup == "60-Inf")
   tmp_fit    <- suppressMessages(excess_model(counts          = tmp_counts, 
-                                               start          = start[x],
-                                               end            = end[x],
-                                               exclude        = exclude_dates[[x]],
+                                               start          = event_dates[x] - before,
+                                               end            = event_dates[x] + after,
+                                               exclude        = exclude_dates$maria,
                                                control.dates  = control_dates$maria,
                                                weekday.effect = TRUE,
                                                verbose        = FALSE,
-                                               knots.per.year  = nknots,
+                                               knots.per.year = nknots,
                                                model          = "correlated",
                                                discontinuity  = FALSE))
   
@@ -238,17 +222,16 @@ fig1b <- res %>%
   mutate(day = as.numeric(date - event_date),
          lwr = fitted-1.96*se,
          upr = fitted+1.96*se) %>%
-  filter(day >= 0, day <= 365) %>%
   ggplot(aes(day, 100*fitted, color=event)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr, color=event), lty=2, fill=NA, show.legend = F) +
   geom_line(size=1, show.legend = T) +
   xlab("Days since the event") +
   ylab("Percent increase from expected mortality") +
-  scale_x_continuous(limits = c(0, 365),
-                     breaks = seq(0, 365, by=50)) + 
-  scale_y_continuous(limits = c(-12, 25),
-                     breaks = seq(-12, 24, by=6)) +
+  scale_x_continuous(limits = c(-120, 360),
+                     breaks = seq(-100, 300, by=100)) +
+  scale_y_continuous(limits = c(-13, 30),
+                     breaks = seq(-10, 30, by=10)) +
   theme(axis.title = element_text(size=17),
         axis.text  = element_text(size=18),
         legend.title      = element_blank(),

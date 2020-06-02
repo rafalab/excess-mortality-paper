@@ -13,14 +13,12 @@ dslabs::ds_theme_set()
 # -- Loading cook county data
 data("cook_records")
 
-# -- Wrangling mortality & population
-the_breaks <- c(seq(0, 85, by=5), Inf)
-counts     <- compute_counts(cook_records, by=c("sex", "race", "agegroup"), breaks = the_breaks)
-counts     <- left_join(counts, cook_demographics, by=c("date", "race", "sex", "agegroup"))
+# -- Creating age groups and wrangle
+the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
+counts <- compute_counts(dat = cook_records, demo = cook_demographics, by=c("sex", "race", "agegroup"), breaks = the_breaks)
 
 # -- Creating new agegroups and wrangle
-the_breaks <- c(0, 5, 20, 40, 60, 75, Inf)
-counts     <- collapse_counts_by_age(counts, the_breaks) %>%
+counts <- counts %>%
   filter(race %in% c("white", "black")) %>%
   group_by(date, race, agegroup) %>%
   summarize(outcome    = sum(outcome, na.rm = TRUE),
