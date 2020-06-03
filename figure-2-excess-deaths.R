@@ -292,8 +292,8 @@ fits <- map_df(states, function(x){
   
   fit <- suppressMessages(counts %>% 
     filter(state == x) %>%
-    excess_model(exclude        = exclude_dates,
-                 intervals      = intervals) %>%
+    excess_model(exclude   = exclude_dates,
+                 intervals = intervals) %>%
     mutate(state = x))
 })
 

@@ -17,6 +17,7 @@ covid_states <- read_csv("https://raw.githubusercontent.com/nytimes/covid-19-dat
   mutate(date = ymd(date)) %>%
   filter(!is.na(state)) %>%
   arrange(state)
+
 # split new york into nyc and the rest of ny
 ny <- filter(covid_states, state == "New York")
 ny <- left_join(ny, covid_nyc, by = "date") %>%
@@ -35,12 +36,12 @@ rm(covid_nyc, ny)
 
 
 # Fit excess deaths models ------------------------------------------------
-flu_season <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
+flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date <- max(cdc_state_counts$date) - 7 
+# max_date <- max(cdc_state_counts$date) - 7 
+max_date <- max(cdc_state_counts$date)
 ## remover the latest
 counts <- cdc_state_counts %>% filter(date <= max_date)
-
 
 ## take out states with incomplete data
 states <- counts %>% 
@@ -52,17 +53,17 @@ states <- counts %>%
 ## Only states, and also weird data
 states <- setdiff(states, "Puerto Rico")
 
-kpy <- 24
+kpy <- 12
 fits <- lapply(states, function(x){
   if(x == "Puerto Rico"){
     exclude_dates <- unique(sort(c(exclude_dates, seq(make_date(2017, 9, 20), make_date(2018, 3, 31), by = "day"))))
   }
   ret <- counts %>% filter(state == x) %>%
-    excess_model(exclude = exclude_dates,
-                 start = min(counts$date),
-                 end = max_date,
+    excess_model(exclude        = exclude_dates,
+                 start          = min(counts$date),
+                 end            = max_date,
                  knots.per.year = kpy,
-                 verbose = FALSE)
+                 verbose        = FALSE)
   ret$state <- x
   return(ret)
 })
@@ -70,8 +71,11 @@ names(fits) <- states
 
 
 # Excess mortality --------------------------------------------------------
-intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
-                  seq(make_date(2020, 3, 14), max_date, by = "day"))
+# intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
+#                   seq(make_date(2020, 3, 14), max_date, by = "day"))
+intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 17), by = "day"),
+                  seq(make_date(2020, 03, 01), max_date, by = "day"))
+
 e <- map_df(states, function(x){
   print(x)
   if(x == "Puerto Rico"){
