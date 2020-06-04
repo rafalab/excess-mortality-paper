@@ -102,9 +102,8 @@ supp_fig <- fits %>%
   geom_abline(intercept = 0, slope = 1, color="#cb181d", lty=2) +
   geom_point(alpha=0.50) +
   geom_point(pch=1) +
-  ggrepel::geom_text_repel(size  = 4.5,
-                           force = 0.06,
-                           data = filter(fits, Flu_18 >= 1000 | COVID_19 >= 5000)) +
+  ggrepel::geom_text_repel(force = 0.06) +
+                           # data = filter(fits, Flu_18 >= 1000 | COVID_19 >= 5000)) +
   scale_y_continuous(breaks = seq(0, 300, by=50)) +
   scale_x_continuous(breaks = seq(0, 25, by=5)) +
   ylab("Covid-19 excess deaths per 100,000") +
