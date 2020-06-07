@@ -1,0 +1,7 @@
+Dear XXX,
+
+Electronically submitted please find a manuscript titled "Monitoring Health Systems by Estimating Excess Mortality". We first developed this work to assess the impact on hurricane María on Puerto Rico. During the pandemic, the approach has gained much interest with several group interested in using an approach like ours to estimate the mortality excess due to COVID-19. In fact, our analysis was highlighted in a New York Times opinion piece by Nicholas Kristoph:
+
+https://www.nytimes.com/2020/05/13/opinion/coronavirus-us-deaths.html
+
+Due to the increase interest in our work we have developed a rigorous and flexible version of statistical method and written open source software for other to implement. The submitted manuscript describes this work along with examples demonstrating that the death rate increase in Puerto Rico after María and Georges was substantially higher than the other hurricanes we examined, that excess mortality in the US were already above 100,000 on May 9, 2020, with over 58\% of these occurred in New York, New Jersey, Massachusetts, and Pennsylvania, and that effects of this pandemic was worse for elderly black individuals compared to whites of the same age.
