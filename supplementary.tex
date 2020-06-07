@@ -1,0 +1,128 @@
+\documentclass[11pt]{article}
+
+\usepackage[top=50mm, bottom=50mm, left=50mm, right=50mm]{geometry}
+%\usepackage[a4paper,top=2.5cm,bottom=2.5cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+% for adding numbers for lines 
+\usepackage{lineno}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{epsfig}
+\usepackage{titling}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{authblk}
+\usepackage{graphics}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{float}
+\usepackage{multirow}
+\usepackage{color}
+\usepackage{lineno}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem} 
+\usepackage{makeidx}
+\usepackage{xspace}
+\usepackage{wrapfig}
+\usepackage{newfloat}
+\makeindex
+
+\DeclareFloatingEnvironment[name={Supplementary Figure},fileext=lof]{suppfigure}
+
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{Definition}{Definition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{Theorem}{Theorem}
+\newtheorem{Lemma}{Lemma}
+\newtheorem{Claim}{Claim}
+\newtheorem{Notation}{Notation}
+\newtheorem{Algorithm}{Algorithm}
+\newtheorem{Observation}{Observation}
+
+
+%%%%%%%%%%%%%%% macros by yusu %%%%%%%%%%%%%
+\newtheorem{lemma}{Lemma}
+\newtheorem{claim}{Claim}
+\newtheorem{obs}{Observation}
+
+\definecolor{darkred}{rgb}{1, 0.1, 0.3}
+\definecolor{darkblue}{rgb}{0.1, 0.1, 1}
+\definecolor{darkgreen}{rgb}{0,0.6,0.5}
+\newcommand{\yusu}[1]		{{ \textcolor{darkblue} {{\sc Yusu Says:} #1}}}
+
+\newcommand {\mm}[1] {\ifmmode{#1}\else{\mbox{\(#1\)}}\fi}
+\newcommand{\denselist}{\itemsep 0pt\parsep=1pt\partopsep 0pt}
+
+\newcommand{\etal}		{{et al.}\xspace}
+\newcommand{\myeg}	{{e.g.}\xspace}
+
+\newcommand{\eps}		{\varepsilon}
+\newcommand{\myanceq}	{{\succeq}} %ancerster 
+\newcommand{\myanc}	{{\succ}} %ancerster 
+\newcommand{\mydesceq} {{\preceq}}
+\newcommand{\mydesc}		{{\prec}}
+\newcommand{\dgh}		{\delta_{\mathcal{GH}}} %GH distance
+\newcommand{\optdI}	{\mu}
+\newcommand{\myeps}	{\eps}
+\newcommand{\mygood}		{{good}\xspace}
+\newcommand{\myk}		{\tau} %{\kappa}
+\newcommand{\mydelta}	{\delta}
+\newcommand{\nTone}	{{\widehat{T}_{1, \mydelta}^{\hat{f}}}}
+\newcommand{\nTtwo}	{{\widehat{T}_{2, \mydelta}^{\hat{g}}}}
+\newcommand{\Img}		{{\mathrm{Im}}}
+\newcommand{\myL}		{{L}}
+\newcommand{\superlevel}		{{super-level}\xspace}
+\newcommand{\myC}		{{\mathrm{C}}}
+\newcommand{\setSL}	{{\mathcal{L}}}
+\newcommand{\slone}[1] 	{{\mathrm{L}^{(1)}_{#1}}}
+\newcommand{\sltwo}[1] 	{{\mathrm{L}^{(2)}_{#1}}}
+\newcommand{\hatT}		{{\widehat{T}}}
+\newcommand{\levelC}		{\mathrm{Ch}} %{{levelC}}
+\newcommand{\LCA}		{{LCA}}%common ancester
+\newcommand{\DPalg}	{{\sf DPgoodmap}}
+\newcommand{\modifyDPalg}	{{\sf modified-DP}}
+\newcommand{\myF}		{{\mathcal{F}}}
+\newcommand{\mypartial}[1]		{{partial-{#1}-good}\xspace}
+\newcommand{\myvalue}		{\mathrm{value}}
+\newcommand{\degbound}		{{degree-bound}\xspace}
+\newcommand{\mydepth}		{{depth}\xspace}
+\newcommand{\ep}		{{\varepsilon_p}}
+
+\newcommand{\Intdopt}		{{\mydelta^*}}
+\newcommand{\criSet}		{{\Pi}}
+\newcommand{\Tcal}			{\mathcal{T}}
+\newcommand{\mycost}		{{\mathrm{cost}}}
+\newcommand{\uTone}		{{|T_1^f|}}
+\newcommand{\uTwo}		{{|T_2^g|}}
+\newcommand{\uT}				{{|T|}}
+\newcommand{\mywF}		{{w^F}}
+\newcommand{\mykpara}	{{\myk_\mydelta}}
+\newcommand{\newdepth}	{{depth}}
+\newcommand{\newtau}	{{\widehat{\tau}}}
+
+\newcommand{\sensiblepair}     {{sensible-pair}\xspace}
+\newcommand{\Edgelistpair}      {{Edge-list pair}\xspace}
+\newcommand{\edgelistpair}      {{edge-list pair}\xspace}
+\newcommand{\Fnew}          {{F_{new}}}
+\newcommand{\Fold}          {{F_{old}}}
+
+\newcommand{\footremember}[2]{%
+    \footnote{#2}
+    \newcounter{#1}
+    \setcounter{#1}{\value{footnote}}%
+}
+\newcommand{\footrecall}[1]{%
+    \footnotemark[\value{#1}]%
+} 
+\usepackage{xparse}
+\NewDocumentCommand{\DIV}{om}{%
+  \IfValueT{#1}{\setcounter{#2}{\numexpr#1-1\relax}}%
+  \csname #2\endcsname
+}
+
+\begin{document}
+Hello World
+\end {document}
