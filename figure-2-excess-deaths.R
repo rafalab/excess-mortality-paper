@@ -9,11 +9,11 @@ ndays  <- 365
 knots  <- c(6, 6, 6, 12)
 disc   <- c(TRUE, TRUE, FALSE, FALSE)
 before <- c(365, 365, 365, 365) 
-after  <- c(365, 365, 365, 105)
+after  <- c(365, 365, 365, 45)
 interval_start <- c(hurricane_dates[2], # Georges
                     hurricane_dates[3], # Maria
                     Chikungunya = make_date(2014,07,14),
-                    "Covid-19"  = make_date(2020,01,01))
+                    "Covid-19"  = make_date(2020,03,01))
 
 # -- Outer loop that goes through events in PR
 excess_deaths_pr <- map_df(seq_along(interval_start), function(i)
@@ -177,8 +177,7 @@ rm(covid_nyc, ny)
 # -- Define regions of interest
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-# max_date      <- make_date(2020, 5, 9)
-max_date      <- max(cdc_state_counts$date)
+max_date      <- max(cdc_state_counts$date)-7
 
 # -- Remove data after the max date
 counts <- cdc_state_counts %>% filter(date <= max_date)
@@ -247,7 +246,7 @@ vari_estimates <- us %>%
   select(vari)
 us <- bind_cols(cumulative_deaths, vari_estimates)
 
-dates <- seq(unique(us$date)[1], max_date+14, by = "21 days")
+dates <- seq(unique(us$date)[1], max_date+21, by = "21 days")
 fig2b <- us %>%
   filter(type != "observed") %>%
   mutate(lwr = outcome-1.96*vari,
@@ -263,8 +262,8 @@ fig2b <- us %>%
           method=list("smart.grid", cex=1.5)) +
   ylab("Cumulative excess deaths") +
   xlab("Date") +
-  scale_y_continuous(limits = c(-3000, 125000),
-                     breaks = seq(0, 122000, by=20000),
+  scale_y_continuous(limits = c(-3000, 120000),
+                     breaks = seq(0, 120000, by=20000),
                      labels = scales::comma) +
   scale_x_date(breaks      = dates,
                date_labels = "%b %d") +
@@ -285,7 +284,7 @@ ggsave("figs/figure-2b.pdf",
 ### -- Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
 ### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Intervals for Flu 18 and Covid 19, respectively
-intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 24), by = "day"),
+intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 17), by = "day"),
                   seq(make_date(2020, 03, 01), max_date, by = "day"))
 
 # -- Fitting model to each state 
