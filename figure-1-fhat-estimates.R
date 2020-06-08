@@ -147,6 +147,7 @@ fits <- map_df(seq_along(count_index), function(i){
 fig1a <- fits %>% 
   mutate(day       = as.numeric(date - hurricane_date),
          hurricane = factor(hurricane, levels=rev(unlist(hurricane_names)))) %>%
+  filter(day >= -120 & day <= 360) %>%
   ggplot(aes(day, fitted*100, color = hurricane)) +
   geom_hline(yintercept = 0, lty=2, color="gray") +
   geom_line() +
@@ -341,7 +342,7 @@ fig1c <- df %>%
   geom_ribbon(aes(date, ymin = -2*sd, ymax = 2*sd), color = 1, fill = NA, lty = 2) +
   geom_ribbon(alpha = 0.5) +
   geom_line() +
-  xlab("") +
+  xlab("Date") +
   ylab("Percent increase from expected mortality") +
   theme(axis.text.y  = element_text(size=18),
         axis.text.x  = element_text(size=18),
