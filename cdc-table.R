@@ -38,8 +38,8 @@ rm(covid_nyc, ny)
 # Fit excess deaths models ------------------------------------------------
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-# max_date <- max(cdc_state_counts$date) - 7 
-max_date <- max(cdc_state_counts$date)
+max_date <- max(cdc_state_counts$date) - 7
+
 ## remover the latest
 counts <- cdc_state_counts %>% filter(date <= max_date)
 
@@ -73,7 +73,7 @@ names(fits) <- states
 # Excess mortality --------------------------------------------------------
 # intervals <- list(seq(make_date(2017, 12, 16), make_date(2018, 2, 10), by = "day"),
 #                   seq(make_date(2020, 3, 14), max_date, by = "day"))
-intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 17), by = "day"),
+intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 24), by = "day"),
                   seq(make_date(2020, 03, 01), max_date, by = "day"))
 
 e <- map_df(states, function(x){
