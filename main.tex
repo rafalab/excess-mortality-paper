@@ -273,14 +273,14 @@ Using our approach, we found that the death rate in Puerto Rico increased by 73\
 Our approach can also be used to detect and quantify the effects of epidemics or outbreaks. As an example, we fit our model to Puerto Rico mortality data from 1985 to 2020 and, apart from the hurricane seasons mentioned in the previous section, we detected an unusual increase in mortality rates from July 2014 to February 2015. This period coincides with the 2014-2015 Chikungunya outbreak \cite{sharp2016surveillance, hsu2019risk}  (Figure \ref{fig:fhat-estimates}B). The effects were particularly strong for individuals over 60 years and for the 0 to 4 years age group. (Supplementary Figure \ref{supp-fig:chikungunya-agegroups}).
 
 
-Although mortality records for the period of the COVID-19 pandemic are not yet complete, the CDC has implemented a correction to the most recent counts and is making weekly state-level data from January 2017 to May 12, 2020, publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates detect the pandemic for several states, as well as the 2018 flu epidemics (Supplementary Figure \ref{supp-fig:covid19-states}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 flu season
+Although mortality records for the period of the COVID-19 pandemic are not yet complete, the CDC has implemented a correction to the most recent counts and is making weekly state-level data from January 2017, to May 2020, publicly available \cite{cdc2020covid19}. We fit our model to these data for each state and our event effect estimates detect the pandemic for several states, as well as the 2018 flu epidemics (Supplementary Figure \ref{supp-fig:covid19-states}). By aggregating the results for the entire United States we confirm that the COVID-19 pandemic had a substantially larger impact than the 2018 flu season
 (Figure \ref{fig:fhat-estimates}C).
  
 \subsection{Excess mortality estimates}
 \label{subsec:excess-mortality}
 Once we have fit our model, we can compute excess mortality estimates for any period as well as standard errors that take into account sampling and natural variation. We used the estimated parameters from the Puerto Rico data to compute excess deaths for the 365 days following hurricanes Georges, and Mar\'ia. We also computed these quantities for the 365 days following the start of the detected effects from the 2014 Chikungunya outbreak. Finally, we computed excess deaths in Puerto Rico during the COVID-19 pandemic, specifically from March 1, 2020, to April 15, 2020, the last day for which the death registry has complete data (typically, it takes 90 days for 99\% of deaths to be registered).
 
-For Mar\'ia the excess death curve grew for over six months after landfall, with a point estimate on March 20, 2018, six months after landfall, of 3,200 (95\% CI: 2,800 to 3,600), and for Georges, the excess death curve grew for over three months after landfall, with a point estimate on December 21, 1998, three months after landfall, of 1,200 (95\% CI: 950 to 1,500) (Figure \ref{fig:excess-deaths}A). The period of July 14, 2014, to February 20, 2015, associated with a Chikungunya outbreak was also identified to have unusually high mortality rates. However, we also noted a decrease in cumulative deaths for several months after February 20, 2015, consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. A year after the start of the Chikungunya epidemic, on July 14, 2015, we observe a point estimate for excess mortality of 975 (95\% CI:400 to 1,550) (Figure \ref{fig:excess-deaths}A). We note that from March 15, 2020, to April 15, 2020, associated with the COVID-19 pandemic, no effect is detected.
+For Mar\'ia the excess death curve grew for over six months after landfall, with a point estimate on March 20, 2018, six months after landfall, of 3,200 (95\% CI: 2,800 to 3,600), and for Georges, the excess death curve grew for over three months after landfall, with a point estimate on December 21, 1998, three months after landfall, of 1,200 (95\% CI: 950 to 1,500) (Figure \ref{fig:excess-deaths}A). The period of July 14, 2014, to February 20, 2015, associated with a Chikungunya outbreak was also identified to have unusually high mortality rates. However, we also noted a decrease in cumulative deaths for several months after February 20, 2015, consistent with a \emph{harvesting effect} \cite{hajat2005mortality, dushoff2006mortality}. A year after the start of the Chikungunya epidemic, on July 14, 2015, we observe a point estimate for excess mortality of 975 (95\% CI:400 to 1,550) (Figure \ref{fig:excess-deaths}A). We note that from March 1, 2020, to April 15, 2020, associated with the COVID-19 pandemic, no effect is detected.
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -302,7 +302,7 @@ For Mar\'ia the excess death curve grew for over six months after landfall, with
     \label{fig:excess-deaths}
 \end{figure}
 
-Next, using the CDC data we computed excess mortality for the period of the COVID-19 pandemic for which we have data, specifically for the week ending on March 15, 2020, to the week ending on May 9, 2020. When we compared these numbers to the reported numbers of COVID-19 deaths \cite{smith2020coronavirus}, we found a difference of 33,872 (95\% CI: 31,932 to 35,812) deaths (Figure \ref{fig:excess-deaths}B, Table \ref{tab:covid19-states}). Further, we found that excess deaths in the US were already above 100,000 on May 9, 2020. We also note that in the US, the number of excess deaths during the COVID-19 pandemic is much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, Table \ref{tab:covid19-states}, Supplementary Figure \ref{supp-fig:covid-v-flu}). We also note that 58\% of the cases come from the four northeast states: New York, New Jersey, Massachusetts, and Pennsylvania (Supplementary Figure \ref{supp-fig:covid19-states}). We note that Connecticut was not included in the analysis due to missing data.
+Next, using the CDC data we computed excess mortality for the period of the COVID-19 pandemic for which we have data, specifically for the week ending on March 15, 2020, to the week ending on May 16, 2020. When we compared these numbers to the reported numbers of COVID-19 deaths \cite{smith2020coronavirus}, we found a difference of 32,257 (95\% CI: 30,211 to 34,303) deaths (Figure \ref{fig:excess-deaths}B, Table \ref{tab:covid19-states}). Further, we found that excess deaths in the US were already above 100,000 on May 9, 2020. We also note that in the US, the number of excess deaths during the COVID-19 pandemic is much larger than the 2018 flu season, although this is not true for all states (Figure \ref{fig:excess-deaths}C, Table \ref{tab:covid19-states}, Supplementary Figure \ref{supp-fig:covid-v-flu}). We also note that 58\% of the cases come from the four northeast states: New York, New Jersey, Massachusetts, and Pennsylvania (Supplementary Figure \ref{supp-fig:covid19-states}). We note that Connecticut was not included in the analysis due to missing data.
 
 \begin{table}
 \centering
@@ -314,68 +314,69 @@ Next, using the CDC data we computed excess mortality for the period of the COVI
 State & Excess & Reported & Rate  & Excess & Rate \\
  & mortality (SD) & cases & (per million) & mortality (SD) & (per million) \\
 \hline
-New York City & 24132 (134) & 19324 & 2873 & 806 (129) & 96 \\ 
-  New Jersey & 13364 (153) & 9116 & 1505 & 525 (147) & 59 \\ 
-  New York (not including NYC) & 11178 (179) & 7260 & 1011 & 1147 (174) & 104 \\ 
-  Massachusetts & 5995 (131) & 4840 & 870 & 325 (126) & 47 \\ 
-  Michigan & 6240 (189) & 4526 & 625 & 1025 (187) & 103 \\ 
-  Pennsylvania & 7638 (214) & 3793 & 597 & 1022 (206) & 80 \\ 
-  Louisiana & 2544 (133) & 2267 & 547 & 1053 (129) & 226 \\ 
-  District of Columbia & 309 (37) & 311 & 437 & 116 (36) & 165 \\ 
-  Maryland & 2632 (120) & 1614 & 435 & 355 (117) & 59 \\ 
-  Illinois & 4802 (205) & 3362 & 379 & 1601 (199) & 126 \\ 
-  Vermont & 212 (41) & 53 & 340 & 106 (40) & 169 \\ 
-  Delaware & 283 (49) & 221 & 291 & 58 (47) & 60 \\ 
-  Colorado & 1588 (91) & 965 & 276 & 307 (91) & 53 \\ 
-  Mississippi & 791 (94) & 421 & 266 & 773 (92) & 260 \\ 
-  Virginia & 2147 (132) & 827 & 252 & 671 (131) & 79 \\ 
-  South Carolina & 1265 (115) & 330 & 246 & 667 (113) & 129 \\ 
-  Indiana & 1646 (144) & 1490 & 244 & 898 (141) & 133 \\ 
-  Arizona & 1467 (156) & 532 & 202 & 1390 (157) & 191 \\ 
-  New Hampshire & 255 (54) & 131 & 188 & 45 (53) & 33 \\ 
-  Ohio & 1958 (233) & 1331 & 168 & 1724 (226) & 147 \\ 
-  New Mexico & 345 (73) & 191 & 164 & 54 (73) & 26 \\ 
-  Georgia & 1599 (201) & 1380 & 151 & 1398 (197) & 132 \\ 
-  Rhode Island & 152 (50) & 418 & 144 & 81 (50) & 77 \\ 
-  Minnesota & 781 (119) & 558 & 139 & 478 (118) & 85 \\ 
-  Florida & 2854 (372) & 1714 & 133 & 2458 (368) & 114 \\ 
-  Texas & 3840 (370) & 1086 & 132 & 4021 (359) & 139 \\ 
-  Wisconsin & 715 (133) & 398 & 123 & 653 (131) & 112 \\ 
-  Missouri & 736 (169) & 492 & 120 & 1169 (164) & 191 \\ 
-  Washington & 711 (168) & 925 & 93 & -13 (164) & -2 \\ 
-  Alabama & 400 (129) & 390 & 82 & 904 (126) & 184 \\ 
-  California & 2975 (501) & 2732 & 75 & 4530 (487) & 115 \\ 
-  Tennessee & 481 (172) & 241 & 70 & 1120 (169) & 164 \\ 
-  Utah & 213 (62) & 66 & 66 & 47 (62) & 15 \\ 
-  Nevada & 187 (77) & 306 & 61 & 290 (76) & 94 \\ 
-  Kentucky & 231 (113) & 312 & 52 & 708 (111) & 158 \\ 
-  Arkansas & 129 (94) & 88 & 43 & 537 (92) & 178 \\ 
-  Iowa & 136 (91) & 252 & 43 & 160 (89) & 51 \\ 
-  Oregon & 120 (112) & 127 & 29 & 47 (111) & 11 \\ 
-  South Dakota & 25 (47) & 34 & 29 & -56 (47) & -63 \\ 
-  Kansas & 66 (80) & 172 & 23 & 230 (79) & 79 \\ 
-  Maine & 27 (54) & 64 & 20 & 46 (54) & 34 \\ 
-  Idaho & 33 (53) & 67 & 19 & 97 (54) & 54 \\ 
-  Nebraska & 37 (66) & 95 & 19 & 50 (64) & 26 \\ 
-  Wyoming & 9 (30) & 7 & 16 & 15 (31) & 26 \\ 
-  Montana & -7 (49) & 16 & -6 & -72 (48) & -68 \\ 
-  Alaska & -34 (32) & 8 & -47 & -6 (33) & -9 \\ 
-  Hawaii & -81 (51) & 17 & -57 & 87 (51) & 62 \\ 
-  North Dakota & -88 (41) & 35 & -115 & 18 (42) & 24 \\ 
+New York City & 25197 (141) & 20071 & 3026 & 763 (135) & 92 \\ 
+  New Jersey & 15611 (161) & 10249 & 1758 & 501 (154) & 56 \\ 
+  New York (not including NYC) & 11873 (187) & 7882 & 1073 & 1207 (182) & 109 \\ 
+  Massachusetts & 6937 (137) & 5705 & 1005 & 285 (131) & 41 \\ 
+  District of Columbia & 505 (39) & 375 & 711 & 89 (37) & 125 \\ 
+  Michigan & 7039 (197) & 4880 & 705 & 1049 (195) & 105 \\ 
+  Louisiana & 3186 (139) & 2479 & 687 & 1006 (135) & 217 \\ 
+  Pennsylvania & 8727 (228) & 4490 & 682 & 1026 (219) & 80 \\ 
+  Maryland & 3102 (126) & 1957 & 512 & 405 (123) & 67 \\ 
+  Illinois & 6094 (215) & 4149 & 483 & 1667 (208) & 132 \\ 
+  Delaware & 443 (51) & 286 & 452 & 82 (49) & 83 \\ 
+  Rhode Island & 425 (52) & 489 & 401 & 49 (52) & 46 \\ 
+  Mississippi & 1076 (98) & 510 & 362 & 773 (96) & 260 \\ 
+  Colorado & 1703 (96) & 1192 & 293 & 284 (96) & 49 \\ 
+  Vermont & 181 (44) & 53 & 290 & 71 (43) & 113 \\ 
+  Indiana & 1869 (150) & 1741 & 276 & 867 (147) & 128 \\ 
+  Virginia & 2155 (139) & 1002 & 252 & 635 (137) & 74 \\ 
+  South Carolina & 1236 (121) & 380 & 238 & 626 (119) & 120 \\ 
+  New Hampshire & 297 (57) & 171 & 218 & 62 (55) & 46 \\ 
+  Georgia & 2101 (210) & 1573 & 196 & 1303 (207) & 122 \\ 
+  Arizona & 1441 (164) & 679 & 195 & 1325 (165) & 179 \\ 
+  Missouri & 1039 (177) & 593 & 169 & 1197 (172) & 195 \\ 
+  Ohio & 1974 (244) & 1610 & 169 & 1741 (237) & 149 \\ 
+  New Mexico & 347 (76) & 259 & 165 & 67 (76) & 32 \\ 
+  Minnesota & 871 (125) & 709 & 154 & 534 (123) & 94 \\ 
+  Florida & 3191 (389) & 1963 & 147 & 2383 (385) & 110 \\ 
+  Alabama & 643 (135) & 485 & 131 & 922 (132) & 188 \\ 
+  Washington & 967 (177) & 1015 & 126 & -79 (173) & -10 \\ 
+  Texas & 3649 (386) & 1330 & 124 & 3999 (376) & 136 \\ 
+  Wisconsin & 679 (139) & 453 & 116 & 630 (138) & 108 \\ 
+  California & 4453 (525) & 3254 & 113 & 4537 (509) & 115 \\ 
+  Iowa & 308 (96) & 346 & 97 & 208 (94) & 66 \\ 
+  Tennessee & 488 (180) & 292 & 71 & 1085 (177) & 158 \\ 
+  Nebraska & 126 (70) & 129 & 65 & 56 (67) & 29 \\ 
+  Nevada & 174 (80) & 349 & 56 & 268 (80) & 86 \\ 
+  Utah & 162 (65) & 78 & 50 & 47 (65) & 14 \\ 
+  Kentucky & 180 (119) & 346 & 40 & 667 (117) & 149 \\ 
+  Wyoming & 22 (32) & 7 & 38 & 14 (32) & 25 \\ 
+  Arkansas & 84 (99) & 98 & 28 & 553 (97) & 183 \\ 
+  Oregon & 113 (117) & 137 & 27 & 38 (116) & 9 \\ 
+  Kansas & 72 (85) & 189 & 25 & 235 (83) & 80 \\ 
+  Montana & 24 (51) & 16 & 22 & -87 (50) & -81 \\ 
+  Idaho & 16 (56) & 73 & 9 & 85 (57) & 47 \\ 
+  South Dakota & 1 (49) & 44 & 1 & -55 (49) & -62 \\ 
+  Maine & -7 (57) & 70 & -5 & 44 (57) & 32 \\ 
+  Oklahoma & -196 (123) & 288 & -49 & 696 (119) & 175 \\ 
+  Hawaii & -81 (54) & 17 & -58 & 90 (54) & 64 \\ 
+  West Virginia & -141 (80) & 65 & -79 & 442 (79) & 248 \\ 
+  Alaska & -59 (34) & 8 & -81 & 3 (34) & 4 \\ 
+  North Dakota & -78 (43) & 42 & -102 & 35 (44) & 46 \\
  \hline
-  Total & 107041 (1091) & 74905 & 347 & 33664 (1066) & 109 \\ 
+  Total & 120215 (1153) & 84578 & 381 & 34429 (1126) & 109 \\ 
   \hline
  \end{tabular}
- \caption{Excess mortality estimates for the weeks ending on March 14, 2020 to May 9, 2020 (COVID-19) and  December 10, 2017 to February 17, 2018 (2018 Flu). The standard deviation for excess mortality for these periods is included in parenthesis. The states are ordered by the per-million excess mortality rate. Connecticut and North Carolina are excluded due to missing data. Numbers for New York do not include New York City which is listed separately.}
+ \caption{Excess mortality estimates for the weeks ending on March 14, 2020 to May 16, 2020 (COVID-19) and  December 10, 2017 to February 24, 2018 (2018 Flu). The standard deviation for excess mortality for these periods is included in parenthesis. The states are ordered by the per-million excess mortality rate. Connecticut and North Carolina are excluded due to missing data. Numbers for New York do not include New York City which is listed separately.}
  \label{tab:covid19-states}
  \normalsize
 \end{table}
  
- 
 
 \subsection{Across group comparisons}
 \label{subsec:group-comparison}
-At the time of writing, the Cook County Medical Examiner's Office was making up-to-date records available online including demographic information for each individual. This office investigates any human death in Cook County that falls within the category of diseases constituting a threat to public health, among other circumstances\cite{cookcovid19}. If we consider $\mu_t$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and observed the effects of the COVID-19 pandemic, in particular among individuals over 75. However, a persistent increase in mortality above normal levels is observed for individuals above 40 (Supplementary Figure \ref{supp-fig:cook-agegroups}). Furthermore, we found a difference in the effect between white and black individuals in March and April (Figure \ref{fig:cook-white-v-black}). Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 185\% (95\% CI: 144\% to 227\%) and 57\% (95\% CI:24\% to 89\%) on April 11 for blacks and whites, respectively. Furthermore, for the 60 to 74 age group we observed a percent increase of 600\% (95\% CI: 525\% to 674\%) and 480\% (95\% CI: 416\% to 543\%) on April 25, respectively. Finally, the percent increase for individuals 75 years and older was 2,282\% (95\% CI: 2,047\% to 2,518\%) and 1,222\% (95\% CI: 1,109\% to 1,335\%) on April 29, respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}). The population size, in this database, for other racial groups was substantially smaller and were not included in the analysis.
+At the time of writing, the Cook County Medical Examiner's Office was making up-to-date records available online including demographic information for each individual. This office investigates any human death in Cook County that falls within the category of diseases constituting a threat to public health, among other circumstances\cite{cookcovid19}. If we consider $\mu_t$ to be the expected number of deaths recorded by the Medical Examiner's Office, we can fit our model and interpret $f(t)$ as the percent increase in deaths examined by this office. We fit the model to these data and observed the effects of the COVID-19 pandemic, in particular among individuals over 75. However, a persistent increase in mortality above normal levels is observed for individuals above 40 (Supplementary Figure \ref{supp-fig:cook-agegroups}). Furthermore, we found a difference in the effect between white and black individuals in March and April (Figure \ref{fig:cook-white-v-black}). Among those between 40 and 59 years of age, the percent increase in medical examiner death rates for Cook county was as high as 188\% (95\% CI: 150\% to 226\%) and 101\% (95\% CI: 68\% to 134\%) on April 23 for blacks and whites, respectively. Furthermore, for the 60 to 74 age group we observed a percent increase of 628\% (95\% CI: 560\% to 696\%) and 398\% (95\% CI: 345\% to 451\%) on the same date, respectively. Finally, the percent increase for individuals 75 years and older on the same date was 2,193\% (95\% CI: 1,996\% to 2,389\%) and 1,062\% (95\% CI: 974\% to  1,150\%), respectively, another statistically significant finding (Figure \ref{fig:cook-white-v-black}). The population size, in this database, for other racial groups was substantially smaller and were not included in the analysis.
 
 \begin{figure}[ht]
 	\begin{tabular}{lll}
@@ -430,7 +431,7 @@ We have introduced methods and software useful for estimating excess mortality f
 
 We used the model to demonstrate that the indirect effects for Hurricanes Georges and Mar\'ia on Puerto Rico were like nothing seen in previous hurricanes in the United States. We also demonstrated that the 2014 Chikungunya epidemic resulted in substantial excess mortality in Puerto Rico. These results suggest a lack of robustness in Puerto Rico's health system. We note that in New Orleans, shortly after Katrina, a \$14.5 billion investment was made to construct stronger levees\cite{kates2006reconstruction, interagency2007performance, adelson2018}. In contrast, after Hurricane Georges resulted in a similar excess mortality toll, as far as we know, no systematic effort was put in place to improve, for example, Puerto Rico’s electrical grid nor it's data collection infrastructure. On the contrary, it appears that the grid continued to deteriorate during the 19 years between Georges and Mar\'ia. Furthermore, while Puerto Rico seems to have, up to now, \emph{dodged a bullet} during the COVID-19 pandemic, its health system does not appear to be ready to withstand another shock to its fragile infrastructure. As an application of our method, we introduced an index that can be used in real-time to at least attempt to detect when there is a reason for concern.
 
-Our analysis of CDC data demonstrated that by May 9, 2020, excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (35,653) and three of its neighbors: New Jersey (14,537), Pennsylvania (8,383), and Massachusetts (6,159). Note that Connecticut, the other neighboring state, was not included in the analysis due to missing data. However, it is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC \cite{cdc2020covid19} and hence, the accuracy of our results depends on the accuracy of this adjustment.
+Our analysis of CDC data demonstrated that by May 9, 2020, excess mortality was already above 100,000. We also performed a state-by-state analysis and found that over 58\% of these deaths occurred in New York (37,070) and three of its neighbors: New Jersey (15,611), Pennsylvania (8,727), and Massachusetts (6,937). Note that Connecticut, the other neighboring state, was not included in the analysis due to missing data. However, it is important to note that the weekly death counts used in our analysis are adjusted for missing data by the CDC \cite{cdc2020covid19} and hence, the accuracy of our results depends on the accuracy of this adjustment.
 
 Finally, we used our model to compare the effects of the pandemic in blacks and whites in Cook county, IL,  and found a disturbing trend, with elderly blacks affected much more severely than their white counterparts. However, note that this analysis was not based on total mortality counts, but counts calculated from the Medical Examiner. Our conclusions assume that COVID-19 cases from whites and blacks are equally likely to be included in the Medical Examiner dataset.  
 
@@ -555,7 +556,7 @@ To assess our procedure we conducted a Monte Carlo simulation. We start by denot
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-3.pdf} 
-    \caption{Estimated event effects as percent increase over expected mortality. The solid line corresponds to percent change from expected mortality, the shaded region represents a 95\% confidence interval, and points show observed percent change from expected mortality. A) Percent change during the Chikungunya epidemic in Puerto Rico for six age groups. B) Percent change during the 2005 flu season in Puerto Rico.}
+    \caption{Estimated effects as percent increase over expected mortality during the Chikungunya epidemic for different age groups. The solid line corresponds to percent change from expected mortality, the shaded region represents a 95\% confidence interval, and points show observed percent change from expected mortality.}
 	\label{supp-fig:chikungunya-agegroups}
 \end{suppfigure}
 
@@ -563,7 +564,7 @@ To assess our procedure we conducted a Monte Carlo simulation. We start by denot
 \begin{suppfigure}[ht]
 	\centering
 	\includegraphics[width=1\linewidth]{figs/supp-figure-covidVflu-rates.pdf} 
-	\caption{State-specific excess death estimates per 100,000 from March 1, 2020 to May 9, 2020, the period associated with the COVID-19 pandemic, plotted against the excess death estimates per 100,000 from December 10, 2017 to February 17, 2018, the period associated with the 2018 flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season.}
+	\caption{State-specific excess death estimates per 100,000 from March 1, 2020 to May 16, 2020, the period associated with the COVID-19 pandemic, plotted against the excess death estimates per 100,000 from December 10, 2017 to February 24, 2018, the period associated with the 2018 flu season. The identity line is represented in red and separates states in which the increase in mortality was higher during COVID-19 from those in which the increase in mortality was higher during the 2018 flu season.}
 	\label{supp-fig:covid-v-flu}
 \end{suppfigure}
 
