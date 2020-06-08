@@ -39,7 +39,7 @@ rm(covid_nyc, ny)
 # -- Define regions of interest
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date      <- make_date(2020, 5, 9)
+max_date      <- max(cdc_state_counts$date)-7
 
 # -- Remove data after the max date
 counts <- cdc_state_counts %>% filter(date <= max_date)

@@ -51,7 +51,7 @@ rm(covid_nyc, ny)
 # -- Denoting periods of interest
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date      <- make_date(2020, 5, 2)
+max_date      <- max(cdc_state_counts$date)-7
 
 # -- Remove last dates
 counts <- cdc_state_counts %>% filter(date <= max_date)
@@ -109,7 +109,7 @@ supp_fig4 <- df %>%
   geom_ribbon(alpha = 0.5) +
   geom_ribbon(aes(date, ymin = -2*sd, ymax = 2*sd), color = 1, fill = NA, lty = 2) +
   ylab("Percent increase from expected mortality") +
-  xlab("") +
+  xlab("Date") +
   scale_x_date(date_breaks = "1 years", date_labels = "%Y") +
   facet_wrap(~state, scales="free_y") +
   theme(axis.text.y = element_text(size=15),

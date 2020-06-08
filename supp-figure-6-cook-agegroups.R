@@ -54,7 +54,7 @@ supp_fig6 <- cook %>%
   geom_ribbon(aes(ymin = 100*lwr, ymax=100*upr), alpha=0.50) + 
   geom_line() +
   ylab("Percent increase from expected mortality") +
-  xlab("") +
+  xlab("Date") +
   scale_x_date(date_breaks = "5 weeks", 
                date_labels = "%b %d") +
   scale_y_continuous(limits = c(-200, 2000),
