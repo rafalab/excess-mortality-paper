@@ -246,6 +246,7 @@ vari_estimates <- us %>%
 us <- bind_cols(cumulative_deaths, vari_estimates)
 
 # -- Figure 2B
+dates <- seq(unique(us$date)[1], max_date+14, by = "21 days")
 fig2b <- us %>%
   filter(type != "observed") %>%
   mutate(lwr = outcome-1.96*vari,
@@ -255,6 +256,7 @@ fig2b <- us %>%
   geom_ribbon(aes(ymin=lwr,
                   ymax=upr), alpha=0.50, show.legend = F, color="transparent") +
   geom_line(show.legend = F) +
+  geom_point(show.legend = F) +
   geom_dl(aes(color=type, label=type), 
           method=list("last.qp", cex=1.5)) +
   ylab("Cumulative excess deaths") +
@@ -262,9 +264,9 @@ fig2b <- us %>%
   scale_y_continuous(limits = c(-3000, 125000),
                      breaks = seq(0, 122000, by=20000),
                      labels = scales::comma) +
-  scale_x_date(date_breaks = "2 week",
+  scale_x_date(breaks      = dates,
                date_labels = "%b %d",
-               limits = c(ymd("2020-03-07"), ymd("2020-05-30"))) +
+               limits      = c(ymd("2020-03-07"), ymd("2020-05-30"))) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 
