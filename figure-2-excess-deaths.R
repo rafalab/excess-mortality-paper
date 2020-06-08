@@ -177,7 +177,8 @@ rm(covid_nyc, ny)
 # -- Define regions of interest
 flu_season    <- seq(make_date(2017, 12, 16), make_date(2018, 1, 16), by = "day")
 exclude_dates <- c(flu_season, seq(make_date(2020, 1, 1), max(cdc_state_counts$date, na.rm = TRUE), by = "day"))
-max_date      <- make_date(2020, 5, 9)
+# max_date      <- make_date(2020, 5, 9)
+max_date      <- max(cdc_state_counts$date)
 
 # -- Remove data after the max date
 counts <- cdc_state_counts %>% filter(date <= max_date)
@@ -239,8 +240,9 @@ cumulative_deaths <- us %>%
 vari_estimates <- us %>% 
   left_join(covid_us, by="date") %>%
   gather(type, vari, c(3,5)) %>%
-  select(date,vari) %>%
-  bind_rows(tibble(date=.$date[1:10], vari=rep(0,10)))
+  select(date, vari) %>%
+  bind_rows(tibble(date=.$date[1:11], vari=rep(0,11))) %>%
+  select(vari)
 us <- bind_cols(cumulative_deaths, vari_estimates)
 
 # -- Figure 2B
@@ -256,13 +258,13 @@ fig2b <- us %>%
   geom_dl(aes(color=type, label=type), 
           method=list("last.qp", cex=1.5)) +
   ylab("Cumulative excess deaths") +
-  xlab("") +
-  scale_y_continuous(limits = c(-3000, 111000),
-                     breaks = seq(0, 110000, by=20000),
+  xlab("Date") +
+  scale_y_continuous(limits = c(-3000, 125000),
+                     breaks = seq(0, 122000, by=20000),
                      labels = scales::comma) +
   scale_x_date(date_breaks = "2 week",
                date_labels = "%b %d",
-               limits = c(ymd("2020-03-07"), ymd("2020-05-24"))) +
+               limits = c(ymd("2020-03-07"), ymd("2020-05-30"))) +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 

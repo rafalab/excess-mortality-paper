@@ -69,7 +69,7 @@ fig3a <- cook %>%
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line(show.legend = F) +
   ylab("Percent increase from expected mortality") +
-  xlab("") +
+  xlab("Date") +
   scale_x_date(date_breaks = "1 months", 
                date_labels = "%b %d") +
   scale_y_continuous(limits = c(-115, 2700),
@@ -100,7 +100,7 @@ fig3b <- cook %>%
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line() +
   ylab("Percent increase from expected mortality") +
-  xlab("") +
+  xlab("Date") +
   scale_x_date(date_breaks = "1 months", 
                date_labels = "%b %d") +
   scale_y_continuous(limits = c(-115, 2700),
@@ -131,7 +131,7 @@ fig3c <- cook %>%
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50, color="transparent", show.legend = F) +
   geom_line(show.legend = F) +
   ylab("Percent increase from expected mortality") +
-  xlab("") +
+  xlab("Date") +
   scale_x_date(date_breaks = "1 months", 
                date_labels = "%b %d") +
   scale_y_continuous(limits = c(-115, 2700),

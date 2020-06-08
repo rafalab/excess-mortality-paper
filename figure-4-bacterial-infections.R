@@ -59,7 +59,7 @@ fig4a <- fit %>%
   geom_hline(yintercept = 0, color="red3", lty=2) +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50) +
   geom_line() +
-  xlab("") +
+  xlab("Date") +
   ylab("Percent increase from expected mortality") +
   scale_y_continuous(limits = c(-70, 140),
                      breaks = seq(-60, 140, by=30)) +
@@ -85,7 +85,7 @@ fig4b <- fit %>%
   geom_hline(yintercept = 0, color="red3", lty=2) +
   geom_ribbon(aes(ymin=100*lwr, ymax=100*upr), alpha=0.50) +
   geom_line() +
-  xlab("") +
+  xlab("Date") +
   ylab("Percent increase from expected mortality") +
   scale_y_continuous(limits = c(-70, 140),
                      breaks = seq(-60, 140, by=30)) +
