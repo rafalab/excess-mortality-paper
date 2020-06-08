@@ -234,39 +234,40 @@ us <- excess_deaths_us %>%
 
 # -- Some wrangling before viz
 cumulative_deaths <- us %>% 
-  left_join(covid_us, by="date") %>%
+  right_join(covid_us, by="date") %>%
+  arrange(date) %>%
   gather(type, outcome, c(2,4,6)) %>%
   select(-sd, -se)
 vari_estimates <- us %>% 
-  left_join(covid_us, by="date") %>%
+  right_join(covid_us, by="date") %>%
+  arrange(date) %>%
   gather(type, vari, c(3,5)) %>%
   select(date, vari) %>%
-  bind_rows(tibble(date=.$date[1:11], vari=rep(0,11))) %>%
+  bind_rows(tibble(date=.$date[1:93], vari=rep(0,93))) %>%
   select(vari)
 us <- bind_cols(cumulative_deaths, vari_estimates)
 
-# -- Figure 2B
 dates <- seq(unique(us$date)[1], max_date+14, by = "21 days")
 fig2b <- us %>%
   filter(type != "observed") %>%
   mutate(lwr = outcome-1.96*vari,
          upr = outcome+1.96*vari,
          type = ifelse(type=="covid", "Reported \nCovid-19", "Excess \ndeaths")) %>%
+  na.omit() %>%
   ggplot(aes(date, outcome, color=type, fill=type)) +
   geom_ribbon(aes(ymin=lwr,
                   ymax=upr), alpha=0.50, show.legend = F, color="transparent") +
   geom_line(show.legend = F) +
-  geom_point(show.legend = F) +
+  geom_point(aes(color="Excess \ndeaths"), show.legend = F, data = filter(us, type=="fitted")) +
   geom_dl(aes(color=type, label=type), 
-          method=list("last.qp", cex=1.5)) +
+          method=list("smart.grid", cex=1.5)) +
   ylab("Cumulative excess deaths") +
   xlab("Date") +
   scale_y_continuous(limits = c(-3000, 125000),
                      breaks = seq(0, 122000, by=20000),
                      labels = scales::comma) +
   scale_x_date(breaks      = dates,
-               date_labels = "%b %d",
-               limits      = c(ymd("2020-03-07"), ymd("2020-05-30"))) +
+               date_labels = "%b %d") +
   theme(axis.text  = element_text(size=18),
         axis.title = element_text(size=18))
 
