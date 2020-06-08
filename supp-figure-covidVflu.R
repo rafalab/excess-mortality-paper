@@ -52,7 +52,7 @@ states <- setdiff(states, c("Connecticut", "North Carolina", "Puerto Rico"))
 ### -- Figure 2C: Covid19 vs Flu18 excess deaths ------------------------------------------------------------------
 ### -- ----------------------------------------- ------------------------------------------------------------------
 # -- Intervals for Flu 18 and Covid 19, respectively
-intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 17), by = "day"),
+intervals <- list(seq(make_date(2017, 12, 10), make_date(2018, 2, 24), by = "day"),
                   seq(make_date(2020, 03, 01), max_date, by = "day"))
 
 # -- Fitting model to each state 
