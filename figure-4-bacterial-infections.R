@@ -69,7 +69,7 @@ fig4a <- fit %>%
         axis.title = element_text(size=17))
 
 # -- Save figure 4a
-ggsave("figs/figure-4a.pdf",
+ggsave("figs/figure-4a-bacterial-infections.pdf",
        plot   = fig4a,
        dpi    = 300, 
        height = 5,
@@ -95,7 +95,7 @@ fig4b <- fit %>%
         axis.title = element_text(size=17))
 
 # -- Save figure 4b
-ggsave("figs/figure-4b.pdf",
+ggsave("figs/figure-4b-respiratory.pdf",
        plot   = fig4b,
        dpi    = 300, 
        height = 5,

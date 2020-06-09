@@ -86,7 +86,7 @@ fig3a <- cook %>%
         axis.title = element_text(size=17))
 
 # -- Save figure 3a
-ggsave("figs/figure-3a.pdf",
+ggsave("figs/figure-3a-cook-40-59.pdf",
        plot   = fig3a,
        dpi    = 300, 
        height = 5,
@@ -117,7 +117,7 @@ fig3b <- cook %>%
         axis.title = element_text(size=17))
 
 # -- Save figure 3b
-ggsave("figs/figure-3b.pdf",
+ggsave("figs/figure-3b-cook-60-74.pdf",
        plot   = fig3b,
        dpi    = 300, 
        height = 5,
@@ -148,7 +148,7 @@ fig3c <- cook %>%
         axis.title = element_text(size=17))
 
 # -- Save figure 3b
-ggsave("figs/figure-3c.pdf",
+ggsave("figs/figure-3c-cook-75-above.pdf",
        plot   = fig3c,
        dpi    = 300, 
        height = 5,

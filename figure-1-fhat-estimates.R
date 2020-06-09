@@ -166,7 +166,7 @@ fig1a <- fits %>%
 fig1a
 
 # -- Save figure 1A
-ggsave("figs/figure-1a.pdf",
+ggsave("figs/figure-1a-hurricane-estimates.pdf",
        plot   = fig1a,
        dpi    = 300, 
        height = 5,
@@ -242,7 +242,7 @@ fig1b <- res %>%
 fig1b
 
 # -- Save figure 1B
-ggsave("figs/figure-1b.pdf",
+ggsave("figs/figure-1b-chikungunya-estimate.pdf",
        plot   = fig1b,
        dpi    = 300, 
        height = 5,
@@ -350,7 +350,7 @@ fig1c <- df %>%
 fig1c
 
 # -- Saving figure 1c
-ggsave("figs/figure-1c.pdf",
+ggsave("figs/figure-1c-usa-estimate.pdf",
        plot   = fig1c,
        dpi    = 300,
        height = 5,

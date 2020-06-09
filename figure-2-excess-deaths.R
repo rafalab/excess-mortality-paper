@@ -133,7 +133,7 @@ fig2a <- excess_deaths_pr %>%
 
 
 # -- Save figure 2A
-ggsave("figs/figure-2a.pdf",
+ggsave("figs/figure-2a-excess-deaths-pr.pdf",
        plot   = fig2a,
        dpi    = 300, 
        height = 5,
@@ -271,7 +271,7 @@ fig2b <- us %>%
         axis.title = element_text(size=18))
 
 # -- Save figure 2B
-ggsave("figs/figure-2b.pdf",
+ggsave("figs/figure-2b-excess-deaths-us.pdf",
        plot   = fig2b,
        dpi    = 300, 
        height = 5,
@@ -345,7 +345,7 @@ fig2c <- fits %>%
         axis.title = element_text(size=18))
 
 # -- Save figure 2C
-ggsave("figs/figure-2c.pdf",
+ggsave("figs/figure-2c-covid-v-flu.pdf",
        plot   = fig2c,
        dpi    = 300, 
        height = 5,
